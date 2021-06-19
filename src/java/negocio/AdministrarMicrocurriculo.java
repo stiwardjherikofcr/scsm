@@ -5,13 +5,18 @@
  */
 package negocio;
 
+import dao.CambioJpaController;
+import dao.EstadoJpaController;
 import dao.SeccionMicrocurriculoJpaController;
 import dao.exceptions.NonexistentEntityException;
+import dto.Cambio;
 import dto.Contenido;
+import dto.Estado;
 import dto.Materia;
 import dto.MateriaPK;
 import dto.Microcurriculo;
 import dto.Pensum;
+import dto.SeccionCambio;
 import dto.SeccionMicrocurriculo;
 import dto.TablaMicrocurriculoInfo;
 import java.util.ArrayList;
@@ -36,7 +41,14 @@ public class AdministrarMicrocurriculo {
         }
         return microcurriculos;
     }
-
+    
+    public List<dto.SeccionCambio> obtenerSeccionesCambios(){
+         Conexion con = Conexion.getConexion();
+        dao.SeccionCambioJpaController as=new dao.SeccionCambioJpaController(con.getBd());
+        return as.findSeccionCambioEntities();
+    }
+    
+    
     public dto.Microcurriculo obtenerMicrocurriculo(int codigoMateria, int codigoPensum) {
         Conexion con = Conexion.getConexion();
         dao.MateriaJpaController materiaDao = new dao.MateriaJpaController(con.getBd());
@@ -188,24 +200,51 @@ public class AdministrarMicrocurriculo {
         return daoTipoAsignatura.findTipoAsignaturaEntities();
     }
 
-
-    public void listaMicrocurriculos(int idseccion, int idmateria) {
+    public void realizarSolicitudCambio(int idSeccionMicrocurriculo, String texto) {
         Conexion con = Conexion.getConexion();
-        dao.SeccionMicrocurriculoJpaController sec = new SeccionMicrocurriculoJpaController(con.getBd());
-        List<SeccionMicrocurriculo> secciones = sec.findSeccionMicrocurriculoEntities();
-        for (SeccionMicrocurriculo sm : secciones) {
-            List<Contenido> contenidos = sm.getContenidoList();
-            for (Contenido c : contenidos) {
-                if (sm.getSeccionId().getId() == idseccion && sm.getMicrocurriculo().getMateria().getMateriaPK().getCodigoMateria() == idmateria) {
-                    if (c.getSeccionMicrocurriculoId().getId() == sm.getId()) {
-                        System.out.println(c.getId());
-                    }
-                }
-            }
-        }
-    }
+        dao.SeccionMicrocurriculoJpaController daoSeccionMicrocurriculo = new dao.SeccionMicrocurriculoJpaController(con.getBd());
+        SeccionMicrocurriculo smAntigua = daoSeccionMicrocurriculo.findSeccionMicrocurriculo(idSeccionMicrocurriculo);
 
-    public void cambioMicro() {
+        List<SeccionMicrocurriculo> lista = daoSeccionMicrocurriculo.findSeccionMicrocurriculoEntities();
+        SeccionMicrocurriculo ultimoregistro = lista.get(lista.size() - 1);
+
+        SeccionMicrocurriculo SMCNueva = new SeccionMicrocurriculo();
+        SMCNueva.setMicrocurriculo(smAntigua.getMicrocurriculo());
+        SMCNueva.setSeccionId(smAntigua.getSeccionId());
+        SMCNueva.setEditable(smAntigua.getEditable());
+        SMCNueva.setTablaMicrocurriculoList(smAntigua.getTablaMicrocurriculoList());
+
+        daoSeccionMicrocurriculo.create(SMCNueva);
+
+        EstadoJpaController estadodao = new EstadoJpaController(con.getBd());
+        Estado estado = estadodao.findEstado(1);
+
+        Cambio c = new Cambio();
+        c.setEstadoId(estado);
+
+        CambioJpaController cdao = new CambioJpaController(con.getBd());
+        cdao.create(c);
+
+        SeccionCambio sc = new SeccionCambio();
+        sc.setSeccionMicrocurriculoIdAntigua(smAntigua);
+        sc.setSeccionMicrocurriculoIdNuevo(SMCNueva);
+        sc.setCambioId(c);
+
+        dao.SeccionCambioJpaController scdao = new dao.SeccionCambioJpaController(con.getBd());
+        scdao.create(sc);
+
+        Contenido cont = new Contenido();
+        cont.setCantidadItemsLista(0);
+        cont.setTexto(texto);
+        cont.setSeccionMicrocurriculoId(SMCNueva);
+
+        dao.ContenidoJpaController codao = new dao.ContenidoJpaController(con.getBd());
+        codao.create(cont);
+    }
+    
+    public static void main(String args[]){
+        AdministrarMicrocurriculo a=new AdministrarMicrocurriculo();
+        a.realizarSolicitudCambio(17045, "Estos son los 80");
     }
 
 }

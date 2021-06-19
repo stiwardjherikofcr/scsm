@@ -4,6 +4,8 @@
     Author     : Stiward
 --%>
 
+<%@page import="dto.Usuario"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,6 +44,9 @@
     </head>
 
     <body>
+        <%
+            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+        %>
         <div class="wrapper">
             <div class="main-header">
                 <!-- Logo Header -->
@@ -303,6 +308,11 @@
                         </div>
                     </div>
                     <div class="page-inner mt--2">
+                        <%
+                            dto.Microcurriculo microcurriculo = (dto.Microcurriculo) request.getSession().getAttribute("microcurriculo");
+                            List<dto.AreaFormacion> areasFormacion = (List<dto.AreaFormacion>) request.getSession().getAttribute("areasFormacion");
+                            List<dto.TipoAsignatura> tiposAsignatura = (List<dto.TipoAsignatura>) request.getSession().getAttribute("tipoAsignatura");
+                        %>
                         <div class="row">
                             <!--contenido de microcurriculo-->
                             <div class="col-md-10">
@@ -854,9 +864,6 @@
                                             Guardar
                                         </button>
                                     </div>
-                                </div>
-                                <div class="w-100 d-flex justify-content-center">
-                                    <a class="w-75 btn btn-danger" href="solicitudes-microcurriculo.jsp">Crear solicitud de Microcurriculo</a>
                                 </div>
                             </div>
                             <!-- Fin Contenido de Microcurriculo-->

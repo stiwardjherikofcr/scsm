@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -324,6 +325,13 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
+                                            
+                                            <%
+                                               negocio.AdministrarMicrocurriculo aas= new negocio.AdministrarMicrocurriculo();
+                                            List<dto.SeccionCambio> lista= aas.obtenerSeccionesCambios();
+                                            %>
+                                            
+                                            
                                             <table id="basic-datatables"
                                                    class="display table table-striped table-hover text-center">
                                                 <thead>
@@ -343,49 +351,14 @@
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1155704</td>
-                                                        <td>TEORIA GENERAL DE LAS COMUNICACIONES</td>
-                                                        <td>
-                                                            <div>
-                                                                <select class="form-control" id="formGroupDefaultSelect">
-                                                                    <option class="input-solid" selected disabled>En curso</option>
-                                                                    <option>Aprovado</option>
-                                                                    <option>Rechazado</option>
-                                                                </select>
-                                                            </div>
-
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="ver-solicitud.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="See" style="color: black;">
-                                                                        <i class="fas fa-search"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark"
-                                                                        data-original-title="Export PDF" style="color: black;">
-                                                                    <i class="fas fa-file-pdf"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1155705</td>
-                                                        <td>ANALISIS Y DISEÑO DE SISTEMAS</td>
-                                                        <td>
-                                                            <div>
-                                                                <select class="form-control" id="formGroupDefaultSelect">
-                                                                    <option>En curso</option>
-                                                                    <option selected>Aprovado</option>
-                                                                    <option>Rechazado</option>
-                                                                </select>
-                                                            </div>
-                                                        </td>
-                                                        <td>
+                                                    <%
+                                                     for(dto.SeccionCambio sec:lista){%>
+                                                    
+                                                     <tr>
+                                                         <th><%=sec.getSeccionMicrocurriculoIdNuevo().getMicrocurriculo().getMateria().getMateriaPK().getCodigoMateria() %></th>
+                                                         <th><%=sec.getSeccionMicrocurriculoIdNuevo().getMicrocurriculo().getMateria().getNombre() %></th>
+                                                         <th><%=sec.getCambioId().getEstadoId().getEstado() %></th>
+                                                         <td>
                                                             <div class="form-button-action">
                                                                 <button id="pensum" type="button" data-toggle="tooltip"
                                                                         title="" class="btn btn-link btn-dark"
@@ -399,115 +372,14 @@
                                                                 </button>
                                                             </div>
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1155706</td>
-                                                        <td>SEMINARIO DE INVESTIGACION III</td>
-                                                        <td>
-                                                            <div>
-                                                                <select class="form-control" id="formGroupDefaultSelect">
-                                                                    <option selected>En curso</option>
-                                                                    <option>Aprovado</option>
-                                                                    <option>Rechazado</option>
-                                                                </select>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button id="pensum" type="button" data-toggle="tooltip"
-                                                                        title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark"
-                                                                        data-original-title="Export PDF" style="color: black;">
-                                                                    <i class="fas fa-file-pdf"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1155708</td>
-                                                        <td>ADMINISTRACION DE PROYECTOS INFORMATICOS</td>
-                                                        <td>
-                                                            <div>
-                                                                <select class="form-control" id="formGroupDefaultSelect">
-                                                                    <option selected>En curso</option>
-                                                                    <option>Aprovado</option>
-                                                                    <option>Rechazado</option>
-                                                                </select>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button id="pensum" type="button" data-toggle="tooltip"
-                                                                        title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark"
-                                                                        data-original-title="Export PDF" style="color: black;">
-                                                                    <i class="fas fa-file-pdf"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1155704</td>
-                                                        <td>TEORIA GENERAL DE LAS COMUNICACIONES</td>
-                                                        <td>
-                                                            <div>
-                                                                <select class="form-control" id="formGroupDefaultSelect">
-                                                                    <option>En curso</option>
-                                                                    <option>Aprovado</option>
-                                                                    <option selected>Rechazado</option>
-                                                                </select>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button id="pensum" type="button" data-toggle="tooltip"
-                                                                        title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark"
-                                                                        data-original-title="Export PDF" style="color: black;">
-                                                                    <i class="fas fa-file-pdf"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1155704</td>
-                                                        <td>TEORIA GENERAL DE LAS COMUNICACIONES</td>
-                                                        <td>
-                                                            <div>
-                                                                <select class="form-control" id="formGroupDefaultSelect">
-                                                                    <option>En curso</option>
-                                                                    <option selected>Aprovado</option>
-                                                                    <option>Rechazado</option>
-                                                                </select>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button id="pensum" type="button" data-toggle="tooltip"
-                                                                        title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark"
-                                                                        data-original-title="Export PDF" style="color: black;">
-                                                                    <i class="fas fa-file-pdf"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                     </tr>
+                                                    
+                                                    
+                                                    <%
+                                                
+                                            }
+                                                    %>
+                                                   
                                                 </tbody>
                                             </table>
                                         </div>

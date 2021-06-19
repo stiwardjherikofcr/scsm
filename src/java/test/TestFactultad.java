@@ -14,7 +14,6 @@ import negocio.AdministrarMicrocurriculo;
 public class TestFactultad {
 
     public static void main(String[] args) {
-        AdministrarMicrocurriculo am = new AdministrarMicrocurriculo();
-        am.listaMicrocurriculos(7, 1150606);
+ 
     }
 }
