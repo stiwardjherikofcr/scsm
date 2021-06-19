@@ -41,11 +41,21 @@ public class ControladorMicrocurriculo extends HttpServlet {
         request.getSession().removeAttribute("materias");
         AdministrarMicrocurriculo adminMicrocurriculo = new AdministrarMicrocurriculo();
         dto.Usuario usuario = (dto.Usuario) request.getSession().getAttribute("usuario");
-        List<dto.Materia> materias = adminMicrocurriculo.obtenerTodasMateria(usuario.getDocente().getProgramaList().get(0).getCodigo());
+         List<dto.Materia> materias = null;
+         String url = "";
+        if(usuario.getRol().getId()==1){
+         materias = adminMicrocurriculo.obtenerTodasMateria(usuario.getDocente().getProgramaList().get(0).getCodigo());
+        url = "CSM_Software/CSM/director/dashboard/microcurriculo/consultar-microcurriculo.jsp";}
+        else{
+           materias = adminMicrocurriculo.obtenerMateriasDocentes(usuario);
+            System.out.println(materias);
+            url = "CSM_Software/CSM/docente/dashboard/microcurriculo/consultar-microcurriculo.jsp";
+        }
+           
         request.getSession().setAttribute("areasFormacion", adminMicrocurriculo.obtenerAreasFormacion());
         request.getSession().setAttribute("tipoAsignatura", adminMicrocurriculo.obtenerTiposAisgnatura());
         request.getSession().setAttribute("materias", materias);
-        response.sendRedirect("CSM_Software/CSM/director/dashboard/microcurriculo/consultar-microcurriculo.jsp");
+        response.sendRedirect(url);
     }
 
     public void editar(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -67,7 +77,17 @@ public class ControladorMicrocurriculo extends HttpServlet {
         dto.Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(id, codigoMateria, codigoPensum);
         request.getSession().setAttribute("tablas", negocio.AdministrarMicrocurriculo.ordenarTablaInfo(microcurriculo));
         request.getSession().setAttribute("microcurriculo", microcurriculo);
-        response.sendRedirect("CSM_Software/CSM/director/dashboard/microcurriculo/ver-microcurriculo.jsp");
+        String url="";
+        dto.Usuario user = (dto.Usuario) (request.getSession().getAttribute("usuario"));
+        
+        if(user.getRol().getId().equals(1))
+        {  url = "director";
+        }
+      else{
+        url="docente";
+        }
+        response.sendRedirect("CSM_Software/CSM/"+url+"/dashboard/microcurriculo/ver-microcurriculo.jsp");
+        
     }
 
     @Override

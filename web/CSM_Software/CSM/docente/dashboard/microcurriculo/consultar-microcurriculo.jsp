@@ -4,6 +4,8 @@
     Author     : Stiward
 --%>
 
+<%@page import="dto.Usuario"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -185,8 +187,12 @@
                                 </div>
                                 <div class="info">
                                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                                      <%
+            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+        %>
+      
                                         <span>
-                                            Maria Del Pilar
+                                            <h4><%=user.getDocente().getNombre()+""+user.getDocente().getApellido() %>  </h4>
                                             <span class="user-level">Docente</span>
                                             <span class="caret"></span>
                                         </span>
@@ -269,7 +275,7 @@
             </div>
             <!-- End Sidebar -->
 
-            <div class="main-panel">
+          <div class="main-panel">
                 <div class="content">
                     <div class="page-inner">
                         <div class="page-header">
@@ -296,12 +302,21 @@
                                 </ul>
                             </div>
                         </div>
+
                         <div class="row">
                             <!-- Tabla Consultar Microcurriculos -->
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header text-center">
-                                        <h4 class="card-title">Listado Microcurriculos</h4>
+                                    <div class="card-header row">
+                                        <div class="col d-flex justify-content-center align-items-center">
+                                            <h4 class="card-title">Listado Microcurriculos</h4>
+                                        </div>
+                                        <a href="../../../../../ControladorMicrocurriculo?accion=listarTodos">
+                                            <button class="btn btn-primary btn-round ml-auto">
+                                                <i class="fas fa-sync"></i>
+                                                Actualizar
+                                            </button>
+                                        </a>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -328,84 +343,35 @@
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
+                                                    <%
+                                                        List<dto.Materia> materias = (List<dto.Materia>) request.getSession().getAttribute("materias");
+                                                        for (dto.Materia elem : materias) {
+                                                            if (elem.getMicrocurriculoList().size() > 0) {
+                                                    %>
                                                     <tr>
-                                                        <td>115-3</td>
-                                                        <td>1155609</td>
-                                                        <td>SEMINARIO DE INTEGRADOR II</td>
-                                                        <td>2</td>
-                                                        <td>6</td>
+                                                        <td><%=elem.getPensum().getPensumPK().getProgramaCodigo()%> - <%=elem.getPensum().getPensumPK().getCodigo()%></td>
+                                                        <td><%=elem.getMateriaPK().getCodigoMateria()%></td>
+                                                        <td><%=elem.getNombre()%></td>
+                                                        <td><%=elem.getCreditos()%></td>
+                                                        <td><%=elem.getSemestre()%></td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="ver-microcurriculo.jsp">
+                                                                <a href="../../../../../ControladorMicrocurriculo?accion=Consultar&idMicrocurriculo=<%=elem.getMicrocurriculoList().get(0).getMicrocurriculoPK().getId()%>&codigoMateria=<%=elem.getMicrocurriculoList().get(0).getMateria().getMateriaPK().getCodigoMateria()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>"> 
                                                                     <button id="pensum" type="button" data-toggle="tooltip"
                                                                             title="" class="btn btn-link btn-dark"
                                                                             data-original-title="Ver" style="color: black;">
                                                                         <i class="fas fa-search"></i>
                                                                     </button>
                                                                 </a>
-                                                                <a href="solicitud-microcurriculo.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Solicitud"
-                                                                            style="color: black;">
-                                                                        <i class="fas fa-clipboard-list"></i>
-                                                                    </button>
-                                                                </a>
+                                                        
+                                                         
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>115-3</td>
-                                                        <td>1155708</td>
-                                                        <td>ADMINISTRACION DE PROYECTOS INFORMATICOS</td>
-                                                        <td>3</td>
-                                                        <td>7</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="ver-microcurriculo.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Ver" style="color: black;">
-                                                                        <i class="fas fa-search"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <a href="solicitud-microcurriculo.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Solicitud"
-                                                                            style="color: black;">
-                                                                        <i class="fas fa-clipboard-list"></i>
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>115-3</td>
-                                                        <td>1155808</td>
-                                                        <td>FORMULACION Y EVALUACION DE PROYECTOS DE SISTEMAS</td>
-                                                        <td>3</td>
-                                                        <td>8</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="ver-microcurriculo.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Ver" style="color: black;">
-                                                                        <i class="fas fa-search"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <a href="solicitud-microcurriculo.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Solicitud"
-                                                                            style="color: black;">
-                                                                        <i class="fas fa-clipboard-list"></i>
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    <%
+                                                            }
+                                                        }
+                                                    %>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -467,7 +433,6 @@
                 var state = $('#notify_state option:selected').val();
                 var style = $('#notify_style option:selected').val();
                 var content = {};
-
                 content.message = 'Turning standard Bootstrap alerts into "notify" like notifications';
                 content.title = 'Bootstrap notify';
                 if (style == "withicon") {
@@ -477,7 +442,6 @@
                 }
                 content.url = 'index.jsp';
                 content.target = '_blank';
-
                 $.notify(content, {
                     type: state,
                     placement: {

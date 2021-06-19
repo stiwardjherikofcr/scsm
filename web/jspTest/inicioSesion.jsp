@@ -19,7 +19,7 @@
             <input type="radio" name="rol" value="1">
             Docente
             <input type="radio"  name="rol" value="2">
-           <input type="submit" name="accion" value="iniciarSesion">
+           <input type="submit" name="accion" value="iniciar sesion">
       
         </form>
     </body>

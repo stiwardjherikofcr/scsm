@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -155,7 +156,10 @@
                                                          class="avatar-img rounded">
                                                 </div>
                                                 <div class="u-text">
-                                                    <h4>Maria Del Pilar</h4>
+                                                    <%
+            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+        %>
+        <h4><%=user.getDocente().getNombre()+""+user.getDocente().getApellido() %></h4>
                                                     <p class="text-muted">Docente</p>
                                                 </div>
                                             </div>
@@ -188,7 +192,7 @@
                             <div class="info">
                                 <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                                     <span>
-                                        Maria Del Pilar
+                                    <%=user.getDocente().getNombre()+""+user.getDocente().getApellido() %>
                                         <span class="user-level">Docente</span>
                                         <span class="caret"></span>
                                     </span>
@@ -243,7 +247,7 @@
                                 <div class="collapse" id="sidebarLayouts">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="microcurriculo/consultar-microcurriculo.jsp">
+                                            <a href="../../../../ControladorMicrocurriculo?accion=listarTodos">
                                                 <span class="sub-item">Consultar Microcurriculo</span>
                                             </a>
                                         </li>

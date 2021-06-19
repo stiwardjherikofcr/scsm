@@ -32,6 +32,26 @@ public class AdministrarMicrocurriculo {
     public AdministrarMicrocurriculo() {
     }
 
+    public List<dto.Materia> obtenerMateriasDocentes(dto.Usuario user) {
+        dto.Docente docente = user.getDocente();
+        Conexion con = Conexion.getConexion();
+        dao.MateriaPeriodoGrupoJpaController grupoDao = new dao.MateriaPeriodoGrupoJpaController(con.getBd());
+        List<dto.MateriaPeriodoGrupo> grupos = grupoDao.findMateriaPeriodoGrupoEntities();
+        System.out.println(docente.getCodigoDocente());
+        List<dto.Materia> materias = new ArrayList<>();
+        System.out.println("size"+grupos.size());
+        System.out.println("contenido"+grupos);
+        for (dto.MateriaPeriodoGrupo grupo : grupos) {
+            System.out.println(grupo.getDocente().getCodigoDocente()+" igual "+docente.getCodigoDocente());
+            if (grupo.getDocente().getCodigoDocente().equals(docente.getCodigoDocente())) {
+                System.out.println("si dicta la materia");
+                materias.add(grupo.getMateriaPeriodo().getMateria());
+            }
+            System.out.println("    Fuera");
+        }
+        return materias;
+    }
+
     public ArrayList<dto.Microcurriculo> obtenerMicrocurriculosPensum(int codigo, int programaCodigo) {
         AdministrarPensum administrarPensum = new AdministrarPensum();
         dto.Pensum pensum = administrarPensum.obtenerPensum(codigo, programaCodigo);
@@ -41,14 +61,13 @@ public class AdministrarMicrocurriculo {
         }
         return microcurriculos;
     }
-    
-    public List<dto.SeccionCambio> obtenerSeccionesCambios(){
-         Conexion con = Conexion.getConexion();
-        dao.SeccionCambioJpaController as=new dao.SeccionCambioJpaController(con.getBd());
+
+    public List<dto.SeccionCambio> obtenerSeccionesCambios() {
+        Conexion con = Conexion.getConexion();
+        dao.SeccionCambioJpaController as = new dao.SeccionCambioJpaController(con.getBd());
         return as.findSeccionCambioEntities();
     }
-    
-    
+
     public dto.Microcurriculo obtenerMicrocurriculo(int codigoMateria, int codigoPensum) {
         Conexion con = Conexion.getConexion();
         dao.MateriaJpaController materiaDao = new dao.MateriaJpaController(con.getBd());
@@ -241,9 +260,9 @@ public class AdministrarMicrocurriculo {
         dao.ContenidoJpaController codao = new dao.ContenidoJpaController(con.getBd());
         codao.create(cont);
     }
-    
-    public static void main(String args[]){
-        AdministrarMicrocurriculo a=new AdministrarMicrocurriculo();
+
+    public static void main(String args[]) {
+        AdministrarMicrocurriculo a = new AdministrarMicrocurriculo();
         a.realizarSolicitudCambio(17045, "Estos son los 80");
     }
 
