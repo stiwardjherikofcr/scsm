@@ -10,7 +10,7 @@ $(document).ready(function (){
 });
 
 function searchFacultad(){
-    $.post('../ControladorFacultad?accion=listar', {}, function(response){
+    $.post('../../../ControladorFacultad?accion=listar', {}, function(response){
         $('#optionFacultad').html(response);
         $('#optionFacultad').val(1);
         searchDepartamento();
@@ -19,7 +19,7 @@ function searchFacultad(){
 
 function searchDepartamento(){
     f = $('#optionFacultad').val();
-    $.post('../ControladorDepartamento?accion=listar', {query:f}, function(response){
+    $.post('../../../ControladorDepartamento?accion=listar', {query:f}, function(response){
         $('#optionDepartamento').html(response);
     });
 }

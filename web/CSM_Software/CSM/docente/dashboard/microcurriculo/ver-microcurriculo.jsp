@@ -247,11 +247,11 @@
                                                 <span class="sub-item">Consultar Microcurriculo</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="solicitudes-microcurriculo.jsp">
-                                                <span class="sub-item">Solicitudes Microcurriculo</span>
-                                            </a>
-                                        </li>
+                                          <li>
+                                                <a href="solicitudes-microcurriculo.jsp">
+                                                    <span class="sub-item">Mis Solicitudes Microcurriculo</span>
+                                                </a>
+                                            </li>
                                     </ul>
                                 </div>
                             </li>
@@ -261,18 +261,8 @@
                                     <p>Seguimiento</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="../grupos.jsp">
-                                    <i class="fas fa-table"></i>
-                                    <p>Grupos</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../../../../ControladorDocente?action=listarDocente">
-                                    <i class="fas fa-user-friends"></i>
-                                    <p>Docentes</p>
-                                </a>
-                            </li>
+                         
+                         
                         </ul>
                         <div class=" d-flex justify-content-center align-items-end w-100 logoUFPS">
                             <img src="../../../../assets/img/Logo-nuevo-vertical.png" alt="..." class="avatar-img w-75">
