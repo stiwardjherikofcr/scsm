@@ -90,6 +90,7 @@ public class ControladorFacultad extends HttpServlet {
         for (Facultad facultad : facultades) {
             pw.println("<option value=" + facultad.getId() + ">" + facultad.getNombre() + "</option>");
         }
+        System.out.println("dormido");
         pw.flush();
     }
 

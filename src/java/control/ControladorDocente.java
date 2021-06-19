@@ -151,7 +151,7 @@ public class ControladorDocente extends HttpServlet {
         //Creacion del usuario
         Login l = new Login();
         l.guardarDocente(password, codigo);
-        response.sendRedirect("jspTest/registroDocente.jsp");
+        response.sendRedirect("CSM_Software/CSM/sign-in/singin.jsp");
     }
 
     public void listarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {

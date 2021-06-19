@@ -25,6 +25,8 @@
         <link rel="stylesheet" href="../../assets/css/demo.css">
         <!-- CSS Custom -->
         <link rel="stylesheet" href="../../assets/css/microcurriculo.css">
+        <script src="../../assets/js/JQuery.js" type="text/javascript"></script>
+        <script src="../../assets/js/index.js" type="text/javascript"></script>
     </head>
 
     <body>
@@ -37,56 +39,37 @@
                     <div class="offset-md-10 col-2">
                         <img class="logoUFPS" src="../../assets/img/Logo-nuevo-vertical.png" alt="logo de la UFPS">
                     </div>
-
                 </div>
             </div>
             <div class=" row d-flex justify-content-center">
-                <form class="w-75">
+                <form class="w-75" action="../../../ControladorDocente" method="POST" accept-charset="ISO-8859-1">
                     <div class=" fbr plogin  gbcolor">
                         <div class="mb-3 w-100 d-flex justify-content-center align-items-center">
                             <img class="account" src="../../assets/img/profile.svg" alt="">
                         </div>
                         <div class="mb-3 row w-100">
                             <h3 class="col-2">Nombres</h3>
-                            <input type="text" class="col form-control  singin" placeholder="Nombres" id="">
+                            <input type="text" class="col form-control  singin" name="txtNombre" placeholder="Nombres" required>
                             <h3 class="col-2">Apellidos</h3>
-                            <input type="text" class="col form-control  singin" placeholder="Apellidos" id="">
+                            <input type="text" class="col form-control  singin" name="txtApellido" placeholder="Apellidos" required>
                         </div>
                         <div class="mb-3 row w-100">
                             <h3 class="col-2">Codigo</h3>
-                            <input type="text" class="col form-control  singin" placeholder="Codigo" id="">
-                            <h3 class="col-2">Correo</h3>
-                            <input type="text" class="col form-control  singin" placeholder="Correo" id="">
+                            <input type="text" class="col form-control  singin" name="txtCodigo" placeholder="Codigo" required>
+                            <h3 class="col-2" style="visibility: hidden">Codigo</h3>
+                            <input type="text" class="col form-control  singin" placeholder="Correo" id="" style="visibility: hidden">
                         </div>
                         <div class="mb-3 row w-100">
                             <h3 class="col-2">Contraseña</h3>
-                            <input type="text" class="col form-control   singin" placeholder="Contraseña" id="">
+                            <input type="password" class="col form-control   singin" name="txtPassword" placeholder="Contraseña" required>
                             <h3 class="col-2">Confirmar Contraseña</h3>
-                            <input type="text" class="col form-control  singin" placeholder="Confirmar Contraseña"
-                                   id="">
+                            <input type="password" class="col form-control  singin" name="txtPassword" placeholder="Confirmar Contraseña" required>
                         </div>
                         <div class="mb-3 row w-100">
                             <h3 class="col-2">Facultad</h3>
-                            <select class=" col form-control" id="formGroupDefaultSelect">
-                                <option selected>En curso</option>
-                                <option>Aprovado</option>
-                                <option>Rechazado</option>
-                            </select>
+                            <select class=" col form-control" name="optionFacultad" id="optionFacultad" onchange ="searchDepartamento()" required></select>
                             <h3 class="col-2">Departamento</h3>
-                            <select class=" col form-control" id="formGroupDefaultSelect">
-                                <option selected>En curso</option>
-                                <option>Aprovado</option>
-                                <option>Rechazado</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 row w-100">
-                            <h3 class="col-2">Facultad</h3>
-                            <select class=" col form-control" id="formGroupDefaultSelect">
-                                <option selected>En curso</option>
-                                <option>Aprovado</option>
-                                <option>Rechazado</option>
-                            </select>
-
+                            <select class=" col form-control" name="optionDepartamento" id="optionDepartamento" required></select>
                         </div>
                         <!--botones-->
                         <div class="w-100 d-flex justify-content-center ">
@@ -95,15 +78,13 @@
                                     Sesion</a>
                             </div>
                             <div class="w-25">
-                                <a class="btn btn-danger mb-2 w-100 brlogin ml-2"
-                                   href="../sign-up/signup.jsp">Registrarse</a>
+                                <input class="btn btn-danger mb-2 w-100 brlogin ml-2" type="submit" name="action" value="registrarDocente">
                             </div>
                         </div>
                         <!--botones-->
                     </div>
                 </form>
             </div>
-
         </div>
         <!--   Core JS Files   -->
         <script src="../../assets/js/core/jquery.3.2.1.min.js"></script>
@@ -118,19 +99,6 @@
         <script src="../../assets/js/atlantis.min.js"></script>
         <!-- Atlantis DEMO methods, don't include it in your project! -->
         <script src="../../assets/js/setting-demo2.js"></script>
-        <script>
-            function href() {
-                var input_radio_director = document.getElementById("opt1").checked;
-                var input_radio_docente = document.getElementById("opt2").checked;
-                if (input_radio_director) {
-                    window.location = "../director/dashboard/dashboard.jsp";
-                } else if (input_radio_docente) {
-                    window.location = "../docente/dashboard/dashboard.jsp";
-                } else {
-                    window.location = "#";
-                }
-            }
-        </script>
     </body>
 
 </html>

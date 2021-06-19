@@ -83,6 +83,7 @@ public class ControladorDepartamento extends HttpServlet {
     }
 
     private void listarDepartamento(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html;charset=ISO-8859-1");
         PrintWriter pw = new PrintWriter(response.getOutputStream());
         int id = Integer.parseInt(request.getParameter("query"));
         DepartamentoJpaController djpa = new DepartamentoJpaController(Conexion.getConexion().getBd());
