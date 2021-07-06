@@ -326,39 +326,37 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="text-right f border-right mth2"> Asignatura </td>
-                                                    <td class="mt17" colspan="4">Materia</td>
+                                                    <td class="mt17" colspan="4"><%=microcurriculo.getMateria().getNombre()%></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-right border-right mth2">Codigo</td>
-                                                    <td class="mt17" colspan="4">xxxxx</td>
+                                                    <td class="mt17" colspan="4"><%=microcurriculo.getMateria().getMateriaPK().getCodigoMateria()%></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-right border-right mth2">Area de Formacion</td>
                                                     <td colspan="4" class="mt17">
-                                                        <div class="selectgroup w-100 d-flex justify-content-around ">
+                                                        <div class="selectgroup w-100 d-flex justify-content-around">
+                                                            <%
+                                                                for (dto.AreaFormacion elem : areasFormacion) {
+                                                                    if (microcurriculo.getAreaDeFormacionId().getId() == elem.getId()) {
+                                                            %>
+                                                            <label class="selectgroup-item pr-3">
+                                                                <input type="radio" name="Areadeforamacion" value="50"
+                                                                       class="selectgroup-input" checked="" disabled>
+                                                                <span class="selectgroup-button"><%=microcurriculo.getAreaDeFormacionId().getNombre()%></span>
+                                                            </label>
+                                                            <%
+                                                            } else {
+                                                            %>
                                                             <label class="selectgroup-item pr-3">
                                                                 <input type="radio" name="Areadeforamacion" value="50"
                                                                        class="selectgroup-input" disabled>
-                                                                <span class="selectgroup-button">Ciencias Basicas</span>
+                                                                <span class="selectgroup-button"><%=elem.getNombre()%></span>
                                                             </label>
-                                                            <label class="selectgroup-item pr-3">
-                                                                <input type="radio" name="Areadeforamacion" value="100"
-                                                                       class="selectgroup-input" disabled>
-                                                                <span class="selectgroup-button">Ciencias Basicas
-                                                                    Aplicadas</span>
-                                                            </label>
-                                                            <label class="selectgroup-item pr-3">
-                                                                <input type="radio" name="Areadeforamacion" value="150"
-                                                                       class="selectgroup-input" checked="" disabled>
-                                                                <span class="selectgroup-button">Profecional
-                                                                    Especifica</span>
-                                                            </label>
-                                                            <label class="selectgroup-item ">
-                                                                <input type="radio" name="Areadeforamacion" value="200"
-                                                                       class="selectgroup-input" disabled>
-                                                                <span class="selectgroup-button">Socio
-                                                                    Humanistica</span>
-                                                            </label>
+                                                            <%
+                                                                    }
+                                                                }
+                                                            %>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -366,565 +364,150 @@
                                                     <td class="text-right border-right mth2">Tipos de Asignatura</td>
                                                     <td colspan="4" class="mt17">
                                                         <div class="selectgroup w-100 d-flex justify-content-around ">
+                                                            <%
+                                                                for (dto.TipoAsignatura elem : tiposAsignatura) {
+                                                                    if (microcurriculo.getMateria().getTipoAsignaturaId().getId() == elem.getId()) {
+                                                            %>
                                                             <label class="selectgroup-item pr-3">
                                                                 <input type="radio" name="Tiposdeasignatura" value="50"
-                                                                       class="selectgroup-input" disabled>
-                                                                <span class="selectgroup-button">Ciencias Basicas</span>
+                                                                       class="selectgroup-input" checked="" disabled>
+                                                                <span class="selectgroup-button"><%=microcurriculo.getMateria().getTipoAsignaturaId().getTipo()%></span>
                                                             </label>
+                                                            <%
+                                                            } else {
+                                                            %>
                                                             <label class="selectgroup-item pr-3">
                                                                 <input type="radio" name="Tiposdeasignatura" value="150"
-                                                                       class="selectgroup-input" checked="" disabled>
-                                                                <span class="selectgroup-button">Profecional
-                                                                    Especifica</span>
+                                                                       class="selectgroup-input" disabled>
+                                                                <span class="selectgroup-button"><%=elem.getTipo()%></span>
                                                             </label>
+                                                            <%
+                                                                    }
+                                                                }
+                                                            %>
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-right border-right mth2">Numero de Creditos</td>
-                                                    <td class="mt17" colspan="4">xxxxx</td>
+                                                    <td class="mt17" colspan="4"><%=microcurriculo.getMateria().getCreditos()%></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-right border-right mth2">Prerrequisitos </td>
-                                                    <td class="mt17" colspan="4">xxxxx</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-right border-right mth2">Correquisito</td>
-                                                    <td class="mt17" colspan="4">xxxxx</td>
+                                                    <td class="mt17" colspan="4">
+                                                        <%
+                                                            for (dto.PrerrequisitoMateria prerrequisito : microcurriculo.getMateria().getPrerrequisitoMateriaList()) {
+                                                        %>
+                                                        <%=prerrequisito.getMateria1().getNombre()%><br><%}%>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-
                                 </div>
-                                <!--Unidades-->
-                                <div class="card" id="Unidades">
+                                <%
+                                    List<String[][]> tablas = (List<String[][]>) request.getSession().getAttribute("tablas");
+                                    List<dto.SeccionMicrocurriculo> secciones = microcurriculo.getSeccionMicrocurriculoList();
+                                    for (dto.SeccionMicrocurriculo seccion : secciones) {
+                                %>
+                                <!-- Seccion -->  
+                                <% int tipo = seccion.getSeccionId().getTipoSeccionId().getId();
+                                    if (tipo == 1) {%>
+                                <div class="card" id="<%=seccion.getSeccionId().getNombre()%>">
                                     <div class="card-header">
                                         <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle ">Unidades</h4>
+                                            <h4 class="card-title mtittle"><%=seccion.getSeccionId().getNombre()%></h4>
                                         </div>
                                     </div>
-
-                                    <div class="card-body pb-0">
-                                        <table class="table table-hover">
-                                            <tbody>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center" scope="col">Unidad</th>
-                                                    <th class="text-center" scope="col">Nombre de la unidad y
-                                                        contenido
-                                                        tematico</th>
-                                                    <th class="text-center" scope="col">Dedicacion del estudiante
-                                                        (Hora)
-                                                        Trabajo Presencial
-                                                    </th>
-                                                    <th class="text-center" scope="col">Dedicacion del estudiante
-                                                        (Hora)
-                                                        Trabajo
-                                                        Independiente</th>
-                                                    <th class="text-center" scope="col">Horas totales (a+b)</th>
-                                                </tr>
-                                            </thead>
-                                            <tr Class="">
-                                                <td class="text-center "> 1 </td>
-                                                <td class=""> Lorem ipsum dolor sit amet consectetur adipisicing
-                                                    elit.
-                                                    Modi dolores laudantium iste, nemo error repudiandae voluptatem
-                                                    neque unde minus quae dignissimos est accusantium qui id
-                                                    eligendi
-                                                    nam, ad sint perferendis?</td>
-                                                <td class="text-center "> 5 </td>
-                                                <td class="text-center ">8</td>
-                                                <td class="text-center ">1</td>
-                                            </tr>
-                                            <tr Class="">
-                                                <td class="text-center "> 1 </td>
-                                                <td class=""> Lorem ipsum dolor sit amet consectetur adipisicing
-                                                    elit.
-                                                    Modi dolores laudantium iste, nemo error repudiandae voluptatem
-                                                    neque unde minus quae dignissimos est accusantium qui id
-                                                    eligendi
-                                                    nam, ad sint perferendis?</td>
-                                                <td class="text-center "> 5 </td>
-                                                <td class="text-center ">8</td>
-                                                <td class="text-center ">1</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                                <!--Justificacion-->
-                                <div class="card" id="Justificacion">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle">Justificacion</h4>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex justify-content-center ">
-                                            <h2 class="">Justificacion y ubicacion en el programa</h2>
-                                        </div>
-                                        <div class="w-100 d-flex justify-content-center">
-                                            <p class="w-75 text-justify ">
-                                                El Programa de Ingeniería de Sistemas es consciente de la formación
-                                                integral
-                                                del estudiante ha
-                                                formulado asignaturas que conduzcan al futuro profesional a un proceso
-                                                de
-                                                reflexión integración y la
-                                                participación activa del estudiante, la asignatura de seminario
-                                                investigativo I es la primera de tres
-                                                seminarios investigativo que debe adelantar el estudiante en el
-                                                transcurso
-                                                de la carrera. Esto
-                                                considerando que la investigación es una actividad sistemática dirigida
-                                                a
-                                                obtener, mediante
-                                                observación, la experimentación, nuevas informaciones y conocimientos
-                                                que
-                                                necesitan para ampliar
-                                                los diversos campos de la ciencia y la tecnología.
-
-                                                Consciente de que en la actualidad la formación profesional es de mucha
-                                                importancia la intervención
-                                                y participación activa de los estudiantes, los seminarios de
-                                                investigación
-                                                están orientados al desarrollo
-                                                de competencias académicas y profesionales para que el estudiante pueda
-                                                asumir con responsabilidad
-                                                y actitud crítica las situaciones que se presentan en el campo de la
-                                                tecnología y más propiamente de
-                                                la ingeniería de sistemas, y que además sea capaz, de transformar temas
-                                                y
-                                                convertirlos en proyectos
-                                                de investigación.
-
-                                                Por la naturaleza propia de los seminarios el estudiante entra en
-                                                estrecho
-                                                contacto con el profesor y
-                                                éste le ofrece en los ejemplos y trabajos, el medio de desarrollar sus
-                                                capacidades y de profundizar en
-                                                las bases conceptuales necesarias hacia el camino de la investigación.
-                                                Profesores y estudiantes
-                                                trabajan conjuntamente para la solución de problemas y tareas las cuales
-                                                fueron colocadas para
-                                                adelantar la investigación, el estudiante investiga, compara, saca
-                                                conclusiones, descubre caminos y
-                                                el profesor busca conseguir sus fines por medio de enseñanza-aprendizaje
-                                                dialogal.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <!--Objetivo general-->
-                                <div class="card" id="ObjetivoGeneral">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle">Objetivo General</h4>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex justify-content-center ">
-                                            <h2 class="">Objetivo General</h2>
-                                        </div>
-                                        <div class="w-100 d-flex justify-content-center">
-                                            <p class="w-75 text-justify ">
-                                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores
-                                                eveniet
-                                                quibusdam quae repellat harum quod soluta ipsum sequi ducimus, est, fuga
-                                                quaerat odio impedit minus ipsam ab placeat, architecto velit!
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <!--Competencias-->
-                                <div class="card" id="Competencias">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle">Competencias</h4>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-body pb-0">
-                                        <table class="table table-hover">
-                                            <tbody>
-                                            <thead>
-                                                <tr>
-                                                    <th class="mt17 text-center" scope="col">Competencias
-                                                        procedimentales</th>
-                                                </tr>
-                                            </thead>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <table class="table table-hover">
-                                            <tbody>
-                                            <thead>
-                                                <tr>
-                                                    <th class="mt17 text-center" scope="col">Competencias
-                                                        Conceptuales</th>
-                                                </tr>
-                                            </thead>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <table class="table table-hover">
-                                            <tbody>
-                                            <thead>
-                                                <tr>
-                                                    <th class="mt17 text-center" scope="col">Competencias
-                                                        Actitudinales</th>
-                                                </tr>
-                                            </thead>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            <tr class="w-100 d-flex justify-content-center">
-                                                <td class="w-75"> Lorem ipsum dolor sit amet consectetur,
-                                                    adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                                <!--Contenido por unidad-->
-                                <div class="card" id="ContenidoPorUnidad">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle ">Contenido por Unidades</h4>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-body pb-0">
-                                        <table class="table table-hover">
-                                            <tbody>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center mt17" scope="col">Contenido por Unidades
-                                                    </th>
-                                                    <th class="text-center mt17" scope="col">Actividades
-                                                        presenciales
-                                                    </th>
-                                                    <th class="text-center mt17" scope="col">Trabajo independiente
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tr>
-                                                <td> Lorem ipsum dolor sit amet consectetur, adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                                <td> Lorem ipsum dolor sit amet consectetur, adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                                <td> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos
-                                                    saepe
-                                                    repellendus provident ratione, iste inventore unde et a nisi
-                                                    culpa,
-                                                    harum illum, aliquid exercitationem excepturi earum deleniti
-                                                    nulla
-                                                    repellat error.</td>
-                                            </tr>
-                                            <tr>
-                                                <td> Lorem ipsum dolor sit amet consectetur, adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                                <td> Lorem ipsum dolor sit amet consectetur, adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                                <td> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos
-                                                    saepe
-                                                    repellendus provident ratione, iste inventore unde et a nisi
-                                                    culpa,
-                                                    harum illum, aliquid exercitationem excepturi earum deleniti
-                                                    nulla
-                                                    repellat error.</td>
-                                            </tr>
-                                            <tr>
-                                                <td> Lorem ipsum dolor sit amet consectetur, adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                                <td> Lorem ipsum dolor sit amet consectetur, adipisicing
-                                                    elit. Non quibusdam ad nobis rerum! Aliquid eligendi magnam
-                                                    quasi
-                                                    quos minima culpa natus ipsam veritatis, distinctio commodi
-                                                    expedita
-                                                    officiis cum quod. Iure. </td>
-                                                <td> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos
-                                                    saepe
-                                                    repellendus provident ratione, iste inventore unde et a nisi
-                                                    culpa,
-                                                    harum illum, aliquid exercitationem excepturi earum deleniti
-                                                    nulla
-                                                    repellat error.</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                                <!--Metodologia-->
-                                <div class="card" id="Metodologia">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle">Metodologia</h4>
-                                        </div>
-                                    </div>
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex justify-content-center ">
-                                            <h2 class="">Metodologia</h2>
-                                        </div>
-                                        <div class="w-100 d-flex justify-content-center">
-                                            <div class="w-75 form-group">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                          rows="3"></textarea>
+                                    <% if (seccion.getSeccionId().getId() > 5) {%>
+                                    <form action="../../../../../ControladorMicrocurriculoDocente?accion=solicitarCambio" method="POST">
+                                        <div class="card-body pb-0">
+                                            <div class="w-100 d-flex justify-content-center">
+                                                <div class="w-75 form-group">
+                                                    <textarea class="form-control" name="contenidonuevo" value="info" rows="3"><%=seccion.getContenidoList().get(0).getTexto()%></textarea>
+                                                    <input type="hidden"  name="idseccionmicrocurriculo" value=<%=seccion.getMicrocurriculo().getMicrocurriculoPK().getId()%>>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-center p-3">
+                                            <button class="btn btn-danger" type="button">
+                                                <span class="btn-label">
+                                                    <i class="fas fa-save"></i>
+                                                </span>
+                                                Guardar
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <%} else {%>
+                                    <div class="card-body pb-0">
+                                        <div class="w-100 d-flex justify-content-center">
+                                            <p class="w-75 text-justify "><%=seccion.getContenidoList().get(0).getTexto()%></p>
+                                        </div>
                                     </div>
-                                    <div class="d-flex justify-content-center p-3">
-                                        <button class="btn btn-danger" type="button">
-                                            <span class="btn-label">
-                                                <i class="fas fa-save"></i>
-                                            </span>
-                                            Guardar
-                                        </button>
-                                    </div>
+                                    <%}%>
                                 </div>
-                                <!--Estrategias de Evaluacion-->
-                                <div class="card" id="EstrategiasDeEvaluacion">
+                                <!-- Fin Seccion -->
+                                <%   } else {
+                                    int canColum = seccion.getTablaMicrocurriculoList().get(0).getCantidadColumnas();
+                                %>
+                                <!-- Tabla -->
+                                <div class="card" id="<%=seccion.getSeccionId().getNombre()%>">
                                     <div class="card-header">
                                         <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle">Estrategias de Evaluacion</h4>
+                                            <h4 class="card-title mtittle "><%=seccion.getSeccionId().getNombre()%></h4>
                                         </div>
                                     </div>
                                     <div class="card-body pb-0">
-                                        <div class="d-flex justify-content-center ">
-                                            <h2 class="">Estrategias de Evaluacion</h2>
-                                        </div>
-                                        <div class="w-100 d-flex justify-content-center">
-                                            <div class="w-75 form-group">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                          rows="3"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center p-3">
-                                        <button class="btn btn-danger" type="button">
-                                            <span class="btn-label">
-                                                <i class="fas fa-save"></i>
-                                            </span>
-                                            Guardar
-                                        </button>
-                                    </div>
-                                </div>
-                                <!--Recursos-->
-                                <div class="card" id="Recursos">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle">Recursos</h4>
-                                        </div>
-                                    </div>
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex justify-content-center ">
-                                            <h2 class="">Recursos Utilizados</h2>
-                                        </div>
-                                        <div class="w-100 d-flex justify-content-center">
-                                            <div class="w-75 form-group">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                          rows="3"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center p-3">
-                                        <button class="btn btn-danger" type="button">
-                                            <span class="btn-label">
-                                                <i class="fas fa-save"></i>
-                                            </span>
-                                            Guardar
-                                        </button>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <% for (int i = 0; i < canColum; i++) {%>
+                                                    <th class="text-center" scope="col"><%=seccion.getTablaMicrocurriculoList().get(0).getEncabezadoTablaList().get(i).getEncabezadoId().getNombre()%></th>
+                                                        <%}%>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%  List<dto.TablaMicrocurriculoInfo> tablainfo = seccion.getTablaMicrocurriculoList().get(0).getTablaMicrocurriculoInfoList();
+                                                    for (int i = 0; i < seccion.getTablaMicrocurriculoList().get(0).getCantidadFilas(); i++) {
+                                                %>
+                                                <tr>
+                                                    <%
+                                                        for (int j = 0; j < seccion.getTablaMicrocurriculoList().get(0).getCantidadColumnas(); j++) {
+                                                    %>
+                                                    <td class="text-center "><%=tablainfo.size() == 0 ? "" : tablas.get(seccion.getTablaMicrocurriculoList().get(0).getTablaMicrocurriculoPK().getId() - 1)[i][j]%></td>
+                                                    <%}%>
+                                                </tr>
+                                                <% }%>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <!--Bibliografia-->
-                                <div class="card" id="Bibliografia">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-center">
-                                            <h4 class="card-title mtittle">Bibliografía</h4>
-                                        </div>
-                                    </div>
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex justify-content-center ">
-                                            <h2 class="">Bibliografía</h2>
-                                        </div>
-                                        <div class="w-100 d-flex justify-content-center">
-                                            <div class="w-75 form-group">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                          rows="3"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center p-3">
-                                        <button class="btn btn-danger" type="button">
-                                            <span class="btn-label">
-                                                <i class="fas fa-save"></i>
-                                            </span>
-                                            Guardar
-                                        </button>
-                                    </div>
-                                </div>
+                                <!-- Fin Tabla -->
+                                <%
+                                        }
+                                    }
+                                %>
                             </div>
-                            <!-- Fin Contenido de Microcurriculo-->
+                            <!-- Fin Contenido de Microcurriculo -->
 
-                            <!-- Navegacion de Microcurriculo-->
+                            <!-- Navegacion de Microcurriculo -->
                             <div class="col-md-2 position-relative">
                                 <div class=" position-fixed ">
                                     <h2 class="d-flex justify-content-center font-weight-bold">Navegacion</h2>
-                                    <a href="#Microcurriculo">
+                                    <%
+                                        for (dto.SeccionMicrocurriculo seccion : secciones) {
+                                    %>
+                                    <a href="#<%=seccion.getSeccionId().getNombre()%>">
                                         <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Microcurriculo</h4>
+                                            <h4 class="card-title "><%=seccion.getSeccionId().getNombre()%></h4>
                                         </div>
                                     </a>
-                                    <a href="#Unidades">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Unidades</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Justificacion">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Justificacion</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#ObjetivoGeneral">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Objetivo General</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Competencias">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Competencias</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#ContenidoPorUnidad">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Contenido Por Unidad</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Metodologia">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Metodologia</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#EstrategiasDeEvaluacion">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Estrategias De Evaluacion</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Recursos">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Recursos</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Bibliografia">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Bibliografia</h4>
-                                        </div>
-                                    </a>
+                                    <%
+                                        }
+                                    %>      
                                 </div>
                             </div>
-                            <!-- Fin Navegacion de Microcurriculo-->
+                            <!-- Fin Navegacion de Microcurriculo -->
                         </div>
                     </div>
                 </div>

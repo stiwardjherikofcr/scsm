@@ -7,7 +7,6 @@ package negocio;
 
 import dao.CambioJpaController;
 import dao.EstadoJpaController;
-import dao.SeccionMicrocurriculoJpaController;
 import dao.exceptions.NonexistentEntityException;
 import dto.Cambio;
 import dto.Contenido;
@@ -39,10 +38,10 @@ public class AdministrarMicrocurriculo {
         List<dto.MateriaPeriodoGrupo> grupos = grupoDao.findMateriaPeriodoGrupoEntities();
         System.out.println(docente.getCodigoDocente());
         List<dto.Materia> materias = new ArrayList<>();
-        System.out.println("size"+grupos.size());
-        System.out.println("contenido"+grupos);
+        System.out.println("size" + grupos.size());
+        System.out.println("contenido" + grupos);
         for (dto.MateriaPeriodoGrupo grupo : grupos) {
-            System.out.println(grupo.getDocente().getCodigoDocente()+" igual "+docente.getCodigoDocente());
+            System.out.println(grupo.getDocente().getCodigoDocente() + " igual " + docente.getCodigoDocente());
             if (grupo.getDocente().getCodigoDocente().equals(docente.getCodigoDocente())) {
                 System.out.println("si dicta la materia");
                 materias.add(grupo.getMateriaPeriodo().getMateria());

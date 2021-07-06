@@ -59,6 +59,8 @@ public class ControladorPensum extends HttpServlet {
             switch (request.getParameter("accion")) {
                 case "listarPensum":
                     this.listarPensum2(request, response);
+                case "listarPensumDocente":
+                    this.listarPensum3(request, response);
             }
         } catch (Exception e) {
             System.out.println("estoy editando");
@@ -81,6 +83,20 @@ public class ControladorPensum extends HttpServlet {
         List<dto.Materia> materias = admin.obtenerMateriasPensum(pensumCodigo, programa.getCodigo());
         request.getSession().setAttribute("listaMateriasTodas", materias);
         response.sendRedirect("CSM_Software/CSM/director/dashboard/pensum.jsp");
+    }
+    
+        public void listarPensum3(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //listar pensum
+        AdministrarPensum admin = new AdministrarPensum();
+        Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+        dto.Programa programa = (dto.Programa) request.getSession().getAttribute("programaSesion");
+        List<Pensum> pensum = admin.obtenerPensum(u.getDocente().getProgramaList().get(0));
+        request.getSession().setAttribute("listaPensum3", pensum);
+        //lista materias del pensum
+        int pensumCodigo = pensum.get(0).getPensumPK().getCodigo();
+        List<dto.Materia> materias = admin.obtenerMateriasPensum(pensumCodigo, programa.getCodigo());
+        request.getSession().setAttribute("listaMateriasTodas", materias);
+        response.sendRedirect("CSM_Software/CSM/docente/dashboard/pensum.jsp");
     }
 
     private void registrar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

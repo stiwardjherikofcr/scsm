@@ -288,7 +288,6 @@
             </div>
             <!-- End Sidebar -->
 
-
             <div class="main-panel">
                 <div class="content">
                     <div class="page-inner">
@@ -325,13 +324,10 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            
                                             <%
-                                               negocio.AdministrarMicrocurriculo aas= new negocio.AdministrarMicrocurriculo();
-                                            List<dto.SeccionCambio> lista= aas.obtenerSeccionesCambios();
+                                                negocio.AdministrarMicrocurriculo aas = new negocio.AdministrarMicrocurriculo();
+                                                List<dto.SeccionCambio> lista = aas.obtenerSeccionesCambios();
                                             %>
-                                            
-                                            
                                             <table id="basic-datatables"
                                                    class="display table table-striped table-hover text-center">
                                                 <thead>
@@ -352,13 +348,12 @@
                                                 </tfoot>
                                                 <tbody>
                                                     <%
-                                                     for(dto.SeccionCambio sec:lista){%>
-                                                    
-                                                     <tr>
-                                                         <th><%=sec.getSeccionMicrocurriculoIdNuevo().getMicrocurriculo().getMateria().getMateriaPK().getCodigoMateria() %></th>
-                                                         <th><%=sec.getSeccionMicrocurriculoIdNuevo().getMicrocurriculo().getMateria().getNombre() %></th>
-                                                         <th><%=sec.getCambioId().getEstadoId().getEstado() %></th>
-                                                         <td>
+                                                        for (dto.SeccionCambio sec : lista) {%>
+                                                    <tr>
+                                                        <th><%=sec.getSeccionMicrocurriculoIdNuevo().getMicrocurriculo().getMateria().getMateriaPK().getCodigoMateria()%></th>
+                                                        <th><%=sec.getSeccionMicrocurriculoIdNuevo().getMicrocurriculo().getMateria().getNombre()%></th>
+                                                        <th><%=sec.getCambioId().getEstadoId().getEstado()%></th>
+                                                        <td>
                                                             <div class="form-button-action">
                                                                 <button id="pensum" type="button" data-toggle="tooltip"
                                                                         title="" class="btn btn-link btn-dark"
@@ -372,14 +367,10 @@
                                                                 </button>
                                                             </div>
                                                         </td>
-                                                     </tr>
-                                                    
-                                                    
+                                                    </tr>
                                                     <%
-                                                
-                                            }
+                                                        }
                                                     %>
-                                                   
                                                 </tbody>
                                             </table>
                                         </div>

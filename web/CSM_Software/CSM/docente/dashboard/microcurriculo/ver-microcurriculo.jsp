@@ -156,8 +156,8 @@
                                                          class="avatar-img rounded">
                                                 </div>
                                                 <div class="u-text">
-                                                    <h4><%=user.getDocente().getNombre()+""+user.getDocente().getApellido() %></h4>
-                                                    <p class="text-muted">Docente</p>
+                                                    <h4><%=user.getDocente().getNombre()%></h4>
+                                                    <p class="text-muted"><%=user.getRol().getRol()%></p>
                                                 </div>
                                             </div>
                                         </li>
@@ -183,12 +183,12 @@
                     <div class="sidebar-content">
                         <div class="user">
                             <div class="avatar-sm float-left mr-2">
-                                <img src="../../../../assets/img/profile.jfif" alt="..." class="avatar-img rounded-circle">
+                                <img src="../../../../assets/img/profile-docente.jfif" alt="..." class="avatar-img rounded-circle">
                             </div>
                             <div class="info">
                                 <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                                     <span>
-                                        <%=user.getDocente().getNombre()+" "+user.getDocente().getApellido() %>
+                                        <%=user.getDocente().getNombre()%>
                                         <span class="user-level"><%=user.getRol().getRol()%></span>
                                         <span class="caret"></span>
                                     </span>

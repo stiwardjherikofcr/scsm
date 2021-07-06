@@ -43,6 +43,7 @@
     </head>
 
     <body>
+        <%Usuario user = (Usuario) request.getSession().getAttribute("usuario");%>
         <div class="wrapper">
             <div class="main-header">
                 <!-- Logo Header -->
@@ -153,8 +154,8 @@
                                                          alt="image profile" class="avatar-img rounded">
                                                 </div>
                                                 <div class="u-text">
-                                                    <h4>Maria Del Pilar</h4>
-                                                    <p class="text-muted">Docente</p>
+                                                    <h4><%=user.getDocente().getNombre()%></h4>
+                                                    <p class="text-muted"><%=user.getRol().getRol()%></p>
                                                 </div>
                                             </div>
                                         </li>
@@ -187,13 +188,9 @@
                                 </div>
                                 <div class="info">
                                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-                                      <%
-            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
-        %>
-      
                                         <span>
-                                            <h4><%=user.getDocente().getNombre()+""+user.getDocente().getApellido() %>  </h4>
-                                            <span class="user-level">Docente</span>
+                                            <h4><%=user.getDocente().getNombre()%></h4>
+                                            <span class="user-level"><%=user.getRol().getRol()%></span>
                                             <span class="caret"></span>
                                         </span>
                                     </a>
@@ -275,7 +272,7 @@
             </div>
             <!-- End Sidebar -->
 
-          <div class="main-panel">
+            <div class="main-panel">
                 <div class="content">
                     <div class="page-inner">
                         <div class="page-header">
@@ -363,8 +360,14 @@
                                                                         <i class="fas fa-search"></i>
                                                                     </button>
                                                                 </a>
-                                                        
-                                                         
+                                                                <a href="../../../../../ControladorMicrocurriculoDocente?accion=Solicitud&idMicrocurriculo=<%=elem.getMicrocurriculoList().get(0).getMicrocurriculoPK().getId()%>&codigoMateria=<%=elem.getMicrocurriculoList().get(0).getMateria().getMateriaPK().getCodigoMateria()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>">
+                                                                    <button id="pensum" type="button" data-toggle="tooltip"
+                                                                            title="" class="btn btn-link btn-dark"
+                                                                            data-original-title="Solicitud"
+                                                                            style="color: black;">
+                                                                        <i class="fas fa-clipboard-list"></i>
+                                                                    </button>
+                                                                </a>
                                                             </div>
                                                         </td>
                                                     </tr>

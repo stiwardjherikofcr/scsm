@@ -328,110 +328,24 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Código</th>
-                                                        <th>Periodo</th>
                                                         <th>Créditos</th>
                                                         <th>Cant Materias</th>
-                                                        <th>Fecha Inicio</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tfoot>
                                                     <tr>
                                                         <th>Código</th>
-                                                        <th>Periodo</th>
                                                         <th>Créditos</th>
                                                         <th>Cant Materias</th>
-                                                        <th>Fecha Inicio</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
                                                     <tr>
-                                                        <td>115-3</td>
-                                                        <td>2021</td>
-                                                        <td>164</td>
-                                                        <td>46</td>
-                                                        <td>2021/01/01</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark" data-original-title="Ver"
-                                                                        style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>115-2</td>
-                                                        <td>2020</td>
-                                                        <td>163</td>
-                                                        <td>48</td>
-                                                        <td>2020/01/01</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark" data-original-title="Ver"
-                                                                        style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
                                                         <td>115-1</td>
-                                                        <td>2019</td>
-                                                        <td>162</td>
-                                                        <td>50</td>
-                                                        <td>2019/01/01</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark" data-original-title="Ver"
-                                                                        style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>151</td>
-                                                        <td>2018</td>
-                                                        <td>160</td>
-                                                        <td>43</td>
-                                                        <td>2018/01/01</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark" data-original-title="Ver"
-                                                                        style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>152</td>
-                                                        <td>2017</td>
-                                                        <td>165</td>
-                                                        <td>45</td>
-                                                        <td>2017/01/01</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark" data-original-title="Ver"
-                                                                        style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>153</td>
-                                                        <td>2017</td>
-                                                        <td>165</td>
-                                                        <td>46</td>
-                                                        <td>2017/01/01</td>
+                                                        <td>294</td>
+                                                        <td>96</td>
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <button type="button" data-toggle="tooltip" title=""

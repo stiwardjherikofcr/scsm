@@ -4,6 +4,8 @@
     Author     : Stiward
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.util.List"%>
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -39,6 +41,8 @@
         <link rel="stylesheet" href="../../../assets/css/atlantis.min.css">
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link rel="stylesheet" href="../../../assets/css/demo.css">
+        <script src="../../../assets/js/JQuery.js" type="text/javascript"></script>
+        <script src="../../../assets/js/administrarGrupos.js" type="text/javascript"></script>
     </head>
 
     <body>
@@ -337,69 +341,28 @@
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
+                                                    <% List<dto.MateriaPeriodoGrupo> materias = (List<dto.MateriaPeriodoGrupo>) request.getSession().getAttribute("grupos");
+                                                        for (dto.MateriaPeriodoGrupo materia : materias) {
+                                                    %>
                                                     <tr>
-                                                        <td>1155704</td>
-                                                        <td>TEORIA GENERAL DE LAS COMUNICACIONES</td>
-                                                        <td>1151201</td>
-                                                        <td>Salamanca Landinez Alvaro</td>
-                                                        <td>A</td>
+                                                        <td><%=materia.getMateriaPeriodo().getMateria().getMateriaPK().getCodigoMateria()%></td>
+                                                        <td><%=materia.getMateriaPeriodo().getMateria().getNombre()%></td>
+                                                        <td><%=materia.getDocente().getCodigoDocente()%></td>
+                                                        <td><%=materia.getDocente().getNombre() + " " + materia.getDocente().getApellido()%></td>
+                                                        <td><%=materia.getMateriaPeriodoGrupoPK().getGrupo()%></td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <button id="pensum" type="button" data-toggle="tooltip"
-                                                                        title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task">
-                                                                    <i class="fa fa-edit" style="color: black;"></i>
-                                                                </button>
+                                                                <a href="../../../../ControladorGrupos?accion=Eliminar&grupo=<%=materia.getMateriaPeriodoGrupoPK().getGrupo()%>&docente_codigo=<%=materia.getDocente().getCodigoDocente()%>&anio=<%=materia.getMateriaPeriodoGrupoPK().getMateriaPeriodoAnio()%>&semestre_anio=<%=materia.getMateriaPeriodoGrupoPK().getMateriaPeriodoSemestreAnio()%>&codigo_materia=<%=materia.getMateriaPeriodoGrupoPK().getMateriaPeriodoMateriaCodigoMateria()%>&codigoPensum=<%=materia.getMateriaPeriodoGrupoPK().getMateriaPeriodoMateriaPensumCodigo()%>">
+                                                                    <button id="pensum" type="button" data-toggle="tooltip"
+                                                                            title="" class="btn btn-link btn-dark"
+                                                                            data-original-title="Eliminar" style="color: black;">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </button>
+                                                                </a>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>1155705</td>
-                                                        <td>ANALISIS Y DISEÑO DE SISTEMAS</td>
-                                                        <td>1151202</td>
-                                                        <td>Pardo Garcia Carlos Eduardo</td>
-                                                        <td>A</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button id="pensum" type="button" data-toggle="tooltip"
-                                                                        title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task">
-                                                                    <i class="fa fa-edit" style="color: black;"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1155706</td>
-                                                        <td>SEMINARIO DE INVESTIGACION III</td>
-                                                        <td>1151203</td>
-                                                        <td>Vera Rivera Fredy Humberto</td>
-                                                        <td>A</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <button id="pensum" type="button" data-toggle="tooltip"
-                                                                        title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
-                                                                    <i class="fas fa-search"></i>
-                                                                </button>
-                                                                <button type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task">
-                                                                    <i class="fa fa-edit" style="color: black;"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    <%}%>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -407,7 +370,7 @@
                                 </div>
                             </div>
                             <!-- Find Tabla Grupos -->
-
+                            <%dto.Usuario usuario = (dto.Usuario) (request.getSession().getAttribute("usuario"));%>
                             <!--Crear Grupos-->
                             <div class="col-md-4">
                                 <div class="">
@@ -416,39 +379,31 @@
                                             <h2 class="card-title mtittle"> Crear Grupos</h2>
                                         </div>
                                         <div class="card-body pb-0 ">
-                                            <form>
+                                            <form action="../../../../ControladorGrupos" method="GET">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Pensum</label>
+                                                    <select class="form-control" name="optionPensum" id="optionPensum" onchange="searchMateria()"></select>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Materia</label>
-                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                        <option>Seminario de Investigación ll</option>
-                                                        <option>Análisis y Diseño</option>
-                                                        <option>Administración de proyectos informaticos</option>
-                                                        <option>Inteligencia Artificial</option>
-                                                        <option>Seminario de Investigación lll</option>
-                                                    </select>
+                                                    <select class="form-control" name="optionMateria" id="optionMateria"></select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlSelect1">Docente</label>
-                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                        <option>Alvaro Salamanca Landinez</option>
-                                                        <option>Judith del Pilar Rodrigez Tenjo</option>
-                                                        <option>Maria del Pilar Rojas Puentes</option>
-                                                        <option>Eduard Gilberto Puerto Cuadros</option>
-                                                        <option>Alvaro Salamanca Landinez</option>
+                                                    <% List<dto.Docente> docentes = (List<dto.Docente>) (request.getSession().getAttribute("docentesPrograma"));%>
+                                                    <select class="form-control" name="optionDocente" id="optionDocente">
+                                                        <%
+                                                            for (dto.Docente docente : docentes) {
+                                                        %>
+                                                        <option value="<%=docente.getCodigoDocente()%>"><%=docente.getNombre() + " " + docente.getApellido()%></option>
+                                                        <%}%>
                                                     </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlSelect1">Grupo</label>
-                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                        <option>A</option>
-                                                        <option>B</option>
-                                                        <option>C</option>
-                                                        <option>D</option>
-                                                        <option>E</option>
-                                                    </select>
-                                                </div>
+                                                <%    Date fecha = new Date();%> 
+                                                <input type="hidden" name="anio" value="<%=fecha.getYear() + 1900%>">
+                                                <input type="hidden" name="periodo" value="<%=fecha.getMonth() + 1%>">     
                                                 <div class="form-group d-flex justify-content-center align-items-center">
-                                                    <button class="btn btn-danger">Crear</button>
+                                                    <input class="btn btn-danger" type="submit" name="accion" value="Registrar Grupo">
                                                 </div>
                                             </form>
                                         </div>

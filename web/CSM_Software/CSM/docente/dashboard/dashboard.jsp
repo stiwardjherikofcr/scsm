@@ -157,9 +157,9 @@
                                                 </div>
                                                 <div class="u-text">
                                                     <%
-            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
-        %>
-        <h4><%=user.getDocente().getNombre()+""+user.getDocente().getApellido() %></h4>
+                                                        Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+                                                    %>
+                                                    <h4><%=user.getDocente().getNombre()%></h4>
                                                     <p class="text-muted">Docente</p>
                                                 </div>
                                             </div>
@@ -192,7 +192,7 @@
                             <div class="info">
                                 <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                                     <span>
-                                    <%=user.getDocente().getNombre()+""+user.getDocente().getApellido() %>
+                                        <%=user.getDocente().getNombre()%>
                                         <span class="user-level">Docente</span>
                                         <span class="caret"></span>
                                     </span>

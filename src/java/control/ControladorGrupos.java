@@ -88,7 +88,7 @@ public class ControladorGrupos extends HttpServlet {
     public void listar(HttpServletRequest request, HttpServletResponse response) throws IOException {
         cargarDocentes(request, response);
         cargarGrupos(request, response);
-        response.sendRedirect("jspTest/grupos.jsp");
+        response.sendRedirect("CSM_Software/CSM/director/dashboard/grupos.jsp");
     }
 
     public void cargarGrupos(HttpServletRequest request, HttpServletResponse response) {

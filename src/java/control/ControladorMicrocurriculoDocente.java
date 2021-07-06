@@ -5,15 +5,10 @@
  */
 package control;
 
-import com.itextpdf.text.DocumentException;
-import static control.ControladorMicrocurriculo.listar;
 import dto.Docente;
 import dto.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -69,23 +64,13 @@ public class ControladorMicrocurriculoDocente extends HttpServlet {
         if (accion.equalsIgnoreCase("listarTodos")) {
             microDocentes(request, response);
         }
+        if (accion.equalsIgnoreCase("solicitarCambio")) {
+            solicitarCambio(request, response);
+        }
+        if (accion.equalsIgnoreCase("Solicitud")) {
+            solicitud(request, response);
+        }
     }
-//            throws ServletException, IOException {
-//        PrintWriter pw = response.getWriter();
-//        try {
-//            switch (request.getParameter("accion")) {
-//                case "listarTodos":
-//                    microDocentes(request, response);
-//                    break;
-//            }
-//            pw.println("<h1>Hizo algo</h1>");
-//        } catch (Exception e) {
-//            pw.println("<h1>Error</h1>");
-//            e.printStackTrace();
-//            System.err.println(e);
-//        }
-//        pw.flush();
-//    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -134,6 +119,17 @@ public class ControladorMicrocurriculoDocente extends HttpServlet {
         response.sendRedirect("jspTest/microcurriculoDocente.jsp");
     }
 
+    public void solicitud(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("idMicrocurriculo"));
+        int codigoPensum = Integer.parseInt(request.getParameter("codigoPensum"));
+        int codigoMateria = Integer.parseInt(request.getParameter("codigoMateria"));
+        negocio.AdministrarMicrocurriculo adminMicrocurriculo = new negocio.AdministrarMicrocurriculo();
+        dto.Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(id, codigoMateria, codigoPensum);
+        request.getSession().setAttribute("tablas", negocio.AdministrarMicrocurriculo.ordenarTablaInfo(microcurriculo));
+        request.getSession().setAttribute("microcurriculo", microcurriculo);
+        response.sendRedirect("CSM_Software/CSM/docente/dashboard/microcurriculo/solicitud-microcurriculo.jsp");
+    }
+
     public void consultar(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("idMicrocurriculo"));
         int codigoPensum = Integer.parseInt(request.getParameter("codigoPensum"));
@@ -142,22 +138,16 @@ public class ControladorMicrocurriculoDocente extends HttpServlet {
         dto.Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(id, codigoMateria, codigoPensum);
         request.getSession().setAttribute("tablas", negocio.AdministrarMicrocurriculo.ordenarTablaInfo(microcurriculo));
         request.getSession().setAttribute("microcurriculo", microcurriculo);
-        response.sendRedirect("jspTest/microcurriculoDocente.jsp");
+        response.sendRedirect("CSM_Software/CSM/docente/dashboard/microcurriculo/ver-microcurriculo.jsp");
     }
 
-    //ControladorMicrocurriculo?accion=solicitarCambio enviando por post idseccionmicrocurriculo y contenido
-    /*<form action="ControladorMicrocurriculo?accion=solicitarCambio" method="POST">
-        textarea = name="contenidonuevo"
-    input = name =" idseccionmicrocurriculo" hidden
-    <button type="submit">Solicitar</button>
-    </form>*/
     private void solicitarCambio(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idSeccionMicrocurriculo = request.getParameter("idseccionmicrocurriculo");
         String contenido = request.getParameter("contenidonuevo");
         Integer idseccionMi = Integer.parseInt(idSeccionMicrocurriculo);
         negocio.AdministrarMicrocurriculo am = new negocio.AdministrarMicrocurriculo();
         am.realizarSolicitudCambio(idseccionMi, contenido);
-        response.sendRedirect("ControladorMicrocurriculo?accion=listar ");
+        listar(request, response);
     }
 
     /**
