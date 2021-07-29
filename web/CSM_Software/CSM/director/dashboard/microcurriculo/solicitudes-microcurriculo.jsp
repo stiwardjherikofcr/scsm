@@ -266,7 +266,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../grupos.jsp">
+                                    <a href="../../../../../ControladorGrupos?accion=listar">
                                         <i class="fas fa-table"></i>
                                         <p>Grupos</p>
                                     </a>

@@ -427,15 +427,15 @@
         <script src="../../../assets/js/setting-demo2.js"></script>
         <!-- Filtros Tablas JS -->
         <script>
-                                                                                $(document).ready(function () {
-                                                                                    pageLength();
-                                                                                });
+                                                                            $(document).ready(function () {
+                                                                                pageLength();
+                                                                            });
 
-                                                                                function pageLength() {
-                                                                                    // Basic
-                                                                                    $('#basic-datatables').DataTable({
-                                                                                        "pageLength": 15});
-                                                                                }
+                                                                            function pageLength() {
+                                                                                // Basic
+                                                                                $('#basic-datatables').DataTable({
+                                                                                    "pageLength": 15});
+                                                                            }
         </script>
         <script>
             function validarCheck(codigo) {
