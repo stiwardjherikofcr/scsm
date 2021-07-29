@@ -321,7 +321,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="d-flex justify-content-center">
-                                            <h4 class="card-title">Pensum 115-3</h4>
+                                            <h4 class="card-title">Pensum 115 - 1</h4>
                                         </div>
                                     </div>
                                     <div class="card-body d-flex align-items-end">
@@ -417,7 +417,7 @@
                                                                     int materiaXcreditos[] = admin.creditosMateriasPensum(p.getPensumPK().getCodigo(), p.getPensumPK().getProgramaCodigo());
                                                     %>
                                                     <tr>
-                                                        <td><%= p.getPensumPK().getProgramaCodigo() + "-" + p.getPensumPK().getCodigo()%></td>                                                        
+                                                        <td><%= p.getPensumPK().getProgramaCodigo() + " - " + p.getPensumPK().getCodigo()%></td>                                                        
                                                         <td><%= materiaXcreditos[1]%></td>
                                                         <td><%= materiaXcreditos[0]%></td>                                                        
                                                         <td>

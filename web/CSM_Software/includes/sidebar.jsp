@@ -19,18 +19,18 @@
                     <div class="collapse in" id="collapseExample">
                         <ul class="nav">
                             <li>
-                                <a href="<%=request.getContextPath()%>/perfil/profile.jsp">
-                                    <span class="link-collapse">My Profile</span>
+                                <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/perfil/profile.jsp">
+                                    <span class="link-collapse">Perfil</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<%=request.getContextPath()%>/perfil/edit-profile.jsp">
-                                    <span class="link-collapse">Account Setting</span>
+                                <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/perfil/edit-profile.jsp">
+                                    <span class="link-collapse">Configuración</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<%=request.getContextPath()%>/sign-in/singin.jsp">
-                                    <span class="link-collapse">Logout</span>
+                                <a href="<%=request.getContextPath()%>/CSM_Software/CSM/sign-in/singin.jsp">
+                                    <span class="link-collapse">Salir</span>
                                 </a>
                             </li>
                         </ul>
@@ -70,7 +70,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="<%=request.getContextPath()%>/microcurriculo/solicitudes-microcurriculo.jsp">
+                                <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/microcurriculo/solicitudes-microcurriculo.jsp">
                                     <span class="sub-item">Solicitudes Microcurriculo</span>
                                 </a>
                             </li>
@@ -78,7 +78,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="<%=request.getContextPath()%>/seguimiento.jsp">
+                    <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/seguimiento.jsp">
                         <i class="fas fa-chart-bar"></i>
                         <p>Seguimiento</p>
                     </a>

@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="dto.Usuario"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,23 +49,22 @@
             request.getSession().removeAttribute("materias");
         %>
         <div class="wrapper">
-
             <div class="main-header">
-
+                
                 <!-- Logo Header -->
-                <jsp:include page="../../../includes/header.jsp"/>
+                <jsp:include page="/CSM_Software/includes/header.jsp"/>
                 <!-- End Logo Header -->
 
                 <!-- Navbar Header -->
-                <jsp:include page="../../../includes/navbar.jsp"/>
+                <jsp:include page="/CSM_Software/includes/navbar.jsp"/>
                 <!-- End Navbar -->
-
+                
             </div>
-
+                
             <!-- Sidebar -->
-            <jsp:include page="../../../includes/sidebar.jsp"/>
+            <jsp:include page="/CSM_Software/includes/sidebar.jsp"/>
             <!-- End Sidebar -->
-
+            
             <div class="main-panel">
                 <div class="content">
                     <div class="page-inner">
@@ -74,7 +73,7 @@
                             <div class="ml-md-auto">
                                 <ul class="breadcrumbs">
                                     <li class="nav-home">
-                                        <a href="#">
+                                        <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/dashboard.jsp">
                                             <i class="flaticon-home"></i>
                                         </a>
                                     </li>
@@ -92,7 +91,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-primary card-round">
                                     <div class="card-body">
-                                        <a href="docentes.jsp" alt="Docentes" class="anonstyle">
+                                        <a href="<%=request.getContextPath()%>/ControladorDocente?action=listarDocente" alt="Docentes" class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="icon-big text-center">
@@ -102,7 +101,7 @@
                                                 <div class="col-7 col-stats">
                                                     <div class="numbers">
                                                         <p class="card-category">Docentes Activos</p>
-                                                        <h4 class="card-title">50</h4>
+                                                        <h4 class="card-title">10</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -113,7 +112,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-info card-round">
                                     <div class="card-body">
-                                        <a href="pensum.jsp" alt="Pensum" class="anonstyle">
+                                        <a href="<%=request.getContextPath()%>/ControladorPensum?accion=listarPensum" alt="Pensum" class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="icon-big text-center">
@@ -123,7 +122,7 @@
                                                 <div class="col-7 col-stats">
                                                     <div class="numbers">
                                                         <p class="card-category">Pensum</p>
-                                                        <h4 class="card-title">3</h4>
+                                                        <h4 class="card-title">115 - 1</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -134,7 +133,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-warning card-round">
                                     <div class="card-body ">
-                                        <a href="seguimiento.jsp" alt="Materias" class="anonstyle">
+                                        <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/seguimiento.jsp" alt="Materias" class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="icon-big text-center">
@@ -144,7 +143,7 @@
                                                 <div class="col-7 col-stats">
                                                     <div class="numbers">
                                                         <p class="card-category">Materias</p>
-                                                        <h4 class="card-title">35</h4>
+                                                        <h4 class="card-title">50</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,7 +154,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-danger card-round">
                                     <div class="card-body ">
-                                        <a href="microcurriculo/consultar-microcurriculo.jsp" alt="Microcurriculos"
+                                        <a href="<%=request.getContextPath()%>/ControladorMicrocurriculo?accion=listarTodos" alt="Microcurriculos"
                                            class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
@@ -195,7 +194,7 @@
                 </div>
 
                 <!-- Footer -->
-                <jsp:include page="../../../includes/footer.jsp"/>
+                <jsp:include page="/CSM_Software/includes/footer.jsp"/>
                 <!-- End Footer -->
 
             </div>
