@@ -125,12 +125,9 @@ public class ControladorDocente extends HttpServlet {
 
     public void activarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
         AdministrarDocentes docentes = new AdministrarDocentes();
-        System.out.println("lol: "+request.getParameter("cod"));
         String codDocente = request.getParameter("cod");
         Docente d = docentes.obtenerDocente(Integer.parseInt(codDocente));
         docentes.activarDocente(d, d.getEstado()!=1);
-        System.out.println(d.getEstado()!=1);
-        listarDocente(request, response);
     }
 
     public void guardarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {

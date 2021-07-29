@@ -422,11 +422,11 @@
                                                         <td><%= materiaXcreditos[0]%></td>                                                        
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <button type="button" data-toggle="tooltip" title=""
+                                                                <a href="../../../../ControladorPensum?accion=ver&cod=<%=p.getPensumPK().getCodigo()%>" type="button" data-toggle="tooltip" title=""
                                                                         class="btn btn-link btn-dark" data-original-title="See"
                                                                         style="color: black;">
                                                                     <i class="fas fa-search"></i>
-                                                                </button>
+                                                                </a>
                                                                 <button type="button" data-toggle="tooltip" title=""
                                                                         class="btn btn-link btn-dark"
                                                                         data-original-title="Export PDF" style="color: black;">
