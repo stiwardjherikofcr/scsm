@@ -5,11 +5,13 @@
  */
 package control;
 
+import dto.Materia;
 import dto.Pensum;
 import dto.Usuario;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,8 +61,12 @@ public class ControladorPensum extends HttpServlet {
             switch (request.getParameter("accion")) {
                 case "listarPensum":
                     this.listarPensum2(request, response);
+                    break;
                 case "listarPensumDocente":
                     this.listarPensum3(request, response);
+                    break;
+                case "ver":
+                    this.verPensum(request, response);
             }
         } catch (Exception e) {
             System.out.println("estoy editando");
@@ -172,6 +178,23 @@ public class ControladorPensum extends HttpServlet {
         pw.flush();
     }
 
+    private void verPensum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Usuario user = (Usuario)request.getSession().getAttribute("usuario");
+        Integer cod = Integer.parseInt(request.getParameter("cod"));
+        List<Materia> materiasSemestre[] = new List[10];
+        for(Pensum pensum : user.getDocente().getProgramaList().get(0).getPensumList()){
+            if(pensum.getPensumPK().getCodigo()!=cod) continue;
+            for(Materia m: pensum.getMateriaList()){
+                int semestre = m.getSemestre()-1;
+                if(materiasSemestre[semestre] == null)
+                    materiasSemestre[semestre] = new ArrayList<>();
+                materiasSemestre[semestre].add(m);
+            }
+        }
+        request.getSession().setAttribute("materiasSemestre", materiasSemestre);
+        response.sendRedirect("CSM_Software/CSM/director/dashboard/pensum.jsp");
+    }
+    
     /**
      * Returns a short description of the servlet.
      *

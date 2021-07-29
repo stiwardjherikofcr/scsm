@@ -124,17 +124,10 @@ public class ControladorDocente extends HttpServlet {
     }
 
     public void activarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
-        System.out.println("ACTIVAR DOCENTE");
         AdministrarDocentes docentes = new AdministrarDocentes();
-        String[] inactivos = request.getParameterValues("activarDocente2");
-        System.out.println(Arrays.toString(inactivos));
-        for (String s : inactivos) {
-            System.out.println(s);
-            String[] spliteado = s.split("-");
-            Docente d = docentes.obtenerDocente(Integer.parseInt(spliteado[1]));
-            docentes.activarDocente(d, "true".equals(spliteado[0]));
-        }
-        listarDocente(request, response);
+        String codDocente = request.getParameter("cod");
+        Docente d = docentes.obtenerDocente(Integer.parseInt(codDocente));
+        docentes.activarDocente(d, d.getEstado()!=1);
     }
 
     public void guardarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
@@ -155,7 +148,6 @@ public class ControladorDocente extends HttpServlet {
     }
 
     public void listarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
-        System.out.println("Listando docentes");
         AdministrarDocentes d = new AdministrarDocentes();
         List<Docente> docentes = d.listarDocentes();
         request.getSession().setAttribute("listaDocentes", docentes);

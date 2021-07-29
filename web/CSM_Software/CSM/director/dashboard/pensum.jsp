@@ -326,7 +326,7 @@
                                     </div>
                                     <div class="card-body d-flex align-items-end">
                                         <iframe class="materialboxed" id="contenedor" src="pensum/ver-pensum.jsp"
-                                                title="visualizar pensum" scrolling="no" frameborder="0" height="850px"
+                                                title="visualizar pensum" scrolling="auto" frameborder="0" height="850px"
                                                 width="100%" allowfullscreen></iframe>
                                     </div>
                                 </div>
@@ -422,11 +422,11 @@
                                                         <td><%= materiaXcreditos[0]%></td>                                                        
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <button type="button" data-toggle="tooltip" title=""
+                                                                <a href="../../../../ControladorPensum?accion=ver&cod=<%=p.getPensumPK().getCodigo()%>" type="button" data-toggle="tooltip" title=""
                                                                         class="btn btn-link btn-dark" data-original-title="See"
                                                                         style="color: black;">
                                                                     <i class="fas fa-search"></i>
-                                                                </button>
+                                                                </a>
                                                                 <button type="button" data-toggle="tooltip" title=""
                                                                         class="btn btn-link btn-dark"
                                                                         data-original-title="Export PDF" style="color: black;">
