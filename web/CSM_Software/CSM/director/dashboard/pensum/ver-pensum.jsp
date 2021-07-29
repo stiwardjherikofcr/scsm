@@ -109,7 +109,7 @@
                                             data-target="#calculodiferencial">
                                         <b><%=materia.getMateriaPK().getCodigoMateria()%></b><br/>
                                         <%=materia.getNombre()%><br />
-                                        Horas:<%=materia.getHt()%> Cred:<%=materia.getCr()%>
+                                        Horas: <%=materia.getHt()%> Cred: <%=materia.getCreditos()%>
                                     </button>
                                 </td>
                             </tr>

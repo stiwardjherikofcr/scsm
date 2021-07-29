@@ -3,7 +3,7 @@
 <nav class="navbar navbar-header navbar-expand-lg" data-background-color="red">
     <div class="container-fluid ">
         <div class="d-inline-flex">
-            <div class="avatar"><img src="../../../assets/img/logo_ingsistemas.png"
+            <div class="avatar"><img src="<%=request.getContextPath()%>/CSM_Software/assets/img/logo_ingsistemas.png"
                                      alt="logotipo de ing Sistemas" class="avatar-img rounded"></div>
             <h1 class=" ml-3 text-white d-flex align-items-center">Ingeniería de Sistemas</h1>
         </div>
@@ -44,7 +44,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="notif-img">
-                                        <img src="../../../assets/img/profile2.jpg" alt="Img Profile">
+                                        <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile2.jpg" alt="Img Profile">
                                     </div>
                                     <div class="notif-content">
                                         <span class="block">
@@ -75,7 +75,7 @@
                 <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
                    aria-expanded="false">
                     <div class="avatar-sm">
-                        <img src="../../../assets/img/profile.jfif" alt="..."
+                        <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="..."
                              class="avatar-img rounded-circle">
                     </div>
                 </a>
@@ -84,7 +84,7 @@
                         <li>
                             <div class="user-box">
                                 <div class="avatar-lg">
-                                    <img src="../../../assets/img/profile.jfif" alt="image profile"
+                                    <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="image profile"
                                          class="avatar-img rounded">
                                 </div>
                                 <div class="u-text"> 
@@ -95,11 +95,11 @@
                         </li>
                         <li>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="perfil/profile.jsp">My Profile</a>
+                            <a class="dropdown-item" href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/perfil/profile.jsp">Perfil</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="perfil/edit-profile.jsp">Account Setting</a>
+                            <a class="dropdown-item" href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/perfil/edit-profile.jsp">Configuración</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="../../sign-in/singin.jsp">Logout</a>
+                            <a class="dropdown-item" href="<%=request.getContextPath()%>/CSM_Software/CSM/sign-in/singin.jsp">Salir</a>
                         </li>
                     </div>
                 </ul>

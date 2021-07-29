@@ -1,5 +1,5 @@
 <div class="logo-header" data-background-color="red">
-    <a href="dashboard.jsp" style="text-decoration: none;">
+    <a href="#" style="text-decoration: none;">
         <h2 class=" ml-3 text-white d-flex align-items-center">CSM Software</h2>
     </a>
     <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
