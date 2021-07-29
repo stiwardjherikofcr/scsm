@@ -347,25 +347,25 @@
                                                     <tr>
                                                         <td ><%= teacher.getCodigoDocente()%></td>
                                                         <td ><%= teacher.getNombre() + " " + teacher.getApellido()%></td>
-                                                        <td><%=(teacher.getEstado() == 1) ? "Activo" : "Inactivo"%></td> 
+                                                        <td><label id="label-<%=teacher.getCodigoDocente()%>"><%=(teacher.getEstado() == 1) ? "Activo" : "Inactivo"%><label></td> 
                                                         <td>
-                                                            <form method="POST" action="../../../../ControladorDocente?action=activarDocente">
+                                                            <!--form method="POST" action="../../../../ControladorDocente?action=activarDocente"-->
                                                                 <div class="switch-button">   
                                                                     <%if (teacher.getEstado() == 1) {%>
                                                                     <button class="btn btn-primary btn-link">
-                                                                        <input type="hidden"  name="activarDocente2"  value="true-<%=teacher.getCodigoDocente()%>" id="activarDocente2-<%=teacher.getCodigoDocente()%>" >
-                                                                        <input class="switch-button__checkbox" type="checkbox" name="activarDocente" value="true-<%=teacher.getCodigoDocente()%>" id="activarDocente-<%=teacher.getCodigoDocente()%>" onchange="validarCheck(<%=teacher.getCodigoDocente()%>)" checked>
-                                                                        <label for="activarDocente-<%=teacher.getCodigoDocente()%>" class="switch-button__label"></label>
+                                                                        <!--input type="hidden"  name="activarDocente2"  value="true-<%=teacher.getCodigoDocente()%>" id="activarDocente2-<%=teacher.getCodigoDocente()%>" -->
+                                                                        <input class="switch-button__checkbox" type="checkbox" id="check-<%=teacher.getCodigoDocente()%>" onchange="validarCheck(<%=teacher.getCodigoDocente()%>)" checked>
+                                                                        <label for="<%=teacher.getCodigoDocente()%>" class="switch-button__label" onclick="validarCheck(<%=teacher.getCodigoDocente()%>)"></label>
                                                                     </button>
                                                                     <%} else {%>
                                                                     <button class="btn btn-primary btn-link">
-                                                                        <input type="hidden"  name="activarDocente2"  value="false-<%=teacher.getCodigoDocente()%>" id="activarDocente2-<%=teacher.getCodigoDocente()%>" >
-                                                                        <input class="switch-button__checkbox" type="checkbox" name="activarDocente" value="true-<%=teacher.getCodigoDocente()%>" id="activarDocente-<%=teacher.getCodigoDocente()%>" onchange="validarCheck(<%=teacher.getCodigoDocente()%>)">
-                                                                        <label for="activarDocente-<%=teacher.getCodigoDocente()%>" class="switch-button__label"></label>
+                                                                        <!--input type="hidden"  name="activarDocente2"  value="false-<%=teacher.getCodigoDocente()%>" id="activarDocente2-<%=teacher.getCodigoDocente()%>" -->
+                                                                        <input class="switch-button__checkbox" type="checkbox" id="check-<%=teacher.getCodigoDocente()%>" onchange="validarCheck(<%=teacher.getCodigoDocente()%>)">
+                                                                        <label for="<%=teacher.getCodigoDocente()%>" class="switch-button__label" onclick="validarCheck(<%=teacher.getCodigoDocente()%>)"></label>
                                                                     </button>
                                                                     <%}%>
                                                                 </div>
-                                                            </form>
+                                                            <!--/form-->
                                                         </td>
                                                     </tr>
                                                     <%}
@@ -439,11 +439,12 @@
         </script>
         <script>
             function validarCheck(codigo) {
-                if (document.getElementById("activarDocente-" + codigo).checked) {
-                    document.getElementById("activarDocente2-" + codigo).value = true + "-" + codigo;
-                } else {
-                    document.getElementById("activarDocente2-" + codigo).value = false + "-" + codigo;
-                }
+                $.post("../../../../ControladorDocente?action=activarDocente", 
+                {cod :codigo}, function(response){
+                    var val = !($('#check-'+codigo).prop('checked'));
+                    $('#check-'+codigo).prop('checked', val);
+                    $('#label-'+codigo).text(val ? "Activo" : "Inactivo");
+                });
             }
         </script>
     </body>
