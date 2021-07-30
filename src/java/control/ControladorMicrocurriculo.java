@@ -7,9 +7,16 @@ package control;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
+import dao.MicrocurriculoJpaController;
+import dto.Contenido;
+import dto.Materia;
+import dto.Microcurriculo;
+import dto.MicrocurriculoPK;
 import dto.Pensum;
 import dto.Seccion;
+import dto.SeccionMicrocurriculo;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import negocio.AdministrarMicrocurriculo;
 import negocio.MicrocurriculoPDF;
 import negocio.RegistroMicrocurriculoBackground;
+import util.Conexion;
 
 /**
  *
@@ -48,7 +56,6 @@ public class ControladorMicrocurriculo extends HttpServlet {
             url = "CSM_Software/CSM/director/dashboard/microcurriculo/consultar-microcurriculo.jsp";
         } else {
             materias = adminMicrocurriculo.obtenerMateriasDocentes(usuario);
-            System.out.println(materias);
             url = "CSM_Software/CSM/docente/dashboard/microcurriculo/consultar-microcurriculo.jsp";
         }
         request.getSession().setAttribute("areasFormacion", adminMicrocurriculo.obtenerAreasFormacion());
@@ -129,7 +136,6 @@ public class ControladorMicrocurriculo extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        System.out.println(accion);
         if (accion.equalsIgnoreCase("Registrar")) {
             try {
                 registrar(request, response);
@@ -137,19 +143,23 @@ public class ControladorMicrocurriculo extends HttpServlet {
                 Logger.getLogger(ControladorMicrocurriculo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        if (accion.equalsIgnoreCase("ver-materia")){
+            try{
+                this.verMateria(request, response);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void registrarInformacionTablas(HttpServletRequest request, HttpServletResponse response, AdministrarMicrocurriculo adminM) throws Exception {
         dto.Microcurriculo microcurriculo = (dto.Microcurriculo) request.getSession().getAttribute("microcurriculo");
-        microcurriculo = adminM.obtenerMicrocurriculoId(microcurriculo.getMicrocurriculoPK().getId());
         for (dto.SeccionMicrocurriculo secciones : microcurriculo.getSeccionMicrocurriculoList()) {
             if (secciones.getSeccionId().getTipoSeccionId().getId() == 2) {
                 int cantidadFilas = Integer.parseInt(request.getParameter("nfilas-" + secciones.getId()));
                 secciones.getTablaMicrocurriculoList().get(0).setCantidadFilas(cantidadFilas);
                 adminM.actualizarFilasTabla(secciones.getTablaMicrocurriculoList().get(0));
                 String contenido[][] = new String[cantidadFilas][secciones.getTablaMicrocurriculoList().get(0).getCantidadColumnas()];
-                System.out.println("Cantidad Filas=" + cantidadFilas);
-                System.out.println("Cantidad Columnas=" + secciones.getTablaMicrocurriculoList().get(0).getCantidadColumnas());
                 for (int i = 0; i < contenido.length; i++) {
                     for (int j = 0; j < contenido[i].length; j++) {
                         contenido[i][j] = (String) request.getParameter("contenido-" + secciones.getSeccionId().getId() + "-" + (i) + "-" + j);
@@ -162,13 +172,10 @@ public class ControladorMicrocurriculo extends HttpServlet {
 
     public void registrarSecciones(HttpServletRequest request, HttpServletResponse response, AdministrarMicrocurriculo adminM) throws Exception {
         List<dto.Seccion> secciones = adminM.obtenerSecciones();
-        response.setContentType("text/html");
         for (Seccion seccione : secciones) {
             if (seccione.getTipoSeccionId().getId() != 2) {
                 String informacion = request.getParameter("seccion-" + seccione.getId());
-                System.out.println("SECCION : " + "seccion-" + seccione.getId());
                 int idSeccionMicrocurriculo = Integer.parseInt(request.getParameter("seccionId-" + seccione.getId()));
-                System.out.println("informacion asdasd:" + informacion);
                 adminM.ingresarContenidoSecciones(informacion, idSeccionMicrocurriculo);
             }
         }
@@ -189,6 +196,79 @@ public class ControladorMicrocurriculo extends HttpServlet {
         response.sendRedirect("ControladorPensum?accion=listarPensum");
     }
 
+    private void verMateria(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter pw = new PrintWriter(response.getOutputStream());
+        Integer cod = Integer.parseInt(request.getParameter("cod"));
+        Integer sem = Integer.parseInt(request.getParameter("sem"));
+        List<Materia> materias[] = (List<Materia>[])request.getSession().getAttribute("materiasSemestre");
+        for(Materia materia: materias[sem-1]){
+            if(materia.getMateriaPK().getCodigoMateria()==cod){
+                this.paintModal(pw, materia);
+                break;
+            }
+        }
+    }
+    
+    private void paintModal(PrintWriter pw, Materia materia){
+        Contenido contUnidad = null, contBibliografia = null;
+        MicrocurriculoJpaController microJpa = new MicrocurriculoJpaController(Conexion.getConexion().getBd());
+        List<Microcurriculo> microcurriculos = microJpa.findMicrocurriculoEntities();
+        Microcurriculo micro = new Microcurriculo();
+        for(Microcurriculo microcurriculo: microcurriculos){
+            if(materia.getMateriaPK().getCodigoMateria()==microcurriculo.getMicrocurriculoPK().getMateriaCodigoMateria() &&
+                    materia.getMateriaPK().getPensumCodigo()==microcurriculo.getMicrocurriculoPK().getMateriaPensumCodigo()){
+                micro = microcurriculo;
+                break;
+            }
+        }
+        for(SeccionMicrocurriculo seccionMicro : micro.getSeccionMicrocurriculoList()){
+            if(seccionMicro.getSeccionId().getId()==1){
+                for(Contenido contenido: seccionMicro.getContenidoList()){
+                    System.out.println(contenido.getTexto());
+                }
+            }
+        }
+//        materia.getMicrocurriculoList().get(0).getSeccionMicrocurriculoList().get(0).getC
+//        pw.write("<div class='row'>");
+//        pw.write("<div class='col-12'>");
+//        pw.write("<div class='form-group form-group-default'>");
+//                                        <h6><b>CONTENIDO</b></h6>
+//
+//                                        <p>UNIDAD 1. Medios, instrumentos, técnicas y
+//                                            método en la recolección de datos e
+//                                            información.</p>
+//
+//                                        <p>UNIDAD 2. Tabulación, análisis e interpretación
+//                                            de datos.</p>
+//
+//
+//                                        <p>UNIDAD 3. Informe y presentación de los
+//                                            datos de una investigación.</p>
+//                                    </div>
+//                                </div>
+//                                <div class="col-12">
+//                                    <div class="form-group form-group-default">
+//                                        <h6><b>BIBLIOGRAFIA</b></h6>
+//
+//                                        <p>- CERDA HUGO. Los elementos de la Investigación,
+//                                            como reconocerlos, diseñarlos y construirlos.
+//                                            Tercera edición, 2008. Editorial El Buho.</p>
+//
+//                                        <p>- MUÑOZ G. Jose, QUINTERO C. Josefina. Como
+//                                            desarrollar competencias investigativas en
+//                                            educación. 4 edición. Editorial Magisterio.</p>
+//
+//                                        <p>- HERNANDEZ Sampieri; FERNANDEZ Collado; BAPTISTA
+//                                            Lucio. Metodología de la investigación. McGraw
+//                                            Hill. 2006.</p>
+//
+//                                        <p>- MÉNDEZ A. Carlos E. Metodología. McGraw Hill.
+//                                            2005.</p>
+//                                    </div>
+//                                </div>
+//                            </div>
+    }
+    
     @Override
     public String getServletInfo() {
         return "Short description";

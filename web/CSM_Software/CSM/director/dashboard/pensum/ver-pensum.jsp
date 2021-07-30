@@ -18,7 +18,7 @@
     <body>
 
         <!-- Modal -->
-        <div class="modal fade" id="calculodiferencial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+        <div class="modal fade" id="modal-materia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -105,12 +105,12 @@
                             %>
                             <tr>
                                 <td>
-                                    <button class="btn btn-light btn-round ml-auto" data-toggle="modal"
-                                            data-target="#calculodiferencial">
+                                    <a onclick="verMateria(<%=materia.getMateriaPK().getCodigoMateria() %>,<%=materia.getSemestre() %>)" class="btn btn-light btn-round ml-auto" data-toggle="modal"
+                                            data-target="#modal-materia">
                                         <b><%=materia.getMateriaPK().getCodigoMateria()%></b><br/>
                                         <%=materia.getNombre()%><br />
                                         Horas: <%=materia.getHt()%> Cred: <%=materia.getCreditos()%>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                             <%}%>
@@ -140,5 +140,12 @@
             <!-- Atlantis DEMO methods, don't include it in your project! -->
             <script src="../../../../assets/js/setting-demo2.js"></script>
     </body>
-
+    
+    <script>
+        function verMateria(codigo, semestre) {
+            $.post('../../../../../ControladorMicrocurriculo?accion=ver-materia', {cod: codigo, sem: semestre}, function(response){
+                
+            });
+        }
+    </script>
 </html>

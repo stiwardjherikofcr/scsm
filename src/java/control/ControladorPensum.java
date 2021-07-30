@@ -190,6 +190,7 @@ public class ControladorPensum extends HttpServlet {
                     materiasSemestre[semestre] = new ArrayList<>();
                 materiasSemestre[semestre].add(m);
             }
+            break;
         }
         request.getSession().setAttribute("materiasSemestre", materiasSemestre);
         response.sendRedirect("CSM_Software/CSM/director/dashboard/pensum.jsp");
