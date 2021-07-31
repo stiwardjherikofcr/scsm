@@ -435,8 +435,7 @@
         function pageLength() {
             // Basic
             $('#basic-datatables').DataTable({
-                "pageLength": 15,
-            });
+                "pageLength": 15});
         }
     </script>
 </body>

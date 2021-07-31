@@ -263,8 +263,7 @@
                         function pageLength() {
                             // Basic
                             $('#basic-datatables').DataTable({
-                                "pageLength": 5,
-                            });
+                                "pageLength": 5});
                         }
                     </script>
 </body>
