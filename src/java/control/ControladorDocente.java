@@ -29,11 +29,6 @@ import util.Conexion;
  */
 @WebServlet(name = "ControladorDocente", urlPatterns = {"/ControladorDocente"})
 public class ControladorDocente extends HttpServlet {
-
-    EntityManagerFactory em = Conexion.getConexion().getBd();
-    DocenteJpaController docenteDao = new DocenteJpaController(em);
-    UsuarioJpaController usuarioDao = new UsuarioJpaController(em);
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -72,24 +67,15 @@ public class ControladorDocente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter pw = response.getWriter();
         try {
             switch (request.getParameter("action")) {
-                case "editarDocente":
-                    this.editarDocente(request, response);
-                    break;
                 case "listarDocente":
                     this.listarDocente(request, response);
                     break;
             }
-            pw.println("<h1>Hizo algo</h1>");
         } catch (Exception e) {
-            System.out.println("estoy editando");
-            pw.println("<h1>Error</h1>");
             e.printStackTrace();
-            System.err.println(e);
         }
-        pw.flush();
     }
 
     /**
@@ -103,7 +89,6 @@ public class ControladorDocente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter pw = response.getWriter();
         try {
             switch (request.getParameter("action")) {
                 case "Registrar":
@@ -113,14 +98,9 @@ public class ControladorDocente extends HttpServlet {
                     this.activarDocente(request, response);
                     break;
             }
-            pw.println("<h1>Hizo algo</h1>");
         } catch (Exception e) {
-            System.out.println("estoy editando");
-            pw.println("<h1>Error</h1>");
             e.printStackTrace();
-            System.err.println(e);
         }
-        pw.flush();
     }
 
     public void activarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
@@ -128,6 +108,7 @@ public class ControladorDocente extends HttpServlet {
         String codDocente = request.getParameter("cod");
         Docente d = docentes.obtenerDocente(Integer.parseInt(codDocente));
         docentes.activarDocente(d, d.getEstado()!=1);
+        request.getSession().setAttribute("numDocActivos", docentes.getNumDocentesActivos());
     }
 
     public void guardarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
@@ -151,15 +132,7 @@ public class ControladorDocente extends HttpServlet {
         AdministrarDocentes d = new AdministrarDocentes();
         List<Docente> docentes = d.listarDocentes();
         request.getSession().setAttribute("listaDocentes", docentes);
-        Usuario u = (Usuario) request.getSession().getAttribute("usuario");
         response.sendRedirect("CSM_Software/CSM/director/dashboard/docentes.jsp");
-    }
-
-    public void editarDocente(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
-        System.out.println("Estoy en editar");
-        PrintWriter pw = response.getWriter();
-        pw.println("<h1>Error</h1>");
-        response.sendRedirect("jspTest/listaDocente.jsp");
     }
 
     /**

@@ -28,12 +28,16 @@ import dto.SeccionMicrocurriculo;
 import dto.TablaMicrocurriculo;
 import dto.TablaMicrocurriculoInfo;
 import dto.TipoAsignatura;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
+import org.apache.commons.io.IOUtils;
 import util.Conexion;
 
 /**
@@ -48,6 +52,7 @@ public class MicrocurriculoPDF {
     private List<TipoAsignatura> ta;
     private Document doc;
     private String path;
+    private File file;
 
     public MicrocurriculoPDF(String path, Microcurriculo m) throws FileNotFoundException, DocumentException, BadElementException, IOException {
         EntityManagerFactory em = Conexion.getConexion().getBd();
@@ -59,10 +64,11 @@ public class MicrocurriculoPDF {
         this.bf = BaseFont.createFont(this.path + "\\fonts\\Roboto-Medium.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         TableHeader th = new TableHeader(this.getTablaEnca());
         this.doc = new Document(PageSize.A4, 36, 36, 20 + th.getTableHeight(), 36);
-        PdfWriter.getInstance(this.doc, new FileOutputStream(this.path + "\\temp\\MICROCURRICULO_" + m.getMateria().getNombre() + "_" + m.getMateria().getMateriaPK().getCodigoMateria() + ".pdf")).setPageEvent(th);
+        this.file = new File(this.path + "\\temp\\MICROCURRICULO_" + m.getMateria().getNombre() + "_" + m.getMateria().getMateriaPK().getCodigoMateria() + ".pdf");
+        PdfWriter.getInstance(this.doc, new FileOutputStream(this.file.getAbsolutePath())).setPageEvent(th);
     }
 
-    public void createPDF() throws DocumentException, BadElementException, IOException {
+    public InputStream createPDF() throws DocumentException, BadElementException, IOException {
         this.doc.open();
         this.doc.add(this.getParapgraph("Microcurriculo", 10, Paragraph.ALIGN_CENTER));
         this.createBlank();
@@ -79,8 +85,10 @@ public class MicrocurriculoPDF {
             this.createBlank();
         }
         this.doc.close();
+        InputStream is = new FileInputStream(this.file);
+        return is;
     }
-
+    
     private PdfPTable getTabla(TablaMicrocurriculo tm) throws DocumentException {
         PdfPTable tab = new PdfPTable(tm.getCantidadColumnas());
         if (tm.getTablaMicrocurriculoPK().getId() == 1) {
@@ -207,5 +215,9 @@ public class MicrocurriculoPDF {
 
     public void createBlank() throws DocumentException {
         this.doc.add(getParapgraph("\n", 9, Paragraph.ALIGN_CENTER));
+    }
+
+    public File getFile() {
+        return file;
     }
 }

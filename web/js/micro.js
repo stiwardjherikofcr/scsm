@@ -16,7 +16,9 @@ function agregarFila(seccionId) {
     console.log(seccionId);
     var max = Math.max(nColumnas, nColumnas2);
     for (var i = 0; i < max; i++) {
-        rta += `<td><textarea style="border:none;" name="contenido-${seccionId }-${filas - 1}-${i}"></textarea></td>`;
+        var inputOrText = i!=1 ? "input type='number'" : "textarea type='number'";
+        console.log(inputOrText);
+        rta += `<td><`+inputOrText+`style="border:none;" name="contenido-${seccionId }-${filas - 1}-${i}"></textarea></td>`;
     }
     rta += "</tr>"
     tabla.insertRow(-1).innerHTML = rta;

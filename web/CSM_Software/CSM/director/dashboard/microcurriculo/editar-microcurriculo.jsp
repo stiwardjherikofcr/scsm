@@ -44,6 +44,11 @@
         <link rel="stylesheet" href="../../../../assets/css/microcurriculo.css">
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link rel="stylesheet" href="../../../../assets/css/demo.css">
+        <style>
+            input[type="text"]:disabled{
+                background: #fff;
+            }
+        </style>
     </head>
 
     <body>
@@ -346,24 +351,15 @@
                                                         <td colspan="4" class="mt17">
                                                             <div class="selectgroup w-100 d-flex justify-content-around">
                                                                 <%
+                                                                    int id = microcurriculo.getAreaDeFormacionId().getId();
                                                                     for (dto.AreaFormacion elem : areasFormacion) {
-                                                                        if (microcurriculo.getAreaDeFormacionId().getId() == elem.getId()) {
                                                                 %>
                                                                 <label class="selectgroup-item pr-3">
                                                                     <input type="radio" name="areasFormacion" value="<%=elem.getId()%>"
-                                                                           class="selectgroup-input" checked="">
+                                                                           class="selectgroup-input" <%if(id==elem.getId()){%>checked<%}%>>
                                                                     <span class="selectgroup-button"><%=elem.getNombre()%></span>
                                                                 </label>
                                                                 <%
-                                                                } else {
-                                                                %>
-                                                                <label class="selectgroup-item pr-3">
-                                                                    <input type="radio" name="areasFormacion" value="<%=elem.getId()%>"
-                                                                           class="selectgroup-input">
-                                                                    <span class="selectgroup-button"><%=elem.getNombre()%></span>
-                                                                </label>
-                                                                <%
-                                                                        }
                                                                     }
                                                                 %>
                                                             </div>
@@ -465,21 +461,26 @@
                                                     <tr>
                                                         <%
                                                             for (int j = 0; j < seccion.getTablaMicrocurriculoList().get(0).getCantidadColumnas(); j++) {
-                                                                if (j == 0 || j == 4) {
                                                         %>
                                                         <td>
                                                             <div class="form-group">
-                                                                <textarea class="form-control" rows="3" name="contenido-<%=seccion.getSeccionId().getId()%>-<%=i%>-<%=j%>" disabled><%=tablainfo.size() == 0 ? "" : tablas.get(seccion.getTablaMicrocurriculoList().get(0).getTablaMicrocurriculoPK().getId() - 1)[i][j]%></textarea>
+                                                                <%if(j!=1 && seccion.getSeccionId().getId()==1){%> <input type="text" id="<%=seccion.getSeccionId().getId()%>-<%=i%>-<%=j%>" onkeyup="sumFields('<%=seccion.getSeccionId().getId()%>-<%=i%>-<%=j%>')" onkeypress="return validate(event,'<%=seccion.getSeccionId().getId()%>-<%=i%>-<%=j%>')" <%} else {%> <textarea<%}%>
+                                                                    style="display:block;width:100%;border:none;margin:auto auto;text-align:center;"
+                                                                    class="form-control" 
+                                                                    rows="3" 
+                                                                    name="contenido-<%=seccion.getSeccionId().getId()%>-<%=i%>-<%=j%>" 
+                                                                    <%if((j == 0 || j == 4) && seccion.getSeccionId().getId()==1){%> readonly <%}%>
+                                                                <%
+                                                                    String msg = tablainfo.size() == 0 ? "" : tablas.get(seccion.getTablaMicrocurriculoList().get(0).getTablaMicrocurriculoPK().getId() - 1)[i][j];
+                                                                    if(j!=1 && seccion.getSeccionId().getId()==1){
+                                                                %> 
+                                                                    value="<%=msg %>"/> 
+                                                                <%}else{%> 
+                                                                    ><%=msg %></textarea>
+                                                                <%}%>
                                                             </div>
                                                         </td>
-                                                        <%} else {%>
-                                                        <td>
-                                                            <div class="form-group">
-                                                                <textarea class="form-control" rows="3" name="contenido-<%=seccion.getSeccionId().getId()%>-<%=i%>-<%=j%>"><%=tablainfo.size() == 0 ? "" : tablas.get(seccion.getTablaMicrocurriculoList().get(0).getTablaMicrocurriculoPK().getId() - 1)[i][j]%></textarea>
-                                                            </div>
-                                                        </td>
-                                                        <%}
-                                                            }%>
+                                                        <%}%>
                                                     </tr>
                                                     <%}%>
                                                 </tbody>
@@ -603,6 +604,17 @@
                                                             time: 1000,
                                                         });
                                                     });
+                                                                    
+            function validate(evt, id){
+                return (/^\d+$/).test(evt.key);
+            }
+            
+            function sumFields(id){
+                var head = id.substring(0, id.length-1);
+                var c1 = parseInt($('#'+head+2).val().length == 0 ? "0" : $('#'+head+2).val(), 10);
+                var c2 = parseInt($('#'+head+3).val().length == 0 ? "0" : $('#'+head+3).val(), 10);
+                $('#'+head+4).val(c1+c2);
+            }
         </script>
     </body>
 

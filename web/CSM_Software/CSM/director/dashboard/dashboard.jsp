@@ -262,12 +262,15 @@
 
         <!-- Chart -->
         <script type="text/javascript">
-            google.charts.load("current", {
+            $(document).ready(function (){
+                google.charts.load("current", {
                 packages: ['corechart']
+                });
+                google.charts.setOnLoadCallback(drawChart);
             });
-            google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
+            function drawChart(msg) {
+                console.log();
                 var data = google.visualization.arrayToDataTable([
                     ["Materia", "Porcentaje", {
                             role: "style"

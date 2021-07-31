@@ -381,7 +381,7 @@
                                                                         <i class="fa fa-edit" style="color: black;"></i>
                                                                     </button>
                                                                 </a>
-                                                                <a href="../../../../../ControladorMicrocurriculo?accion=PDF&idMicrocurriculo=<%=elem.getMicrocurriculoList().get(0).getMicrocurriculoPK().getId()%>&codigoMateria=<%=elem.getMicrocurriculoList().get(0).getMateria().getMateriaPK().getCodigoMateria()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>">
+                                                                <a href="../../../../../ControladorMicrocurriculo?accion=PDF&idMicrocurriculo=<%=elem.getMicrocurriculoList().get(0).getMicrocurriculoPK().getId()%>&codigoMateria=<%=elem.getMicrocurriculoList().get(0).getMateria().getMateriaPK().getCodigoMateria()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>" target="_blank">
                                                                     <button type="button" data-toggle="tooltip" title=""
                                                                             class="btn btn-link btn-dark"
                                                                             data-original-title="Exportar PDF" style="color: black;">

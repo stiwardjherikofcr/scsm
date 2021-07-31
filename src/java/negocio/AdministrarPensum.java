@@ -11,11 +11,13 @@ import dao.ProgramaJpaController;
 import dto.Materia;
 import dto.Pensum;
 import dto.PensumPK;
+import dto.Usuario;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import util.Conexion;
@@ -55,7 +57,7 @@ public class AdministrarPensum {
         p.setPrograma(prjpa.findPrograma(id_programa));
         pjpa.create(p);
         List<Materia> materias = l.getMaterias(count);
-        new File(path).delete();     
+        new File(path).delete();
         p.setMateriaList(materias);
         new MateriaJpaAlternativo(MyConnection.getConnection()).create(p);
         return p;
@@ -82,7 +84,6 @@ public class AdministrarPensum {
     }
 
     public List<dto.Materia> obtenerMateriasPensum(int pensumCodigo, int programaCodigo) {
-        System.out.println("Pensum " + pensumCodigo);
         dto.Pensum pensum = obtenerPensum(pensumCodigo, programaCodigo);
         List<dto.Materia> materias = pensum.getMateriaList();
         return materias;
@@ -103,4 +104,27 @@ public class AdministrarPensum {
         return materiasXcreditos;
     }
 
+    public Pensum getLastPensum(Usuario usuario) {
+        Pensum pensumRes = null;
+        for (Pensum pensum : usuario.getDocente().getProgramaList().get(0).getPensumList()) {
+            if (pensumRes != null && pensumRes.getPensumPK().getCodigo() < pensum.getPensumPK().getCodigo()) {
+                pensumRes = pensum;
+            } else {
+                pensumRes = pensum;
+            }
+        }
+        return pensumRes;
+    }
+
+    public List<Materia>[] cargarMateriasPorSemestre(Pensum pensum) {
+        List<Materia> materiasSemestre[] = new List[10];
+        for (Materia m : pensum.getMateriaList()) {
+            int semestre = m.getSemestre() - 1;
+            if (materiasSemestre[semestre] == null) {
+                materiasSemestre[semestre] = new ArrayList<>();
+            }
+            materiasSemestre[semestre].add(m);
+        }
+        return materiasSemestre;
+    }
 }

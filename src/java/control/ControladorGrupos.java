@@ -52,7 +52,6 @@ public class ControladorGrupos extends HttpServlet {
     }
 
     public void eliminarMateriaPG(HttpServletRequest request, HttpServletResponse response) throws NonexistentEntityException, IOException {
-        System.out.println("mpg");
         String grupo = request.getParameter("grupo");
         int codigoDocente = Integer.parseInt(request.getParameter("docente_codigo"));
         int anio = Integer.parseInt(request.getParameter("anio"));
