@@ -16,6 +16,7 @@ import dto.Pensum;
 import dto.Seccion;
 import dto.SeccionMicrocurriculo;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,9 +26,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JFileChooser;
 import negocio.AdministrarMicrocurriculo;
 import negocio.MicrocurriculoPDF;
 import negocio.RegistroMicrocurriculoBackground;
+import org.apache.commons.io.IOUtils;
 import util.Conexion;
 
 /**
@@ -128,8 +131,12 @@ public class ControladorMicrocurriculo extends HttpServlet {
         negocio.AdministrarMicrocurriculo admin = new AdministrarMicrocurriculo();
         dto.Microcurriculo microcurriculo = admin.obtenerMicrocurriculo(codigoMateria, codigoPensum);
         negocio.MicrocurriculoPDF pdf = new MicrocurriculoPDF(request.getServletContext().getRealPath("/"), microcurriculo);
-        pdf.createPDF();
-        response.sendRedirect("CSM_Software/CSM/director/dashboard/microcurriculo/consultar-microcurriculo.jsp");
+        response.setContentType("application/pdf");
+        InputStream is = pdf.createPDF();
+        IOUtils.copy(is, response.getOutputStream());
+        is.close();
+        pdf.getFile().deleteOnExit();
+        response.flushBuffer();
     }
 
     @Override
@@ -143,10 +150,10 @@ public class ControladorMicrocurriculo extends HttpServlet {
                 Logger.getLogger(ControladorMicrocurriculo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (accion.equalsIgnoreCase("ver-materia")){
-            try{
+        if (accion.equalsIgnoreCase("ver-materia")) {
+            try {
                 this.verMateria(request, response);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -200,75 +207,68 @@ public class ControladorMicrocurriculo extends HttpServlet {
         PrintWriter pw = new PrintWriter(response.getOutputStream());
         Integer cod = Integer.parseInt(request.getParameter("cod"));
         Integer sem = Integer.parseInt(request.getParameter("sem"));
-        List<Materia> materias[] = (List<Materia>[])request.getSession().getAttribute("materiasSemestre");
-        for(Materia materia: materias[sem-1]){
-            if(materia.getMateriaPK().getCodigoMateria()==cod){
+        List<Materia> materias[] = (List<Materia>[]) request.getSession().getAttribute("materiasSemestre");
+        for (Materia materia : materias[sem - 1]) {
+            if (materia.getMateriaPK().getCodigoMateria() == cod) {
                 this.paintModal(pw, materia);
                 break;
             }
         }
     }
-    
-    private void paintModal(PrintWriter pw, Materia materia){
-        Contenido contUnidad = null, contBibliografia = null;
-        MicrocurriculoJpaController microJpa = new MicrocurriculoJpaController(Conexion.getConexion().getBd());
-        List<Microcurriculo> microcurriculos = microJpa.findMicrocurriculoEntities();
-        Microcurriculo micro = new Microcurriculo();
-        for(Microcurriculo microcurriculo: microcurriculos){
-            if(materia.getMateriaPK().getCodigoMateria()==microcurriculo.getMicrocurriculoPK().getMateriaCodigoMateria() &&
-                    materia.getMateriaPK().getPensumCodigo()==microcurriculo.getMicrocurriculoPK().getMateriaPensumCodigo()){
-                micro = microcurriculo;
-                break;
-            }
-        }
-        for(SeccionMicrocurriculo seccionMicro : micro.getSeccionMicrocurriculoList()){
-            if(seccionMicro.getSeccionId().getId()==1){
-                for(Contenido contenido: seccionMicro.getContenidoList()){
-                    System.out.println(contenido.getTexto());
-                }
-            }
-        }
-//        materia.getMicrocurriculoList().get(0).getSeccionMicrocurriculoList().get(0).getC
-//        pw.write("<div class='row'>");
-//        pw.write("<div class='col-12'>");
-//        pw.write("<div class='form-group form-group-default'>");
-//                                        <h6><b>CONTENIDO</b></h6>
-//
-//                                        <p>UNIDAD 1. Medios, instrumentos, técnicas y
-//                                            método en la recolección de datos e
-//                                            información.</p>
-//
-//                                        <p>UNIDAD 2. Tabulación, análisis e interpretación
-//                                            de datos.</p>
-//
-//
-//                                        <p>UNIDAD 3. Informe y presentación de los
-//                                            datos de una investigación.</p>
-//                                    </div>
-//                                </div>
-//                                <div class="col-12">
-//                                    <div class="form-group form-group-default">
-//                                        <h6><b>BIBLIOGRAFIA</b></h6>
-//
-//                                        <p>- CERDA HUGO. Los elementos de la Investigación,
-//                                            como reconocerlos, diseñarlos y construirlos.
-//                                            Tercera edición, 2008. Editorial El Buho.</p>
-//
-//                                        <p>- MUÑOZ G. Jose, QUINTERO C. Josefina. Como
-//                                            desarrollar competencias investigativas en
-//                                            educación. 4 edición. Editorial Magisterio.</p>
-//
-//                                        <p>- HERNANDEZ Sampieri; FERNANDEZ Collado; BAPTISTA
-//                                            Lucio. Metodología de la investigación. McGraw
-//                                            Hill. 2006.</p>
-//
-//                                        <p>- MÉNDEZ A. Carlos E. Metodología. McGraw Hill.
-//                                            2005.</p>
-//                                    </div>
-//                                </div>
-//                            </div>
+
+    private void paintModal(PrintWriter pw, Materia materia) {
+        AdministrarMicrocurriculo adminMicro = new AdministrarMicrocurriculo();
+        Microcurriculo micro = adminMicro.obtenerMicrocurriculo(materia.getMateriaPK().getCodigoMateria(), materia.getMateriaPK().getPensumCodigo());
+        List<String[][]> retrieveDataTable = AdministrarMicrocurriculo.ordenarTablaInfo(micro);
+        StringBuilder build = new StringBuilder();
+        this.getModalHeader(materia, build);
+        this.getModalBody(micro, retrieveDataTable.get(0), build);
+        pw.write(build.toString());
+        pw.flush();
     }
-    
+
+    private void getModalHeader(Materia materia, StringBuilder build) {
+        build.append("<div class='modal-header no-bd'>");
+        build.append("<h4 class='modal-title'><b>");
+        build.append(materia.getNombre());
+        build.append(" - ");
+        build.append(materia.getMateriaPK().getCodigoMateria());
+        build.append("</b></h4>");
+        build.append("<button type='button' class='close' data-dismiss='modal' aria-label='Close'>");
+        build.append("<span aria-hidden='true'>&times;</span>");
+        build.append("</button>");
+        build.append("</div>");
+    }
+
+    private void getModalBody(Microcurriculo micro, String contenido[][], StringBuilder build) {
+        build.append("<div class='modal-body'>");
+        for (SeccionMicrocurriculo seccion : micro.getSeccionMicrocurriculoList()) {
+            if (seccion.getSeccionId().getId() == 1 || seccion.getSeccionId().getId() == 9) {
+                build.append("<div class='col-12'>");
+                build.append("<div class='form-group form-group-default'>");
+                build.append("<h6><b>");
+                build.append(seccion.getSeccionId().getNombre().toUpperCase());
+                build.append("</b></h6>");
+                if (seccion.getSeccionId().getId() == 1) {
+                    for (String row[] : contenido) {
+                        build.append("<p>UNIDAD ");
+                        build.append(row[0]);
+                        build.append(". ");
+                        build.append(row[1]);
+                        build.append("</p>");
+                    }
+                } else {
+                    build.append("<p>");
+                    build.append(seccion.getContenidoList().get(0).getTexto());
+                    build.append("</p>");
+                }
+                build.append("</div>");
+                build.append("</div>");
+            }
+        }
+        build.append("</div>");
+    }
+
     @Override
     public String getServletInfo() {
         return "Short description";

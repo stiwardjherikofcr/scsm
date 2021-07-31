@@ -181,20 +181,35 @@ public class ControladorPensum extends HttpServlet {
     private void verPensum(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Usuario user = (Usuario)request.getSession().getAttribute("usuario");
         Integer cod = Integer.parseInt(request.getParameter("cod"));
-        List<Materia> materiasSemestre[] = new List[10];
-        for(Pensum pensum : user.getDocente().getProgramaList().get(0).getPensumList()){
-            if(pensum.getPensumPK().getCodigo()!=cod) continue;
-            for(Materia m: pensum.getMateriaList()){
-                int semestre = m.getSemestre()-1;
-                if(materiasSemestre[semestre] == null)
-                    materiasSemestre[semestre] = new ArrayList<>();
-                materiasSemestre[semestre].add(m);
-            }
-            break;
-        }
-        request.getSession().setAttribute("materiasSemestre", materiasSemestre);
+        AdministrarPensum adminPemsum = new AdministrarPensum();
+        List<Materia> materias[] = adminPemsum.cargarMateriasPorSemestre(this.getPensum(user.getDocente().getProgramaList().get(0).getPensumList(), cod));
+        request.getSession().setAttribute("materiasSemestre", materias);
         response.sendRedirect("CSM_Software/CSM/director/dashboard/pensum.jsp");
     }
+    
+    private Pensum getPensum(List<Pensum> pensums, int cod){
+        for(Pensum pensum: pensums){
+            if(pensum.getPensumPK().getCodigo()==cod){
+                return pensum;
+            }
+        }
+        return null;
+    }
+    
+//    public static void cargarMateriasPorSemestre(HttpServletRequest request, Usuario user, int cod){
+//        List<Materia> materiasSemestre[] = new List[10];
+//        for(Pensum pensum : user.getDocente().getProgramaList().get(0).getPensumList()){
+//            if(pensum.getPensumPK().getCodigo()!=cod) continue;
+//            for(Materia m: pensum.getMateriaList()){
+//                int semestre = m.getSemestre()-1;
+//                if(materiasSemestre[semestre] == null)
+//                    materiasSemestre[semestre] = new ArrayList<>();
+//                materiasSemestre[semestre].add(m);
+//            }
+//            break;
+//        }
+//        
+//    }
     
     /**
      * Returns a short description of the servlet.

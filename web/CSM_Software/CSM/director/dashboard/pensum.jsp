@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="dto.Materia"%>
 <%@page import="dto.Pensum"%>
 <%@page import="java.util.List"%>
 <%@page import="dto.Usuario"%>
@@ -321,7 +322,16 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="d-flex justify-content-center">
-                                            <h4 class="card-title">Pensum 115 - 1</h4>
+                                            <h4 class="card-title">
+                                                <%
+                                                    List<Materia> materiasSemestre[] = (List<Materia>[]) request.getSession().getAttribute("materiasSemestre");
+                                                    if (materiasSemestre != null && materiasSemestre.length > 0) {
+                                                %>
+                                                Pensum <%=materiasSemestre[0].get(0).getPensum().getPensumPK().getProgramaCodigo() %> - <%=materiasSemestre[0].get(0).getPensum().getPensumPK().getCodigo()%>
+                                                <%} else {%>
+                                                No hay pensum registrado
+                                                <%}%>
+                                            </h4>
                                         </div>
                                     </div>
                                     <div class="card-body d-flex align-items-end">
@@ -423,8 +433,8 @@
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a href="../../../../ControladorPensum?accion=ver&cod=<%=p.getPensumPK().getCodigo()%>" type="button" data-toggle="tooltip" title=""
-                                                                        class="btn btn-link btn-dark" data-original-title="See"
-                                                                        style="color: black;">
+                                                                   class="btn btn-link btn-dark" data-original-title="See"
+                                                                   style="color: black;">
                                                                     <i class="fas fa-search"></i>
                                                                 </a>
                                                                 <button type="button" data-toggle="tooltip" title=""

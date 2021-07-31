@@ -25,7 +25,6 @@ public class Login {
         dao.UsuarioJpaController daoUsuario = new dao.UsuarioJpaController(con.getBd());
         dto.UsuarioPK usuarioPk = new dto.UsuarioPK(rol, codigo);
         dto.Usuario usuario = daoUsuario.findUsuario(usuarioPk);
-        System.out.println(usuario);
         if (usuario != null && autenticarContra(contrasena, codigo, rol) && usuario.getDocente().getEstado() == 1) {
             return true;
         } else {
@@ -65,7 +64,6 @@ public class Login {
     public boolean autenticarContra(String password, int codigo, int rol) {
         PasswordAuthentication encriptarPass = new PasswordAuthentication();
         Conexion con = Conexion.getConexion();
-        dao.DocenteJpaController daoDocente = new dao.DocenteJpaController(con.getBd());
         dao.UsuarioJpaController daoUsuario = new dao.UsuarioJpaController(con.getBd());
         Usuario u = daoUsuario.findUsuario(new UsuarioPK(rol, codigo));
         return encriptarPass.authenticate(password, u.getClave());

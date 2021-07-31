@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="dto.Pensum"%>
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%> 
 <!DOCTYPE html>
@@ -46,6 +47,7 @@
     <body>
         <%
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+            Pensum pensum = (Pensum) request.getSession().getAttribute("pensum");
             request.getSession().removeAttribute("materias");
         %>
         <div class="wrapper">
@@ -101,7 +103,9 @@
                                                 <div class="col-7 col-stats">
                                                     <div class="numbers">
                                                         <p class="card-category">Docentes Activos</p>
-                                                        <h4 class="card-title">10</h4>
+                                                        <h4 class="card-title">
+                                                            <%=request.getSession().getAttribute("numDocActivos") %>
+                                                        </h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -122,7 +126,15 @@
                                                 <div class="col-7 col-stats">
                                                     <div class="numbers">
                                                         <p class="card-category">Pensum</p>
-                                                        <h4 class="card-title">115 - 1</h4>
+                                                        <h4 class="card-title">
+                                                            <%
+                                                                if(pensum!=null){
+                                                            %>
+                                                            <%=pensum.getPensumPK().getProgramaCodigo() %> - <%=pensum.getPensumPK().getCodigo() %>
+                                                            <%}else{%>
+                                                            No hay pensum registrado
+                                                            <%}%>
+                                                        </h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,7 +155,15 @@
                                                 <div class="col-7 col-stats">
                                                     <div class="numbers">
                                                         <p class="card-category">Materias</p>
-                                                        <h4 class="card-title">50</h4>
+                                                        <h4 class="card-title">
+                                                            <%
+                                                                if(pensum!=null){
+                                                            %>
+                                                            <%=pensum.getMateriaList().size() %>
+                                                            <%}else{%>
+                                                            0
+                                                            <%}%>
+                                                        </h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -165,7 +185,15 @@
                                                 <div class="col-7 col-stats">
                                                     <div class="numbers">
                                                         <p class="card-category">Microcurriculos</p>
-                                                        <h4 class="card-title">105</h4>
+                                                        <h4 class="card-title">
+                                                            <%
+                                                                if(pensum!=null){
+                                                            %>
+                                                            <%=pensum.getMateriaList().size() %>
+                                                            <%}else{%>
+                                                            0
+                                                            <%}%>
+                                                        </h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,12 +267,15 @@
 
         <!-- Chart -->
         <script type="text/javascript">
-            google.charts.load("current", {
+            $(document).ready(function (){
+                google.charts.load("current", {
                 packages: ['corechart']
+                });
+                google.charts.setOnLoadCallback(drawChart);
             });
-            google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
+            function drawChart(msg) {
+                console.log();
                 var data = google.visualization.arrayToDataTable([
                     ["Materia", "Porcentaje", {
                             role: "style"

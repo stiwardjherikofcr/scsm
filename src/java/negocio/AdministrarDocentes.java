@@ -8,6 +8,7 @@ package negocio;
 import dao.DocenteJpaController;
 import dao.exceptions.NonexistentEntityException;
 import dto.*;
+import java.util.ArrayList;
 import java.util.List;
 import util.Conexion;
 
@@ -54,4 +55,14 @@ public class AdministrarDocentes {
         return programa.getDepartamentoId().getDocenteList();
     }
 
+    public int getNumDocentesActivos(){
+        int count = 0;
+        List<Docente> allDocentes = this.listarDocentes();
+        for(Docente docente: allDocentes){
+            if(docente.getEstado()==1){
+                count++;
+            }
+        }
+        return count;
+    }
 }
