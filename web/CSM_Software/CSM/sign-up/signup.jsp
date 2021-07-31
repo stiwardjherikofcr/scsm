@@ -78,7 +78,7 @@
                                     Sesion</a>
                             </div>
                             <div class="w-25">
-                                <input class="btn btn-danger mb-2 w-100 brlogin ml-2" type="submit" name="action" value="registrarDocente">
+                                <input class="btn btn-danger mb-2 w-100 brlogin ml-2" type="submit" name="action" value="Registrar">
                             </div>
                         </div>
                         <!--botones-->

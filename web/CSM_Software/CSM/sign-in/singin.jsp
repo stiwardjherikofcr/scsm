@@ -39,20 +39,20 @@
                                 <img class="w-50" src="../../assets/img/profile.svg" alt="">
                             </div>
                             <div class="mb-3">
-                                <input class="form-control brlogin singin" type="number" name="codigo" placeholder="Codigo">
+                                <input class="form-control brlogin singin" type="number" name="codigo" placeholder="Codigo" required>
                             </div>
                             <div class="mb-3">
-                                <input class="form-control brlogin singin" type="password" name="clave" placeholder="Contraseña">
+                                <input class="form-control brlogin singin" type="password" name="clave" placeholder="Contraseña" required>
                             </div>
                             <div class="mb-3  d-flex justify-content-around">
                                 <div>
                                     <label for="opt1" class="radio">
-                                        <input class="hidden" type="radio" id="opt1" name="rol" value="1">
+                                        <input class="hidden" type="radio" id="opt1" name="rol" value="1" required>
                                         <span class="label"></span>Director de Programa
                                     </label>
 
                                     <label for="opt2" class="radio">
-                                        <input class="hidden" type="radio" id="opt2" name="rol" value="2">
+                                        <input class="hidden" type="radio" id="opt2" name="rol" value="2" required>
                                         <span class="label"></span>Docente
                                     </label>
                                 </div>

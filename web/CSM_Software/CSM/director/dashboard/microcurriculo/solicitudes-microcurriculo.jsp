@@ -357,12 +357,12 @@
                                                             <div class="form-button-action">
                                                                 <button id="pensum" type="button" data-toggle="tooltip"
                                                                         title="" class="btn btn-link btn-dark"
-                                                                        data-original-title="See" style="color: black;">
+                                                                        data-original-title="Ver" style="color: black;">
                                                                     <i class="fas fa-search"></i>
                                                                 </button>
                                                                 <button type="button" data-toggle="tooltip" title=""
                                                                         class="btn btn-link btn-dark"
-                                                                        data-original-title="Export PDF" style="color: black;">
+                                                                        data-original-title="Exportar PDF" style="color: black;">
                                                                     <i class="fas fa-file-pdf"></i>
                                                                 </button>
                                                             </div>

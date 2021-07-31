@@ -106,7 +106,7 @@ public class ControladorDocente extends HttpServlet {
         PrintWriter pw = response.getWriter();
         try {
             switch (request.getParameter("action")) {
-                case "registrarDocente":
+                case "Registrar":
                     this.guardarDocente(request, response);
                     break;
                 case "activarDocente":
