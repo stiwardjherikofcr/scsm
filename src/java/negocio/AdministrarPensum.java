@@ -72,25 +72,15 @@ public class AdministrarPensum {
         return file.getAbsolutePath();
     }
 
-    public dto.Pensum obtenerPensum(int codigo, int programaCodigo) {
+    public Pensum obtenerPensum(int codigo, int programaCodigo) {
         Conexion con = Conexion.getConexion();
-        dao.PensumJpaController daoPensum = new dao.PensumJpaController(con.getBd());
-        Pensum pensum = daoPensum.findPensum(new dto.PensumPK(codigo, programaCodigo));
+        PensumJpaController daoPensum = new PensumJpaController(con.getBd());
+        Pensum pensum = daoPensum.findPensum(new PensumPK(codigo, programaCodigo));
         return pensum;
     }
 
-    public List<dto.Pensum> obtenerPensum(dto.Programa programa) {
-        return programa.getPensumList();
-    }
-
-    public List<dto.Materia> obtenerMateriasPensum(int pensumCodigo, int programaCodigo) {
-        dto.Pensum pensum = obtenerPensum(pensumCodigo, programaCodigo);
-        List<dto.Materia> materias = pensum.getMateriaList();
-        return materias;
-    }
-
     public int[] creditosMateriasPensum(int pensumCodigo, int programaCodigo) {
-        List<dto.Materia> materias = obtenerMateriasPensum(pensumCodigo, programaCodigo);
+        List<dto.Materia> materias = obtenerPensum(pensumCodigo, programaCodigo).getMateriaList();
         int materiasXcreditos[] = new int[2];
         int creditos = 0;
         int cantMaterias = 0;
@@ -106,7 +96,7 @@ public class AdministrarPensum {
 
     public Pensum getLastPensum(Usuario usuario) {
         Pensum pensumRes = null;
-        for (Pensum pensum : usuario.getDocente().getProgramaList().get(0).getPensumList()) {
+        for (Pensum pensum : usuario.getDocente().getProgramaCodigo().getPensumList()) {
             if (pensumRes != null && pensumRes.getPensumPK().getCodigo() < pensum.getPensumPK().getCodigo()) {
                 pensumRes = pensum;
             } else {

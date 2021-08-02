@@ -5,24 +5,25 @@
  */
 package dao;
 
+import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
-import dao.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import dto.Cumplimiento;
 import dto.Docente;
 import dto.MateriaPeriodo;
 import dto.MateriaPeriodoGrupo;
-import dto.MateriaPeriodoGrupoPK;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Manuel
+ * @author Sachikia
  */
 public class MateriaPeriodoGrupoJpaController implements Serializable {
 
@@ -35,44 +36,45 @@ public class MateriaPeriodoGrupoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(MateriaPeriodoGrupo materiaPeriodoGrupo) throws PreexistingEntityException, Exception {
-        if (materiaPeriodoGrupo.getMateriaPeriodoGrupoPK() == null) {
-            materiaPeriodoGrupo.setMateriaPeriodoGrupoPK(new MateriaPeriodoGrupoPK());
-        }
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoSemestreAnio(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getSemestreAnio());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoMateriaPensumCodigo(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getMateriaPensumCodigo());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setDocenteCodigo(materiaPeriodoGrupo.getDocente().getCodigoDocente());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoMateriaCodigoMateria(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getMateriaCodigoMateria());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoAnio(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getAnio());
+    public void create(MateriaPeriodoGrupo materiaPeriodoGrupo) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Docente docente = materiaPeriodoGrupo.getDocente();
-            if (docente != null) {
-                docente = em.getReference(docente.getClass(), docente.getCodigoDocente());
-                materiaPeriodoGrupo.setDocente(docente);
+            Cumplimiento cumplimiento = materiaPeriodoGrupo.getCumplimiento();
+            if (cumplimiento != null) {
+                cumplimiento = em.getReference(cumplimiento.getClass(), cumplimiento.getMateriaPeriodoGrupoId());
+                materiaPeriodoGrupo.setCumplimiento(cumplimiento);
             }
-            MateriaPeriodo materiaPeriodo = materiaPeriodoGrupo.getMateriaPeriodo();
-            if (materiaPeriodo != null) {
-                materiaPeriodo = em.getReference(materiaPeriodo.getClass(), materiaPeriodo.getMateriaPeriodoPK());
-                materiaPeriodoGrupo.setMateriaPeriodo(materiaPeriodo);
+            Docente docenteCodigo = materiaPeriodoGrupo.getDocenteCodigo();
+            if (docenteCodigo != null) {
+                docenteCodigo = em.getReference(docenteCodigo.getClass(), docenteCodigo.getCodigo());
+                materiaPeriodoGrupo.setDocenteCodigo(docenteCodigo);
+            }
+            MateriaPeriodo materiaPeriodoId = materiaPeriodoGrupo.getMateriaPeriodoId();
+            if (materiaPeriodoId != null) {
+                materiaPeriodoId = em.getReference(materiaPeriodoId.getClass(), materiaPeriodoId.getId());
+                materiaPeriodoGrupo.setMateriaPeriodoId(materiaPeriodoId);
             }
             em.persist(materiaPeriodoGrupo);
-            if (docente != null) {
-                docente.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
-                docente = em.merge(docente);
+            if (cumplimiento != null) {
+                MateriaPeriodoGrupo oldMateriaPeriodoGrupoOfCumplimiento = cumplimiento.getMateriaPeriodoGrupo();
+                if (oldMateriaPeriodoGrupoOfCumplimiento != null) {
+                    oldMateriaPeriodoGrupoOfCumplimiento.setCumplimiento(null);
+                    oldMateriaPeriodoGrupoOfCumplimiento = em.merge(oldMateriaPeriodoGrupoOfCumplimiento);
+                }
+                cumplimiento.setMateriaPeriodoGrupo(materiaPeriodoGrupo);
+                cumplimiento = em.merge(cumplimiento);
             }
-            if (materiaPeriodo != null) {
-                materiaPeriodo.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
-                materiaPeriodo = em.merge(materiaPeriodo);
+            if (docenteCodigo != null) {
+                docenteCodigo.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
+                docenteCodigo = em.merge(docenteCodigo);
+            }
+            if (materiaPeriodoId != null) {
+                materiaPeriodoId.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
+                materiaPeriodoId = em.merge(materiaPeriodoId);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findMateriaPeriodoGrupo(materiaPeriodoGrupo.getMateriaPeriodoGrupoPK()) != null) {
-                throw new PreexistingEntityException("MateriaPeriodoGrupo " + materiaPeriodoGrupo + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -80,51 +82,71 @@ public class MateriaPeriodoGrupoJpaController implements Serializable {
         }
     }
 
-    public void edit(MateriaPeriodoGrupo materiaPeriodoGrupo) throws NonexistentEntityException, Exception {
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoSemestreAnio(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getSemestreAnio());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoMateriaPensumCodigo(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getMateriaPensumCodigo());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setDocenteCodigo(materiaPeriodoGrupo.getDocente().getCodigoDocente());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoMateriaCodigoMateria(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getMateriaCodigoMateria());
-        materiaPeriodoGrupo.getMateriaPeriodoGrupoPK().setMateriaPeriodoAnio(materiaPeriodoGrupo.getMateriaPeriodo().getMateriaPeriodoPK().getAnio());
+    public void edit(MateriaPeriodoGrupo materiaPeriodoGrupo) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            MateriaPeriodoGrupo persistentMateriaPeriodoGrupo = em.find(MateriaPeriodoGrupo.class, materiaPeriodoGrupo.getMateriaPeriodoGrupoPK());
-            Docente docenteOld = persistentMateriaPeriodoGrupo.getDocente();
-            Docente docenteNew = materiaPeriodoGrupo.getDocente();
-            MateriaPeriodo materiaPeriodoOld = persistentMateriaPeriodoGrupo.getMateriaPeriodo();
-            MateriaPeriodo materiaPeriodoNew = materiaPeriodoGrupo.getMateriaPeriodo();
-            if (docenteNew != null) {
-                docenteNew = em.getReference(docenteNew.getClass(), docenteNew.getCodigoDocente());
-                materiaPeriodoGrupo.setDocente(docenteNew);
+            MateriaPeriodoGrupo persistentMateriaPeriodoGrupo = em.find(MateriaPeriodoGrupo.class, materiaPeriodoGrupo.getId());
+            Cumplimiento cumplimientoOld = persistentMateriaPeriodoGrupo.getCumplimiento();
+            Cumplimiento cumplimientoNew = materiaPeriodoGrupo.getCumplimiento();
+            Docente docenteCodigoOld = persistentMateriaPeriodoGrupo.getDocenteCodigo();
+            Docente docenteCodigoNew = materiaPeriodoGrupo.getDocenteCodigo();
+            MateriaPeriodo materiaPeriodoIdOld = persistentMateriaPeriodoGrupo.getMateriaPeriodoId();
+            MateriaPeriodo materiaPeriodoIdNew = materiaPeriodoGrupo.getMateriaPeriodoId();
+            List<String> illegalOrphanMessages = null;
+            if (cumplimientoOld != null && !cumplimientoOld.equals(cumplimientoNew)) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("You must retain Cumplimiento " + cumplimientoOld + " since its materiaPeriodoGrupo field is not nullable.");
             }
-            if (materiaPeriodoNew != null) {
-                materiaPeriodoNew = em.getReference(materiaPeriodoNew.getClass(), materiaPeriodoNew.getMateriaPeriodoPK());
-                materiaPeriodoGrupo.setMateriaPeriodo(materiaPeriodoNew);
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            if (cumplimientoNew != null) {
+                cumplimientoNew = em.getReference(cumplimientoNew.getClass(), cumplimientoNew.getMateriaPeriodoGrupoId());
+                materiaPeriodoGrupo.setCumplimiento(cumplimientoNew);
+            }
+            if (docenteCodigoNew != null) {
+                docenteCodigoNew = em.getReference(docenteCodigoNew.getClass(), docenteCodigoNew.getCodigo());
+                materiaPeriodoGrupo.setDocenteCodigo(docenteCodigoNew);
+            }
+            if (materiaPeriodoIdNew != null) {
+                materiaPeriodoIdNew = em.getReference(materiaPeriodoIdNew.getClass(), materiaPeriodoIdNew.getId());
+                materiaPeriodoGrupo.setMateriaPeriodoId(materiaPeriodoIdNew);
             }
             materiaPeriodoGrupo = em.merge(materiaPeriodoGrupo);
-            if (docenteOld != null && !docenteOld.equals(docenteNew)) {
-                docenteOld.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
-                docenteOld = em.merge(docenteOld);
+            if (cumplimientoNew != null && !cumplimientoNew.equals(cumplimientoOld)) {
+                MateriaPeriodoGrupo oldMateriaPeriodoGrupoOfCumplimiento = cumplimientoNew.getMateriaPeriodoGrupo();
+                if (oldMateriaPeriodoGrupoOfCumplimiento != null) {
+                    oldMateriaPeriodoGrupoOfCumplimiento.setCumplimiento(null);
+                    oldMateriaPeriodoGrupoOfCumplimiento = em.merge(oldMateriaPeriodoGrupoOfCumplimiento);
+                }
+                cumplimientoNew.setMateriaPeriodoGrupo(materiaPeriodoGrupo);
+                cumplimientoNew = em.merge(cumplimientoNew);
             }
-            if (docenteNew != null && !docenteNew.equals(docenteOld)) {
-                docenteNew.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
-                docenteNew = em.merge(docenteNew);
+            if (docenteCodigoOld != null && !docenteCodigoOld.equals(docenteCodigoNew)) {
+                docenteCodigoOld.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
+                docenteCodigoOld = em.merge(docenteCodigoOld);
             }
-            if (materiaPeriodoOld != null && !materiaPeriodoOld.equals(materiaPeriodoNew)) {
-                materiaPeriodoOld.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
-                materiaPeriodoOld = em.merge(materiaPeriodoOld);
+            if (docenteCodigoNew != null && !docenteCodigoNew.equals(docenteCodigoOld)) {
+                docenteCodigoNew.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
+                docenteCodigoNew = em.merge(docenteCodigoNew);
             }
-            if (materiaPeriodoNew != null && !materiaPeriodoNew.equals(materiaPeriodoOld)) {
-                materiaPeriodoNew.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
-                materiaPeriodoNew = em.merge(materiaPeriodoNew);
+            if (materiaPeriodoIdOld != null && !materiaPeriodoIdOld.equals(materiaPeriodoIdNew)) {
+                materiaPeriodoIdOld.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
+                materiaPeriodoIdOld = em.merge(materiaPeriodoIdOld);
+            }
+            if (materiaPeriodoIdNew != null && !materiaPeriodoIdNew.equals(materiaPeriodoIdOld)) {
+                materiaPeriodoIdNew.getMateriaPeriodoGrupoList().add(materiaPeriodoGrupo);
+                materiaPeriodoIdNew = em.merge(materiaPeriodoIdNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                MateriaPeriodoGrupoPK id = materiaPeriodoGrupo.getMateriaPeriodoGrupoPK();
+                Integer id = materiaPeriodoGrupo.getId();
                 if (findMateriaPeriodoGrupo(id) == null) {
                     throw new NonexistentEntityException("The materiaPeriodoGrupo with id " + id + " no longer exists.");
                 }
@@ -137,7 +159,7 @@ public class MateriaPeriodoGrupoJpaController implements Serializable {
         }
     }
 
-    public void destroy(MateriaPeriodoGrupoPK id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -145,19 +167,30 @@ public class MateriaPeriodoGrupoJpaController implements Serializable {
             MateriaPeriodoGrupo materiaPeriodoGrupo;
             try {
                 materiaPeriodoGrupo = em.getReference(MateriaPeriodoGrupo.class, id);
-                materiaPeriodoGrupo.getMateriaPeriodoGrupoPK();
+                materiaPeriodoGrupo.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The materiaPeriodoGrupo with id " + id + " no longer exists.", enfe);
             }
-            Docente docente = materiaPeriodoGrupo.getDocente();
-            if (docente != null) {
-                docente.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
-                docente = em.merge(docente);
+            List<String> illegalOrphanMessages = null;
+            Cumplimiento cumplimientoOrphanCheck = materiaPeriodoGrupo.getCumplimiento();
+            if (cumplimientoOrphanCheck != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This MateriaPeriodoGrupo (" + materiaPeriodoGrupo + ") cannot be destroyed since the Cumplimiento " + cumplimientoOrphanCheck + " in its cumplimiento field has a non-nullable materiaPeriodoGrupo field.");
             }
-            MateriaPeriodo materiaPeriodo = materiaPeriodoGrupo.getMateriaPeriodo();
-            if (materiaPeriodo != null) {
-                materiaPeriodo.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
-                materiaPeriodo = em.merge(materiaPeriodo);
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            Docente docenteCodigo = materiaPeriodoGrupo.getDocenteCodigo();
+            if (docenteCodigo != null) {
+                docenteCodigo.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
+                docenteCodigo = em.merge(docenteCodigo);
+            }
+            MateriaPeriodo materiaPeriodoId = materiaPeriodoGrupo.getMateriaPeriodoId();
+            if (materiaPeriodoId != null) {
+                materiaPeriodoId.getMateriaPeriodoGrupoList().remove(materiaPeriodoGrupo);
+                materiaPeriodoId = em.merge(materiaPeriodoId);
             }
             em.remove(materiaPeriodoGrupo);
             em.getTransaction().commit();
@@ -192,7 +225,7 @@ public class MateriaPeriodoGrupoJpaController implements Serializable {
         }
     }
 
-    public MateriaPeriodoGrupo findMateriaPeriodoGrupo(MateriaPeriodoGrupoPK id) {
+    public MateriaPeriodoGrupo findMateriaPeriodoGrupo(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(MateriaPeriodoGrupo.class, id);
@@ -213,5 +246,5 @@ public class MateriaPeriodoGrupoJpaController implements Serializable {
             em.close();
         }
     }
-
+    
 }

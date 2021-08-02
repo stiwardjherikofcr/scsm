@@ -90,7 +90,7 @@ public class ControladorDepartamento extends HttpServlet {
         List<Departamento> depar = djpa.findDepartamentoEntities();
         for (Departamento d : depar) {
             if (d.getFacultadId().getId().equals(id)) {
-                pw.println("<option value=" + d.getId() + ">" + d.getNombreDepartamento() + "</option>");
+                pw.println("<option value=" + d.getId() + ">" + d.getNombre()+ "</option>");
             }
         }
         pw.flush();

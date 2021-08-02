@@ -12,7 +12,7 @@
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
                             <%=user.getDocente().getNombre()%>
-                            <span class="user-level"><%=user.getRol().getRol()%></span>
+                            <span class="user-level"><%=user.getRolId().getRol() %></span>
                             <span class="caret"></span>
                         </span>
                     </a>

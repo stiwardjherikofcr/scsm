@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Manuel
+ * @author Sachikia
  */
 @Entity
 @Table(name = "contenido")
@@ -49,11 +49,13 @@ public class Contenido implements Serializable {
     @Basic(optional = false)
     @Column(name = "cantidad_items_lista")
     private int cantidadItemsLista;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contenidoId")
+    private List<Cumplimiento> cumplimientoList;
     @JoinColumn(name = "seccion_microcurriculo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private SeccionMicrocurriculo seccionMicrocurriculoId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contenidoId")
-    private List<TablaMicrocurriculoInfo> tablaMicrocurriculoInfoList;
+    private List<TablaInfo> tablaInfoList;
 
     public Contenido() {
     }
@@ -92,6 +94,15 @@ public class Contenido implements Serializable {
         this.cantidadItemsLista = cantidadItemsLista;
     }
 
+    @XmlTransient
+    public List<Cumplimiento> getCumplimientoList() {
+        return cumplimientoList;
+    }
+
+    public void setCumplimientoList(List<Cumplimiento> cumplimientoList) {
+        this.cumplimientoList = cumplimientoList;
+    }
+
     public SeccionMicrocurriculo getSeccionMicrocurriculoId() {
         return seccionMicrocurriculoId;
     }
@@ -101,12 +112,12 @@ public class Contenido implements Serializable {
     }
 
     @XmlTransient
-    public List<TablaMicrocurriculoInfo> getTablaMicrocurriculoInfoList() {
-        return tablaMicrocurriculoInfoList;
+    public List<TablaInfo> getTablaInfoList() {
+        return tablaInfoList;
     }
 
-    public void setTablaMicrocurriculoInfoList(List<TablaMicrocurriculoInfo> tablaMicrocurriculoInfoList) {
-        this.tablaMicrocurriculoInfoList = tablaMicrocurriculoInfoList;
+    public void setTablaInfoList(List<TablaInfo> tablaInfoList) {
+        this.tablaInfoList = tablaInfoList;
     }
 
     @Override
@@ -133,5 +144,5 @@ public class Contenido implements Serializable {
     public String toString() {
         return "dto.Contenido[ id=" + id + " ]";
     }
-
+    
 }

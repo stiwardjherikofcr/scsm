@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="u-text"> 
                                     <h4><%=user.getDocente().getNombre()%></h4>
-                                    <p class="text-muted"><%=user.getRol().getRol()%></p>
+                                    <p class="text-muted"><%=user.getRolId().getRol() %></p>
                                 </div>
                             </div>
                         </li>

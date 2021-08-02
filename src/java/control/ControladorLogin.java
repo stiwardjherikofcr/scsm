@@ -6,6 +6,7 @@
 package control;
 
 import dto.Pensum;
+import dto.Usuario;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +26,10 @@ public class ControladorLogin extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        String accion = request.getParameter("accion");
+        if (accion.equals("Iniciar Sesion")) {
+            verificarUsuario(request, response);
+        }
     }
 
     @Override
@@ -37,30 +41,28 @@ public class ControladorLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String accion = request.getParameter("accion");
-        if (accion.equals("Iniciar Sesion")) {
-            verificarUsuario(request, response);
-        }
+        processRequest(request, response);
     }
 
-    public static void verificarUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void verificarUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int codigo = Integer.parseInt(request.getParameter("codigo"));
         String contrasena = request.getParameter("clave");
         int rol = Integer.parseInt(request.getParameter("rol"));
+        
         Login login = new Login();
-        boolean valido = login.validarUsuario(codigo, contrasena, rol);
-        if (valido) {
-            cargarInformacion(request, response, codigo, login, rol);
+        Usuario usuario = login.validarUsuario(codigo, contrasena, rol);
+        
+        if (usuario!=null) {
+            cargarInformacion(request, response, usuario);
             response.sendRedirect("CSM_Software/CSM/"+(rol==1 ? "director" : "docente")+"/dashboard/dashboard.jsp");
         } else {
             response.sendRedirect("CSM_Software/CSM/sign-in/singin.jsp");
         }
     }
 
-    public static void cargarInformacion(HttpServletRequest request, HttpServletResponse response, int codigo, Login login, int rol) {
-        dto.Usuario usuario = login.obtenerUsuario(codigo, rol);
+    public void cargarInformacion(HttpServletRequest request, HttpServletResponse response, Usuario usuario) {
         request.getSession().setAttribute("usuario", usuario);
-        if (rol == 1) {
+        if (usuario.getRolId().getId() == 1) {
             cargarPrograma(request, response, usuario);
             cargarLastPensum(request, response, usuario);
             request.getSession().setAttribute("numDocActivos", new AdministrarDocentes().getNumDocentesActivos());
@@ -70,18 +72,20 @@ public class ControladorLogin extends HttpServlet {
     }
 
     public static void cargarDepartamento(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {
-        request.getSession().setAttribute("departamentoSesion", usuario.getDocente().getDepartamentoId().getNombreDepartamento());
+        request.getSession().setAttribute("departamentoSesion", usuario.getDocente().getProgramaCodigo().getDepartamentoId().getNombre());
     }
 
     public static void cargarPrograma(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {
-        request.getSession().setAttribute("programaSesion", usuario.getDocente().getProgramaList().get(0));
+        request.getSession().setAttribute("programaSesion", usuario.getDocente().getProgramaCodigo());
     }
     
     public static void cargarLastPensum(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {
         AdministrarPensum adminPensum = new AdministrarPensum();
         Pensum pensum = adminPensum.getLastPensum(usuario);
-        request.getSession().setAttribute("pensum", pensum);
-        request.getSession().setAttribute("materiasSemestre", adminPensum.cargarMateriasPorSemestre(pensum));
+        if(pensum != null){
+            request.getSession().setAttribute("pensum", pensum);
+            request.getSession().setAttribute("materiasSemestre", adminPensum.cargarMateriasPorSemestre(pensum));
+        }
     }
 
     @Override

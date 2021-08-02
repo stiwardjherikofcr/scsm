@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Manuel
+ * @author Sachikia
  */
 @Entity
 @Table(name = "seccion_microcurriculo")
@@ -47,9 +47,8 @@ public class SeccionMicrocurriculo implements Serializable {
     @Column(name = "editable")
     private short editable;
     @JoinColumns({
-        @JoinColumn(name = "microcurriculo_id", referencedColumnName = "id")
-        , @JoinColumn(name = "microcurriculo_materia_pensum_codigo", referencedColumnName = "materia_pensum_codigo")
-        , @JoinColumn(name = "microcurriculo_materia_codigo_materia", referencedColumnName = "materia_codigo_materia")})
+        @JoinColumn(name = "microcurriculo_materia_codigo", referencedColumnName = "materia_codigo")
+        , @JoinColumn(name = "microcurriculo_materia_pensum_codigo", referencedColumnName = "materia_pensum_codigo")})
     @ManyToOne(optional = false)
     private Microcurriculo microcurriculo;
     @JoinColumn(name = "seccion_id", referencedColumnName = "id")
@@ -62,7 +61,7 @@ public class SeccionMicrocurriculo implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculoIdAntigua")
     private List<SeccionCambio> seccionCambioList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculo")
-    private List<TablaMicrocurriculo> tablaMicrocurriculoList;
+    private List<TablaSeccion> tablaSeccionList;
 
     public SeccionMicrocurriculo() {
     }
@@ -136,12 +135,12 @@ public class SeccionMicrocurriculo implements Serializable {
     }
 
     @XmlTransient
-    public List<TablaMicrocurriculo> getTablaMicrocurriculoList() {
-        return tablaMicrocurriculoList;
+    public List<TablaSeccion> getTablaSeccionList() {
+        return tablaSeccionList;
     }
 
-    public void setTablaMicrocurriculoList(List<TablaMicrocurriculo> tablaMicrocurriculoList) {
-        this.tablaMicrocurriculoList = tablaMicrocurriculoList;
+    public void setTablaSeccionList(List<TablaSeccion> tablaSeccionList) {
+        this.tablaSeccionList = tablaSeccionList;
     }
 
     @Override
@@ -168,5 +167,5 @@ public class SeccionMicrocurriculo implements Serializable {
     public String toString() {
         return "dto.SeccionMicrocurriculo[ id=" + id + " ]";
     }
-
+    
 }

@@ -33,18 +33,10 @@ public class RolDocente {
         List<MateriaPeriodoGrupo> lmg = materiasGrupo();
         List<MateriaPeriodo> mp = new ArrayList<>();
         for (MateriaPeriodoGrupo materiaGrupo : lmg) {
-            System.out.println(materiaGrupo.getDocente().getCodigoDocente() + " " + codigoDocente);
-            if (materiaGrupo.getDocente().getCodigoDocente() == codigoDocente) {
-                System.out.println(materiaGrupo.getDocente().getCodigoDocente() + " " + codigoDocente);
-                mp.add(materiaGrupo.getMateriaPeriodo());
+            if (materiaGrupo.getDocenteCodigo().getCodigo()== codigoDocente) {
+                mp.add(materiaGrupo.getMateriaPeriodoId());
             }
         }
         return mp;
     }
-
-    public Usuario buscarUsuario(int codigo) {
-        Login l = new Login();
-        return l.obtenerUsuario(codigo, 2);
-    }
-
 }

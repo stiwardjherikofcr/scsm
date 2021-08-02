@@ -12,32 +12,32 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Manuel
+ * @author Sachikia
  */
 @Embeddable
-public class TablaMicrocurriculoPK implements Serializable {
+public class TablaSeccionPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "tabla_id")
+    private int tablaId;
     @Basic(optional = false)
     @Column(name = "seccion_microcurriculo_id")
     private int seccionMicrocurriculoId;
 
-    public TablaMicrocurriculoPK() {
+    public TablaSeccionPK() {
     }
 
-    public TablaMicrocurriculoPK(int id, int seccionMicrocurriculoId) {
-        this.id = id;
+    public TablaSeccionPK(int tablaId, int seccionMicrocurriculoId) {
+        this.tablaId = tablaId;
         this.seccionMicrocurriculoId = seccionMicrocurriculoId;
     }
 
-    public int getId() {
-        return id;
+    public int getTablaId() {
+        return tablaId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTablaId(int tablaId) {
+        this.tablaId = tablaId;
     }
 
     public int getSeccionMicrocurriculoId() {
@@ -51,7 +51,7 @@ public class TablaMicrocurriculoPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) id;
+        hash += (int) tablaId;
         hash += (int) seccionMicrocurriculoId;
         return hash;
     }
@@ -59,11 +59,11 @@ public class TablaMicrocurriculoPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TablaMicrocurriculoPK)) {
+        if (!(object instanceof TablaSeccionPK)) {
             return false;
         }
-        TablaMicrocurriculoPK other = (TablaMicrocurriculoPK) object;
-        if (this.id != other.id) {
+        TablaSeccionPK other = (TablaSeccionPK) object;
+        if (this.tablaId != other.tablaId) {
             return false;
         }
         if (this.seccionMicrocurriculoId != other.seccionMicrocurriculoId) {
@@ -74,7 +74,7 @@ public class TablaMicrocurriculoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "dto.TablaMicrocurriculoPK[ id=" + id + ", seccionMicrocurriculoId=" + seccionMicrocurriculoId + " ]";
+        return "dto.TablaSeccionPK[ tablaId=" + tablaId + ", seccionMicrocurriculoId=" + seccionMicrocurriculoId + " ]";
     }
-
+    
 }
