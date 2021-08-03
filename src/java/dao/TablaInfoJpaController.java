@@ -39,13 +39,14 @@ public class TablaInfoJpaController implements Serializable {
         if (tablaInfo.getTablaInfoPK() == null) {
             tablaInfo.setTablaInfoPK(new TablaInfoPK());
         }
+        tablaInfo.getTablaInfoPK().setTablaSeccionSeccionMicrocurriculoId(tablaInfo.getTablaSeccion().getSeccionMicrocurriculoId());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             TablaSeccion tablaSeccion = tablaInfo.getTablaSeccion();
             if (tablaSeccion != null) {
-                tablaSeccion = em.getReference(tablaSeccion.getClass(), tablaSeccion.getTablaSeccionPK());
+                tablaSeccion = em.getReference(tablaSeccion.getClass(), tablaSeccion.getSeccionMicrocurriculoId());
                 tablaInfo.setTablaSeccion(tablaSeccion);
             }
             Contenido contenidoId = tablaInfo.getContenidoId();
@@ -76,6 +77,7 @@ public class TablaInfoJpaController implements Serializable {
     }
 
     public void edit(TablaInfo tablaInfo) throws NonexistentEntityException, Exception {
+        tablaInfo.getTablaInfoPK().setTablaSeccionSeccionMicrocurriculoId(tablaInfo.getTablaSeccion().getSeccionMicrocurriculoId());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -86,7 +88,7 @@ public class TablaInfoJpaController implements Serializable {
             Contenido contenidoIdOld = persistentTablaInfo.getContenidoId();
             Contenido contenidoIdNew = tablaInfo.getContenidoId();
             if (tablaSeccionNew != null) {
-                tablaSeccionNew = em.getReference(tablaSeccionNew.getClass(), tablaSeccionNew.getTablaSeccionPK());
+                tablaSeccionNew = em.getReference(tablaSeccionNew.getClass(), tablaSeccionNew.getSeccionMicrocurriculoId());
                 tablaInfo.setTablaSeccion(tablaSeccionNew);
             }
             if (contenidoIdNew != null) {

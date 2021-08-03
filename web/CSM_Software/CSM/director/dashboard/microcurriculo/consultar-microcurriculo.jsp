@@ -157,7 +157,7 @@
                                                 </div>
                                                 <div class="u-text">
                                                     <h4><%=user.getDocente().getNombre()%></h4>
-                                                    <p class="text-muted"><%=user.getRol().getRol()%></p>
+                                                    <p class="text-muted"><%=user.getRolId().getRol()%></p>
                                                 </div>
                                             </div>
                                         </li>
@@ -192,7 +192,7 @@
                                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                                         <span>
                                             <%=user.getDocente().getNombre()%>
-                                            <span class="user-level"><%=user.getRol().getRol()%></span>
+                                            <span class="user-level"><%=user.getRolId().getRol()%></span>
                                             <span class="caret"></span>
                                         </span>
                                     </a>
@@ -357,31 +357,31 @@
                                                     <%
                                                         List<dto.Materia> materias = (List<dto.Materia>) request.getSession().getAttribute("materias");
                                                         for (dto.Materia elem : materias) {
-                                                            if (elem.getMicrocurriculoList().size() > 0) {
+                                                            if (elem.getMicrocurriculo() != null) {
                                                     %>
                                                     <tr>
                                                         <td><%=elem.getPensum().getPensumPK().getProgramaCodigo()%> - <%=elem.getPensum().getPensumPK().getCodigo()%></td>
-                                                        <td><%=elem.getMateriaPK().getCodigoMateria()%></td>
+                                                        <td><%=elem.getMateriaPK().getCodigo()%></td>
                                                         <td><%=elem.getNombre()%></td>
                                                         <td><%=elem.getCreditos()%></td>
                                                         <td><%=elem.getSemestre()%></td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="../../../../../ControladorMicrocurriculo?accion=Consultar&idMicrocurriculo=<%=elem.getMicrocurriculoList().get(0).getMicrocurriculoPK().getId()%>&codigoMateria=<%=elem.getMicrocurriculoList().get(0).getMateria().getMateriaPK().getCodigoMateria()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>"> 
+                                                                <a href="../../../../../ControladorMicrocurriculo?accion=consultar&codigoMateria=<%=elem.getMateriaPK().getCodigo()%>&codigoPensum=<%=elem.getMateriaPK().getPensumCodigo() %>"> 
                                                                     <button id="pensum" type="button" data-toggle="tooltip"
                                                                             title="" class="btn btn-link btn-dark"
                                                                             data-original-title="Ver" style="color: black;">
                                                                         <i class="fas fa-search"></i>
                                                                     </button>
                                                                 </a>
-                                                                <a href="../../../../../ControladorMicrocurriculo?accion=Editar&idMicrocurriculo=<%=elem.getMicrocurriculoList().get(0).getMicrocurriculoPK().getId()%>&codigoMateria=<%=elem.getMicrocurriculoList().get(0).getMateria().getMateriaPK().getCodigoMateria()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>">  
+                                                                <a href="../../../../../ControladorMicrocurriculo?accion=to-editar&codigoMateria=<%=elem.getMateriaPK().getCodigo()%>&codigoPensum=<%=elem.getMateriaPK().getPensumCodigo() %>"> 
                                                                     <button type="button" data-toggle="tooltip" title=""
                                                                             class="btn btn-link btn-primary btn-lg"
                                                                             data-original-title="Editar">
                                                                         <i class="fa fa-edit" style="color: black;"></i>
                                                                     </button>
                                                                 </a>
-                                                                <a href="../../../../../ControladorMicrocurriculo?accion=PDF&idMicrocurriculo=<%=elem.getMicrocurriculoList().get(0).getMicrocurriculoPK().getId()%>&codigoMateria=<%=elem.getMicrocurriculoList().get(0).getMateria().getMateriaPK().getCodigoMateria()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>" target="_blank">
+                                                                <a href="../../../../../ControladorMicrocurriculo?accion=PDF&codigoMateria=<%=elem.getMateriaPK().getCodigo()%>&codigoPensum=<%=elem.getMateriaPK().getPensumCodigo() %>" target="_blank"> 
                                                                     <button type="button" data-toggle="tooltip" title=""
                                                                             class="btn btn-link btn-dark"
                                                                             data-original-title="Exportar PDF" style="color: black;">

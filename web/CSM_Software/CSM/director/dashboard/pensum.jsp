@@ -197,21 +197,17 @@
                                                 </tfoot>
                                                 <tbody>
                                                     <%
-                                                        AdministrarPensum admin = new AdministrarPensum();
-                                                        Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-                                                        List<Pensum> pensum = (List<Pensum>) request.getSession().getAttribute("listaPensum2");
-                                                        if (pensum != null) {
-                                                            for (Pensum p : pensum) {
-                                                                if (u.getDocente().getProgramaList().get(0).getDirectorPrograma().getCodigoDocente() == p.getPrograma().getDirectorPrograma().getCodigoDocente()) {
-                                                                    int materiaXcreditos[] = admin.creditosMateriasPensum(p.getPensumPK().getCodigo(), p.getPensumPK().getProgramaCodigo());
+                                                        Object metaData[][] = (Object[][]) request.getSession().getAttribute("pensumList");
+                                                        if (metaData != null) {
+                                                            for (Object data[] : metaData) {
                                                     %>
                                                     <tr>
-                                                        <td><%= p.getPensumPK().getProgramaCodigo() + " - " + p.getPensumPK().getCodigo()%></td>
-                                                        <td><%= materiaXcreditos[1]%></td>
-                                                        <td><%= materiaXcreditos[0]%></td>
+                                                        <td><%=data[0] %></td>
+                                                        <td><%=data[1] %></td>
+                                                        <td><%=data[2] %></td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="<%=request.getContextPath()%>/ControladorPensum?accion=ver&cod=<%=p.getPensumPK().getCodigo()%>"
+                                                                <a href="<%=request.getContextPath()%>/ControladorPensum?accion=ver&cod=<%=data[3]%>"
                                                                    type="button" data-toggle="tooltip" title=""
                                                                    class="btn btn-link btn-dark" data-original-title="Ver"
                                                                    style="color: black;">
@@ -228,7 +224,7 @@
                                                     </tr>
                                                     <%}
                                                         }
-                                                    }%>
+                                                    %>
                                                 </tbody>
                                             </table>
                                         </div>

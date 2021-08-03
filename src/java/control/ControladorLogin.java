@@ -63,23 +63,12 @@ public class ControladorLogin extends HttpServlet {
     public void cargarInformacion(HttpServletRequest request, HttpServletResponse response, Usuario usuario) {
         request.getSession().setAttribute("usuario", usuario);
         if (usuario.getRolId().getId() == 1) {
-            cargarPrograma(request, response, usuario);
             cargarLastPensum(request, response, usuario);
             request.getSession().setAttribute("numDocActivos", new AdministrarDocentes().getNumDocentesActivos());
-        } else {
-            cargarDepartamento(request, response, usuario);
         }
     }
-
-    public static void cargarDepartamento(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {
-        request.getSession().setAttribute("departamentoSesion", usuario.getDocente().getProgramaCodigo().getDepartamentoId().getNombre());
-    }
-
-    public static void cargarPrograma(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {
-        request.getSession().setAttribute("programaSesion", usuario.getDocente().getProgramaCodigo());
-    }
     
-    public static void cargarLastPensum(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {
+    public void cargarLastPensum(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {
         AdministrarPensum adminPensum = new AdministrarPensum();
         Pensum pensum = adminPensum.getLastPensum(usuario);
         if(pensum != null){

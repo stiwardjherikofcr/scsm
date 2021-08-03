@@ -52,16 +52,12 @@ public class AdministrarDocentes {
         
         return docente;
     }
-
-    public List<dto.Docente> obtenerDocentesPrograma(dto.Programa programa) {
-        return programa.getDocenteList();
-    }
-
+    
     public int getNumDocentesActivos(){
         int count = 0;
         List<Docente> allDocentes = this.listarDocentes();
         for(Docente docente: allDocentes){
-            if(docente.getEstado()==1){
+            if(docente.getEstado()==1 && docente.getUsuario().getRolId().getId()==2){
                 count++;
             }
         }

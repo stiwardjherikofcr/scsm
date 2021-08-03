@@ -1,4 +1,11 @@
-    <%-- 
+    <%@page import="dto.TablaSeccion"%>
+<%@page import="dto.TablaInfo"%>
+<%@page import="dto.Tabla"%>
+<%@page import="dto.SeccionMicrocurriculo"%>
+<%@page import="dto.TipoMateria"%>
+<%@page import="dto.AreaFormacion"%>
+<%@page import="dto.Microcurriculo"%>
+<%-- 
         Document   : ver-microcurriculo
         Created on : 15-jun-2021, 23:36:56
         Author     : Stiward
@@ -158,7 +165,7 @@
                                                     </div>
                                                     <div class="u-text">
                                                         <h4><%=user.getDocente().getNombre()%></h4>
-                                                        <p class="text-muted"><%=user.getRol().getRol()%></p>
+                                                        <p class="text-muted"><%=user.getRolId().getRol()%></p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -190,7 +197,7 @@
                                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                                         <span>
                                             <%=user.getDocente().getNombre()%>
-                                            <span class="user-level"><%=user.getRol().getRol()%></span>
+                                            <span class="user-level"><%=user.getRolId().getRol()%></span>
                                             <span class="caret"></span>
                                         </span>
                                     </a>
@@ -317,9 +324,9 @@
                                 </div>
                             </div>
                             <%
-                                dto.Microcurriculo microcurriculo = (dto.Microcurriculo) request.getSession().getAttribute("microcurriculo");
-                                List<dto.AreaFormacion> areasFormacion = (List<dto.AreaFormacion>) request.getSession().getAttribute("areasFormacion");
-                                List<dto.TipoAsignatura> tiposAsignatura = (List<dto.TipoAsignatura>) request.getSession().getAttribute("tipoAsignatura");
+                                Microcurriculo microcurriculo = (Microcurriculo) request.getSession().getAttribute("microcurriculo");
+                                List<AreaFormacion> areasFormacion = (List<AreaFormacion>) request.getSession().getAttribute("areasFormacion");
+                                List<TipoMateria> tiposAsignatura = (List<TipoMateria>) request.getSession().getAttribute("tipoAsignatura");
                             %>
                             <div class="row">
                                 <!-- Contenido de Microcurriculo -->
@@ -338,7 +345,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-right border-right mth2">Codigo</td>
-                                                        <td class="mt17" colspan="4"><%=microcurriculo.getMateria().getMateriaPK().getCodigoMateria()%></td>
+                                                        <td class="mt17" colspan="4"><%=microcurriculo.getMateria().getMateriaPK().getCodigo()%></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-right border-right mth2">Area de Formacion</td>
@@ -373,13 +380,13 @@
                                                         <td colspan="4" class="mt17">
                                                             <div class="selectgroup w-100 d-flex justify-content-around ">
                                                                 <%
-                                                                    for (dto.TipoAsignatura elem : tiposAsignatura) {
-                                                                        if (microcurriculo.getMateria().getTipoAsignaturaId().getId() == elem.getId()) {
+                                                                    for (TipoMateria elem : tiposAsignatura) {
+                                                                        if (microcurriculo.getMateria().getTipoId().getId() == elem.getId()) {
                                                                 %>
                                                                 <label class="selectgroup-item pr-3">
                                                                     <input type="radio" name="Tiposdeasignatura" value="50"
                                                                            class="selectgroup-input" checked="" disabled>
-                                                                    <span class="selectgroup-button"><%=microcurriculo.getMateria().getTipoAsignaturaId().getTipo()%></span>
+                                                                    <span class="selectgroup-button"><%=microcurriculo.getMateria().getTipoId().getTipo()%></span>
                                                                 </label>
                                                                 <%
                                                                 } else {
@@ -415,8 +422,9 @@
                                     </div>
                                     <%
                                         List<String[][]> tablas = (List<String[][]>) request.getSession().getAttribute("tablas");
-                                        List<dto.SeccionMicrocurriculo> secciones = microcurriculo.getSeccionMicrocurriculoList();
-                                        for (dto.SeccionMicrocurriculo seccion : secciones) {
+                                        List<SeccionMicrocurriculo> secciones = microcurriculo.getSeccionMicrocurriculoList();
+                                        int numTabla=0;
+                                        for (SeccionMicrocurriculo seccion : secciones) {
                                     %>
                                     <!-- Seccion -->  
                                     <% int tipo = seccion.getSeccionId().getTipoSeccionId().getId();
@@ -435,7 +443,10 @@
                                     </div>
                                     <!-- Fin Seccion -->
                                     <%   } else {
-                                        int canColum = seccion.getTablaMicrocurriculoList().get(0).getCantidadColumnas();
+                                        TablaSeccion tableSeccion = seccion.getTablaSeccion();
+                                        Tabla table = tableSeccion.getTablaId();
+                                        String tableInfo[][] =  tablas.get(numTabla++);
+                                        int canColum = table.getEncabezadoList().size();
                                     %>
                                     <!-- Tabla -->
                                     <div class="card" id="<%=seccion.getSeccionId().getNombre()%>">
@@ -449,19 +460,19 @@
                                                 <thead>
                                                     <tr>
                                                         <% for (int i = 0; i < canColum; i++) {%>
-                                                        <th class="text-center" scope="col"><%=seccion.getTablaMicrocurriculoList().get(0).getEncabezadoTablaList().get(i).getEncabezadoId().getNombre()%></th>
+                                                        <th class="text-center" scope="col"><%=table.getEncabezadoList().get(i).getEncabezado() %></th>
                                                             <%}%>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <%  List<dto.TablaMicrocurriculoInfo> tablainfo = seccion.getTablaMicrocurriculoList().get(0).getTablaMicrocurriculoInfoList();
-                                                        for (int i = 0; i < seccion.getTablaMicrocurriculoList().get(0).getCantidadFilas(); i++) {
+                                                    <%  
+                                                        for (int i = 0; i < tableInfo.length; i++) {
                                                     %>
                                                     <tr>
                                                         <%
-                                                            for (int j = 0; j < seccion.getTablaMicrocurriculoList().get(0).getCantidadColumnas(); j++) {
+                                                            for (int j = 0; j < tableInfo[i].length; j++) {
                                                         %>
-                                                        <td class="text-center "><%=tablainfo.size() == 0 ? "" : tablas.get(seccion.getTablaMicrocurriculoList().get(0).getTablaMicrocurriculoPK().getId() - 1)[i][j]%></td>
+                                                        <td class="text-center "><%=tableInfo[i][j]%></td>
                                                         <%}%>
                                                     </tr>
                                                     <% }%>

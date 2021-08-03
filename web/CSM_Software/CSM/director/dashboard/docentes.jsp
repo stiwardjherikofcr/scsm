@@ -118,34 +118,34 @@
                                                         List<Docente> docentes = (List<Docente>) request.getSession().getAttribute("listaDocentes");
                                                         Usuario u = (Usuario) request.getSession().getAttribute("usuario");
                                                         for (Docente teacher : docentes) {
-                                                            if (u.getDocente().getDepartamentoId().getId() == teacher.getDepartamentoId().getId()) {
+                                                            if (teacher.getUsuario().getRolId().getId() != 1 && u.getDocente().getProgramaCodigo().getDepartamentoId().equals(teacher.getProgramaCodigo().getDepartamentoId())) {
                                                     %>
                                                 <tr>
-                                                    <td><%= teacher.getCodigoDocente()%></td>
+                                                    <td><%= teacher.getCodigo()%></td>
                                                     <td><%= teacher.getNombre() + " " + teacher.getApellido()%></td>
                                                     <td><label
-                                                            id="label-<%=teacher.getCodigoDocente()%>"><%=(teacher.getEstado() == 1) ? "Activo" : "Inactivo"%><label>
+                                                            id="label-<%=teacher.getCodigo()%>"><%=(teacher.getEstado() == 1) ? "Activo" : "Inactivo"%><label>
                                                     </td>
                                                     <td>
                                                         <div class="switch-button">
                                                             <%if (teacher.getEstado() == 1) {%>
                                                             <button class="btn btn-primary btn-link">
                                                                 <input class="switch-button__checkbox" type="checkbox"
-                                                                    id="check-<%=teacher.getCodigoDocente()%>"
-                                                                    onchange="validarCheck(<%=teacher.getCodigoDocente()%>)"
+                                                                    id="check-<%=teacher.getCodigo()%>"
+                                                                    onchange="validarCheck(<%=teacher.getCodigo()%>)"
                                                                     checked>
-                                                                <label for="<%=teacher.getCodigoDocente()%>"
+                                                                <label for="<%=teacher.getCodigo()%>"
                                                                     class="switch-button__label"
-                                                                    onclick="validarCheck(<%=teacher.getCodigoDocente()%>)"></label>
+                                                                    onclick="validarCheck(<%=teacher.getCodigo()%>)"></label>
                                                             </button>
                                                             <%} else {%>
                                                             <button class="btn btn-primary btn-link">
                                                                 <input class="switch-button__checkbox" type="checkbox"
-                                                                    id="check-<%=teacher.getCodigoDocente()%>"
-                                                                    onchange="validarCheck(<%=teacher.getCodigoDocente()%>)">
-                                                                <label for="<%=teacher.getCodigoDocente()%>"
+                                                                    id="check-<%=teacher.getCodigo()%>"
+                                                                    onchange="validarCheck(<%=teacher.getCodigo()%>)">
+                                                                <label for="<%=teacher.getCodigo()%>"
                                                                     class="switch-button__label"
-                                                                    onclick="validarCheck(<%=teacher.getCodigoDocente()%>)"></label>
+                                                                    onclick="validarCheck(<%=teacher.getCodigo()%>)"></label>
                                                             </button>
                                                             <%}%>
                                                                         </div>

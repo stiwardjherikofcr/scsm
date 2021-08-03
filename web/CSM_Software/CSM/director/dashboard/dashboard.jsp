@@ -46,9 +46,7 @@
 
     <body>
         <%
-            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
             Pensum pensum = (Pensum) request.getSession().getAttribute("pensum");
-            request.getSession().removeAttribute("materias");
         %>
         <div class="wrapper">
             <div class="main-header">

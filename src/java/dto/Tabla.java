@@ -41,7 +41,7 @@ public class Tabla implements Serializable {
     private Integer id;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tabla")
     private List<Encabezado> encabezadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tabla")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tablaId")
     private List<TablaSeccion> tablaSeccionList;
 
     public Tabla() {

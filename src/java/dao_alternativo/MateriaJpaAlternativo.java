@@ -26,8 +26,8 @@ public class MateriaJpaAlternativo {
     }
 
     public void create(Pensum pensum) throws SQLException {
-        PreparedStatement ps = this.connection.prepareStatement("INSERT INTO materia(codigo_materia, nombre, creditos, semestre, pensum_codigo, "
-                + "pensum_programa_codigo, ht, hp, hti, cr, tipo_asignatura_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+        PreparedStatement ps = this.connection.prepareStatement("INSERT INTO materia(codigo, nombre, creditos, semestre, pensum_codigo, "
+                + "programa_codigo, ht, hp, hti, cr, tipo_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
         for (Materia m : pensum.getMateriaList()) {
             ps.setInt(1, m.getMateriaPK().getCodigo());
             ps.setString(2, m.getNombre());
@@ -42,7 +42,7 @@ public class MateriaJpaAlternativo {
             ps.setInt(11, m.getTipoId().getId());
             ps.execute();
         }
-        ps = this.connection.prepareStatement("INSERT INTO prerrequisito_materia(materia_codigo_materia, materia_pensum_codigo, materia_codigo_prerrequisito, materia_pensum_prerrequisito) VALUES (?,?,?,?)");
+        ps = this.connection.prepareStatement("INSERT INTO prerrequisito_materia(materia_codigo, materia_pensum_codigo, materia_codigo_prerreq, materia_pensum_codigo_prerreq) VALUES (?,?,?,?)");
         for (Materia m : pensum.getMateriaList()) {
             for (PrerrequisitoMateria m_r : m.getPrerrequisitoMateriaList()) {
                 ps.setInt(1, m_r.getMateria().getMateriaPK().getCodigo());
@@ -52,7 +52,7 @@ public class MateriaJpaAlternativo {
                 ps.execute();
             }
         }
-        ps = this.connection.prepareStatement("INSERT INTO equivalencia_materia(equivalencia_materia, nombre, materia_codigo_materia, materia_pensum_codigo) VALUES (?,?,?,?)");
+        ps = this.connection.prepareStatement("INSERT INTO equivalencia_materia(equivalencia_materia, nombre, materia_codigo, materia_pensum_codigo) VALUES (?,?,?,?)");
         for (Materia m : pensum.getMateriaList()) {
             for (EquivalenciaMateria m_p : m.getEquivalenciaMateriaList()) {
                 ps.setInt(1, m_p.getEquivalenciaMateria());

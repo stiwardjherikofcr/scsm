@@ -54,7 +54,7 @@ public class TablaJpaController implements Serializable {
             tabla.setEncabezadoList(attachedEncabezadoList);
             List<TablaSeccion> attachedTablaSeccionList = new ArrayList<TablaSeccion>();
             for (TablaSeccion tablaSeccionListTablaSeccionToAttach : tabla.getTablaSeccionList()) {
-                tablaSeccionListTablaSeccionToAttach = em.getReference(tablaSeccionListTablaSeccionToAttach.getClass(), tablaSeccionListTablaSeccionToAttach.getTablaSeccionPK());
+                tablaSeccionListTablaSeccionToAttach = em.getReference(tablaSeccionListTablaSeccionToAttach.getClass(), tablaSeccionListTablaSeccionToAttach.getSeccionMicrocurriculoId());
                 attachedTablaSeccionList.add(tablaSeccionListTablaSeccionToAttach);
             }
             tabla.setTablaSeccionList(attachedTablaSeccionList);
@@ -69,12 +69,12 @@ public class TablaJpaController implements Serializable {
                 }
             }
             for (TablaSeccion tablaSeccionListTablaSeccion : tabla.getTablaSeccionList()) {
-                Tabla oldTablaOfTablaSeccionListTablaSeccion = tablaSeccionListTablaSeccion.getTabla();
-                tablaSeccionListTablaSeccion.setTabla(tabla);
+                Tabla oldTablaIdOfTablaSeccionListTablaSeccion = tablaSeccionListTablaSeccion.getTablaId();
+                tablaSeccionListTablaSeccion.setTablaId(tabla);
                 tablaSeccionListTablaSeccion = em.merge(tablaSeccionListTablaSeccion);
-                if (oldTablaOfTablaSeccionListTablaSeccion != null) {
-                    oldTablaOfTablaSeccionListTablaSeccion.getTablaSeccionList().remove(tablaSeccionListTablaSeccion);
-                    oldTablaOfTablaSeccionListTablaSeccion = em.merge(oldTablaOfTablaSeccionListTablaSeccion);
+                if (oldTablaIdOfTablaSeccionListTablaSeccion != null) {
+                    oldTablaIdOfTablaSeccionListTablaSeccion.getTablaSeccionList().remove(tablaSeccionListTablaSeccion);
+                    oldTablaIdOfTablaSeccionListTablaSeccion = em.merge(oldTablaIdOfTablaSeccionListTablaSeccion);
                 }
             }
             em.getTransaction().commit();
@@ -109,7 +109,7 @@ public class TablaJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain TablaSeccion " + tablaSeccionListOldTablaSeccion + " since its tabla field is not nullable.");
+                    illegalOrphanMessages.add("You must retain TablaSeccion " + tablaSeccionListOldTablaSeccion + " since its tablaId field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -124,7 +124,7 @@ public class TablaJpaController implements Serializable {
             tabla.setEncabezadoList(encabezadoListNew);
             List<TablaSeccion> attachedTablaSeccionListNew = new ArrayList<TablaSeccion>();
             for (TablaSeccion tablaSeccionListNewTablaSeccionToAttach : tablaSeccionListNew) {
-                tablaSeccionListNewTablaSeccionToAttach = em.getReference(tablaSeccionListNewTablaSeccionToAttach.getClass(), tablaSeccionListNewTablaSeccionToAttach.getTablaSeccionPK());
+                tablaSeccionListNewTablaSeccionToAttach = em.getReference(tablaSeccionListNewTablaSeccionToAttach.getClass(), tablaSeccionListNewTablaSeccionToAttach.getSeccionMicrocurriculoId());
                 attachedTablaSeccionListNew.add(tablaSeccionListNewTablaSeccionToAttach);
             }
             tablaSeccionListNew = attachedTablaSeccionListNew;
@@ -143,12 +143,12 @@ public class TablaJpaController implements Serializable {
             }
             for (TablaSeccion tablaSeccionListNewTablaSeccion : tablaSeccionListNew) {
                 if (!tablaSeccionListOld.contains(tablaSeccionListNewTablaSeccion)) {
-                    Tabla oldTablaOfTablaSeccionListNewTablaSeccion = tablaSeccionListNewTablaSeccion.getTabla();
-                    tablaSeccionListNewTablaSeccion.setTabla(tabla);
+                    Tabla oldTablaIdOfTablaSeccionListNewTablaSeccion = tablaSeccionListNewTablaSeccion.getTablaId();
+                    tablaSeccionListNewTablaSeccion.setTablaId(tabla);
                     tablaSeccionListNewTablaSeccion = em.merge(tablaSeccionListNewTablaSeccion);
-                    if (oldTablaOfTablaSeccionListNewTablaSeccion != null && !oldTablaOfTablaSeccionListNewTablaSeccion.equals(tabla)) {
-                        oldTablaOfTablaSeccionListNewTablaSeccion.getTablaSeccionList().remove(tablaSeccionListNewTablaSeccion);
-                        oldTablaOfTablaSeccionListNewTablaSeccion = em.merge(oldTablaOfTablaSeccionListNewTablaSeccion);
+                    if (oldTablaIdOfTablaSeccionListNewTablaSeccion != null && !oldTablaIdOfTablaSeccionListNewTablaSeccion.equals(tabla)) {
+                        oldTablaIdOfTablaSeccionListNewTablaSeccion.getTablaSeccionList().remove(tablaSeccionListNewTablaSeccion);
+                        oldTablaIdOfTablaSeccionListNewTablaSeccion = em.merge(oldTablaIdOfTablaSeccionListNewTablaSeccion);
                     }
                 }
             }
@@ -194,7 +194,7 @@ public class TablaJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Tabla (" + tabla + ") cannot be destroyed since the TablaSeccion " + tablaSeccionListOrphanCheckTablaSeccion + " in its tablaSeccionList field has a non-nullable tabla field.");
+                illegalOrphanMessages.add("This Tabla (" + tabla + ") cannot be destroyed since the TablaSeccion " + tablaSeccionListOrphanCheckTablaSeccion + " in its tablaSeccionList field has a non-nullable tablaId field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

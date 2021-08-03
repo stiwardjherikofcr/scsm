@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class=" row d-flex justify-content-center">
-                <form class="w-75" action="../../../ControladorDocente" method="POST" accept-charset="ISO-8859-1">
+                <form class="w-75" action="../../../ControladorDocente?action=registrar" method="POST" accept-charset="ISO-8859-1">
                     <div class=" fbr plogin  gbcolor">
                         <div class="mb-3 w-100 d-flex justify-content-center align-items-center">
                             <img class="account" src="../../assets/img/profile.svg" alt="">
@@ -78,7 +78,7 @@
                                     Sesion</a>
                             </div>
                             <div class="w-25">
-                                <input class="btn btn-danger mb-2 w-100 brlogin ml-2" type="submit" name="action" value="Registrar">
+                                <input class="btn btn-danger mb-2 w-100 brlogin ml-2" type="submit" value="Registrar">
                             </div>
                         </div>
                         <!--botones-->

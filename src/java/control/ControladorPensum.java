@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import negocio.AdministrarPensum;
+import negocio.AdministrarPrograma;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -82,16 +83,14 @@ public class ControladorPensum extends HttpServlet {
     public void listarPensum2(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //listar pensum
         AdministrarPensum admin = new AdministrarPensum();
+        AdministrarPrograma adminPrograma = new AdministrarPrograma();
         
-        Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-        Programa programa = (Programa) request.getSession().getAttribute("programaSesion");
-        List<Pensum> pensum = programa.getPensumList();
+        Usuario user = (Usuario)request.getSession().getAttribute("usuario");
+        Programa programa = adminPrograma.refreshPrograma(user.getDocente().getProgramaCodigo());
+        List<Pensum> pensums = programa.getPensumList();
         
-        request.getSession().setAttribute("listaPensum2", pensum);
         //lista materias del pensum
-        int pensumCodigo = pensum.get(0).getPensumPK().getCodigo();
-        List<dto.Materia> materias = admin.obtenerPensum(pensumCodigo, programa.getCodigo()).getMateriaList();
-        request.getSession().setAttribute("listaMateriasTodas", materias);
+        request.getSession().setAttribute("pensumList", admin.getMetaInfoPensums(pensums));
         response.sendRedirect("CSM_Software/CSM/director/dashboard/pensum.jsp");
     }
 
@@ -113,21 +112,17 @@ public class ControladorPensum extends HttpServlet {
 
     private void registrar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
-            Integer id_programa = 0;
+            Usuario user = (Usuario)request.getSession().getAttribute("usuario");
+            Programa programa = user.getDocente().getProgramaCodigo();
             InputStream pensumFile = null;
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
             for (FileItem item : items) {
-                if (item.isFormField()) {
-                    switch (item.getFieldName()) {
-                        case "programa":
-                            id_programa = Integer.parseInt(item.getString());
-                    }
-                } else {
+                if (!item.isFormField()) {
                     pensumFile = item.getInputStream();
                 }
             }
             AdministrarPensum ap = new AdministrarPensum(request.getServletContext().getRealPath("/"));
-            request.getSession().setAttribute("pensum", ap.registrar(id_programa, pensumFile));
+            request.getSession().setAttribute("pensum", ap.registrar(programa, pensumFile));
             response.sendRedirect("ControladorMicrocurriculo?accion=registrar");
         } catch (FileUploadException e) {
             throw new ServletException("Cannot parse multipart request.", e);
@@ -152,11 +147,15 @@ public class ControladorPensum extends HttpServlet {
 
     private void listarMaterias(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pw = new PrintWriter(response.getOutputStream());
+        AdministrarPensum adminPensum = new AdministrarPensum();
+        AdministrarPrograma adminPrograma = new AdministrarPrograma();
+        
         response.setContentType("text/html;charset=UTF-8");
-        AdministrarPensum admin = new AdministrarPensum();
-        Programa programa = (Programa) request.getSession().getAttribute("programaSesion");
+        Usuario user = (Usuario)request.getSession().getAttribute("usuario");
+        Programa programa = adminPrograma.refreshPrograma(user.getDocente().getProgramaCodigo());
         int pensumCodigo = Integer.parseInt(request.getParameter("pensumCodigo"));
-        List<dto.Materia> materias = admin.obtenerPensum(pensumCodigo, programa.getCodigo()).getMateriaList();
+
+        List<Materia> materias = adminPensum.obtenerPensum(pensumCodigo, programa.getCodigo()).getMateriaList();
         for (dto.Materia m : materias) {
             pw.println("<option value=" + m.getMateriaPK().getCodigo()+ ">" + m.getMateriaPK().getCodigo() + "-" + m.getNombre() + "</option>");
         }
@@ -165,8 +164,11 @@ public class ControladorPensum extends HttpServlet {
 
     private void listarPensums(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter pw = new PrintWriter(response.getOutputStream());
+        AdministrarPrograma adminPrograma = new AdministrarPrograma();
         response.setContentType("text/html; charset=UTF-8");
-        dto.Programa programa = (dto.Programa) request.getSession().getAttribute("programaSesion");
+        Usuario user = (Usuario)request.getSession().getAttribute("usuario");
+        Programa programa = adminPrograma.refreshPrograma(user.getDocente().getProgramaCodigo());
+
         List<Pensum> pensums = programa.getPensumList();
         for (Pensum p : pensums) {
             pw.println("<option value=" + p.getPensumPK().getCodigo() + ">" + p.getPrograma().getCodigo() + "-" + p.getPensumPK().getCodigo() + "</option>");
@@ -178,7 +180,7 @@ public class ControladorPensum extends HttpServlet {
         Usuario user = (Usuario) request.getSession().getAttribute("usuario");
         Integer cod = Integer.parseInt(request.getParameter("cod"));
         AdministrarPensum adminPemsum = new AdministrarPensum();
-        List<Materia> materias[] = adminPemsum.cargarMateriasPorSemestre(this.getPensum(user.getDocente().getProgramaCodigo().getPensumList(), cod));
+        List<Materia> materias[] = adminPemsum.cargarMateriasPorSemestre(this.getPensum(new AdministrarPrograma().refreshPrograma(user.getDocente().getProgramaCodigo()).getPensumList(), cod));
         request.getSession().setAttribute("materiasSemestre", materias);
         response.sendRedirect("CSM_Software/CSM/director/dashboard/pensum.jsp");
     }

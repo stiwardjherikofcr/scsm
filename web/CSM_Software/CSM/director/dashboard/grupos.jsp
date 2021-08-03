@@ -4,6 +4,8 @@
     Author     : Stiward
 --%>
 
+<%@page import="dto.Docente"%>
+<%@page import="dto.MateriaPeriodoGrupo"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
 <%@page import="dto.Usuario"%>
@@ -119,8 +121,8 @@
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
-                                                    <% List<dto.MateriaPeriodoGrupo> materias = (List<dto.MateriaPeriodoGrupo>) request.getSession().getAttribute("grupos");
-                                                        for (dto.MateriaPeriodoGrupo materia : materias) {
+                                                    <% List<MateriaPeriodoGrupo> materias = (List<MateriaPeriodoGrupo>) request.getSession().getAttribute("grupos");
+                                                        for (MateriaPeriodoGrupo materia : materias) {
                                                     %>
                                                     <tr>
                                                         <td><%=materia.getMateriaPeriodoId().getMateria().getMateriaPK().getCodigo()%>
@@ -133,7 +135,7 @@
                                                         <td>
                                                             <div class="form-button-action">
                                                                 <a
-                                                                    href="<%=request.getContextPath()%>/ControladorGrupos?accion=Editar&id=<%=materia.getId()%>">
+                                                                    href="<%=request.getContextPath()%>/ControladorGrupos?accion=editar&id=<%=materia.getId()%>">
                                                                     <button type="button" data-toggle="tooltip" title=""
                                                                             class="btn btn-link btn-dark"
                                                                             data-original-title="Editar">
@@ -141,7 +143,7 @@
                                                                     </button>
                                                                 </a>
                                                                 <a
-                                                                    href="<%=request.getContextPath()%>/ControladorGrupos?accion=Eliminar&id=<%=materia.getId()%>">
+                                                                    href="<%=request.getContextPath()%>/ControladorGrupos?accion=eliminar&id=<%=materia.getId()%>">
                                                                     <button id="pensum" type="button" data-toggle="tooltip"
                                                                             title="" class="btn btn-link btn-dark"
                                                                             data-original-title="Eliminar"
@@ -160,7 +162,6 @@
                                 </div>
                             </div>
                             <!-- Find Tabla Grupos -->
-                            <%dto.Usuario usuario = (dto.Usuario) (request.getSession().getAttribute("usuario"));%>
                             <!--Crear Grupos-->
                             <div class="col-md-4">
                                 <div class="">
@@ -170,8 +171,8 @@
                                         </div>
                                         <div class="card-body pb-0 ">
                                             <form
-                                                action="<%=request.getContextPath()%>/ControladorGrupos"
-                                                method="GET">
+                                                action="<%=request.getContextPath()%>/ControladorGrupos?accion=registrar"
+                                                method="POST">
                                                 <div class="form-group">
                                                     <label
                                                         for="exampleFormControlSelect1">Pensum</label>
@@ -193,7 +194,7 @@
                                                     <select class="form-control"
                                                             name="optionDocente" id="optionDocente">
                                                         <%
-                                                            for (dto.Docente docente : docentes) {
+                                                            for (Docente docente : docentes) {
                                                         %>
                                                         <option
                                                             value="<%=docente.getCodigo() %>">
@@ -210,7 +211,7 @@
                                                 <div
                                                     class="form-group d-flex justify-content-center align-items-center">
                                                     <input class="btn btn-danger"
-                                                           type="submit" name="accion"
+                                                           type="submit"
                                                            value="Registrar Grupo">
                                                 </div>
                                             </form>

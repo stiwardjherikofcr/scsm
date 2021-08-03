@@ -10,13 +10,14 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -30,56 +31,36 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TablaSeccion.findAll", query = "SELECT t FROM TablaSeccion t")
-    , @NamedQuery(name = "TablaSeccion.findByTablaId", query = "SELECT t FROM TablaSeccion t WHERE t.tablaSeccionPK.tablaId = :tablaId")
-    , @NamedQuery(name = "TablaSeccion.findBySeccionMicrocurriculoId", query = "SELECT t FROM TablaSeccion t WHERE t.tablaSeccionPK.seccionMicrocurriculoId = :seccionMicrocurriculoId")
-    , @NamedQuery(name = "TablaSeccion.findByNumFilas", query = "SELECT t FROM TablaSeccion t WHERE t.numFilas = :numFilas")})
+    , @NamedQuery(name = "TablaSeccion.findBySeccionMicrocurriculoId", query = "SELECT t FROM TablaSeccion t WHERE t.seccionMicrocurriculoId = :seccionMicrocurriculoId")})
 public class TablaSeccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected TablaSeccionPK tablaSeccionPK;
+    @Id
     @Basic(optional = false)
-    @Column(name = "num_filas")
-    private int numFilas;
+    @Column(name = "seccion_microcurriculo_id")
+    private Integer seccionMicrocurriculoId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tablaSeccion")
     private List<TablaInfo> tablaInfoList;
     @JoinColumn(name = "seccion_microcurriculo_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private SeccionMicrocurriculo seccionMicrocurriculo;
-    @JoinColumn(name = "tabla_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "tabla_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Tabla tabla;
+    private Tabla tablaId;
 
     public TablaSeccion() {
     }
 
-    public TablaSeccion(TablaSeccionPK tablaSeccionPK) {
-        this.tablaSeccionPK = tablaSeccionPK;
+    public TablaSeccion(Integer seccionMicrocurriculoId) {
+        this.seccionMicrocurriculoId = seccionMicrocurriculoId;
     }
 
-    public TablaSeccion(TablaSeccionPK tablaSeccionPK, int numFilas) {
-        this.tablaSeccionPK = tablaSeccionPK;
-        this.numFilas = numFilas;
+    public Integer getSeccionMicrocurriculoId() {
+        return seccionMicrocurriculoId;
     }
 
-    public TablaSeccion(int tablaId, int seccionMicrocurriculoId) {
-        this.tablaSeccionPK = new TablaSeccionPK(tablaId, seccionMicrocurriculoId);
-    }
-
-    public TablaSeccionPK getTablaSeccionPK() {
-        return tablaSeccionPK;
-    }
-
-    public void setTablaSeccionPK(TablaSeccionPK tablaSeccionPK) {
-        this.tablaSeccionPK = tablaSeccionPK;
-    }
-
-    public int getNumFilas() {
-        return numFilas;
-    }
-
-    public void setNumFilas(int numFilas) {
-        this.numFilas = numFilas;
+    public void setSeccionMicrocurriculoId(Integer seccionMicrocurriculoId) {
+        this.seccionMicrocurriculoId = seccionMicrocurriculoId;
     }
 
     @XmlTransient
@@ -99,18 +80,18 @@ public class TablaSeccion implements Serializable {
         this.seccionMicrocurriculo = seccionMicrocurriculo;
     }
 
-    public Tabla getTabla() {
-        return tabla;
+    public Tabla getTablaId() {
+        return tablaId;
     }
 
-    public void setTabla(Tabla tabla) {
-        this.tabla = tabla;
+    public void setTablaId(Tabla tablaId) {
+        this.tablaId = tablaId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tablaSeccionPK != null ? tablaSeccionPK.hashCode() : 0);
+        hash += (seccionMicrocurriculoId != null ? seccionMicrocurriculoId.hashCode() : 0);
         return hash;
     }
 
@@ -121,7 +102,7 @@ public class TablaSeccion implements Serializable {
             return false;
         }
         TablaSeccion other = (TablaSeccion) object;
-        if ((this.tablaSeccionPK == null && other.tablaSeccionPK != null) || (this.tablaSeccionPK != null && !this.tablaSeccionPK.equals(other.tablaSeccionPK))) {
+        if ((this.seccionMicrocurriculoId == null && other.seccionMicrocurriculoId != null) || (this.seccionMicrocurriculoId != null && !this.seccionMicrocurriculoId.equals(other.seccionMicrocurriculoId))) {
             return false;
         }
         return true;
@@ -129,7 +110,7 @@ public class TablaSeccion implements Serializable {
 
     @Override
     public String toString() {
-        return "dto.TablaSeccion[ tablaSeccionPK=" + tablaSeccionPK + " ]";
+        return "dto.TablaSeccion[ seccionMicrocurriculoId=" + seccionMicrocurriculoId + " ]";
     }
     
 }

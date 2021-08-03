@@ -55,8 +55,8 @@
                             %>
                             <tr>
                                 <td>
-                                    <a onclick="verMateria(<%=materia.getMateriaPK().getCodigoMateria() %>,<%=materia.getSemestre() %>)" class="btn btn-light btn-round ml-auto">
-                                        <b><%=materia.getMateriaPK().getCodigoMateria()%></b><br/>
+                                    <a onclick="verMateria(<%=materia.getMateriaPK().getCodigo()%>,<%=materia.getSemestre() %>)" class="btn btn-light btn-round ml-auto">
+                                        <b><%=materia.getMateriaPK().getCodigo()%></b><br/>
                                         <%=materia.getNombre()%><br />
                                         Horas: <%=materia.getHt()%> Cred: <%=materia.getCreditos()%>
                                     </a>

@@ -5,15 +5,9 @@
  */
 package control;
 
-import dao.DocenteJpaController;
-import dao.UsuarioJpaController;
 import dto.Docente;
-import dto.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.List;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import negocio.AdministrarDocentes;
 import negocio.Login;
-import util.Conexion;
 
 /**
  *
@@ -43,7 +36,7 @@ public class ControladorDocente extends HttpServlet {
             throws ServletException, IOException {
         try{
             switch (request.getParameter("action")) {
-                case "Registrar":
+                case "registrar":
                     this.guardarDocente(request, response);
                     break;
                 case "activarDocente":

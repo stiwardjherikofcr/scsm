@@ -17,7 +17,6 @@ import dto.SeccionMicrocurriculo;
 import dto.Tabla;
 import dto.TablaInfo;
 import dto.TablaSeccion;
-import dto.TablaSeccionPK;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -38,15 +37,24 @@ public class TablaSeccionJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(TablaSeccion tablaSeccion) throws PreexistingEntityException, Exception {
-        if (tablaSeccion.getTablaSeccionPK() == null) {
-            tablaSeccion.setTablaSeccionPK(new TablaSeccionPK());
-        }
+    public void create(TablaSeccion tablaSeccion) throws IllegalOrphanException, PreexistingEntityException, Exception {
         if (tablaSeccion.getTablaInfoList() == null) {
             tablaSeccion.setTablaInfoList(new ArrayList<TablaInfo>());
         }
-        tablaSeccion.getTablaSeccionPK().setTablaId(tablaSeccion.getTabla().getId());
-        tablaSeccion.getTablaSeccionPK().setSeccionMicrocurriculoId(tablaSeccion.getSeccionMicrocurriculo().getId());
+        List<String> illegalOrphanMessages = null;
+        SeccionMicrocurriculo seccionMicrocurriculoOrphanCheck = tablaSeccion.getSeccionMicrocurriculo();
+        if (seccionMicrocurriculoOrphanCheck != null) {
+            TablaSeccion oldTablaSeccionOfSeccionMicrocurriculo = seccionMicrocurriculoOrphanCheck.getTablaSeccion();
+            if (oldTablaSeccionOfSeccionMicrocurriculo != null) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("The SeccionMicrocurriculo " + seccionMicrocurriculoOrphanCheck + " already has an item of type TablaSeccion whose seccionMicrocurriculo column cannot be null. Please make another selection for the seccionMicrocurriculo field.");
+            }
+        }
+        if (illegalOrphanMessages != null) {
+            throw new IllegalOrphanException(illegalOrphanMessages);
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -56,10 +64,10 @@ public class TablaSeccionJpaController implements Serializable {
                 seccionMicrocurriculo = em.getReference(seccionMicrocurriculo.getClass(), seccionMicrocurriculo.getId());
                 tablaSeccion.setSeccionMicrocurriculo(seccionMicrocurriculo);
             }
-            Tabla tabla = tablaSeccion.getTabla();
-            if (tabla != null) {
-                tabla = em.getReference(tabla.getClass(), tabla.getId());
-                tablaSeccion.setTabla(tabla);
+            Tabla tablaId = tablaSeccion.getTablaId();
+            if (tablaId != null) {
+                tablaId = em.getReference(tablaId.getClass(), tablaId.getId());
+                tablaSeccion.setTablaId(tablaId);
             }
             List<TablaInfo> attachedTablaInfoList = new ArrayList<TablaInfo>();
             for (TablaInfo tablaInfoListTablaInfoToAttach : tablaSeccion.getTablaInfoList()) {
@@ -69,12 +77,12 @@ public class TablaSeccionJpaController implements Serializable {
             tablaSeccion.setTablaInfoList(attachedTablaInfoList);
             em.persist(tablaSeccion);
             if (seccionMicrocurriculo != null) {
-                seccionMicrocurriculo.getTablaSeccionList().add(tablaSeccion);
+                seccionMicrocurriculo.setTablaSeccion(tablaSeccion);
                 seccionMicrocurriculo = em.merge(seccionMicrocurriculo);
             }
-            if (tabla != null) {
-                tabla.getTablaSeccionList().add(tablaSeccion);
-                tabla = em.merge(tabla);
+            if (tablaId != null) {
+                tablaId.getTablaSeccionList().add(tablaSeccion);
+                tablaId = em.merge(tablaId);
             }
             for (TablaInfo tablaInfoListTablaInfo : tablaSeccion.getTablaInfoList()) {
                 TablaSeccion oldTablaSeccionOfTablaInfoListTablaInfo = tablaInfoListTablaInfo.getTablaSeccion();
@@ -87,7 +95,7 @@ public class TablaSeccionJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findTablaSeccion(tablaSeccion.getTablaSeccionPK()) != null) {
+            if (findTablaSeccion(tablaSeccion.getSeccionMicrocurriculoId()) != null) {
                 throw new PreexistingEntityException("TablaSeccion " + tablaSeccion + " already exists.", ex);
             }
             throw ex;
@@ -99,20 +107,27 @@ public class TablaSeccionJpaController implements Serializable {
     }
 
     public void edit(TablaSeccion tablaSeccion) throws IllegalOrphanException, NonexistentEntityException, Exception {
-        tablaSeccion.getTablaSeccionPK().setTablaId(tablaSeccion.getTabla().getId());
-        tablaSeccion.getTablaSeccionPK().setSeccionMicrocurriculoId(tablaSeccion.getSeccionMicrocurriculo().getId());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            TablaSeccion persistentTablaSeccion = em.find(TablaSeccion.class, tablaSeccion.getTablaSeccionPK());
+            TablaSeccion persistentTablaSeccion = em.find(TablaSeccion.class, tablaSeccion.getSeccionMicrocurriculoId());
             SeccionMicrocurriculo seccionMicrocurriculoOld = persistentTablaSeccion.getSeccionMicrocurriculo();
             SeccionMicrocurriculo seccionMicrocurriculoNew = tablaSeccion.getSeccionMicrocurriculo();
-            Tabla tablaOld = persistentTablaSeccion.getTabla();
-            Tabla tablaNew = tablaSeccion.getTabla();
+            Tabla tablaIdOld = persistentTablaSeccion.getTablaId();
+            Tabla tablaIdNew = tablaSeccion.getTablaId();
             List<TablaInfo> tablaInfoListOld = persistentTablaSeccion.getTablaInfoList();
             List<TablaInfo> tablaInfoListNew = tablaSeccion.getTablaInfoList();
             List<String> illegalOrphanMessages = null;
+            if (seccionMicrocurriculoNew != null && !seccionMicrocurriculoNew.equals(seccionMicrocurriculoOld)) {
+                TablaSeccion oldTablaSeccionOfSeccionMicrocurriculo = seccionMicrocurriculoNew.getTablaSeccion();
+                if (oldTablaSeccionOfSeccionMicrocurriculo != null) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("The SeccionMicrocurriculo " + seccionMicrocurriculoNew + " already has an item of type TablaSeccion whose seccionMicrocurriculo column cannot be null. Please make another selection for the seccionMicrocurriculo field.");
+                }
+            }
             for (TablaInfo tablaInfoListOldTablaInfo : tablaInfoListOld) {
                 if (!tablaInfoListNew.contains(tablaInfoListOldTablaInfo)) {
                     if (illegalOrphanMessages == null) {
@@ -128,9 +143,9 @@ public class TablaSeccionJpaController implements Serializable {
                 seccionMicrocurriculoNew = em.getReference(seccionMicrocurriculoNew.getClass(), seccionMicrocurriculoNew.getId());
                 tablaSeccion.setSeccionMicrocurriculo(seccionMicrocurriculoNew);
             }
-            if (tablaNew != null) {
-                tablaNew = em.getReference(tablaNew.getClass(), tablaNew.getId());
-                tablaSeccion.setTabla(tablaNew);
+            if (tablaIdNew != null) {
+                tablaIdNew = em.getReference(tablaIdNew.getClass(), tablaIdNew.getId());
+                tablaSeccion.setTablaId(tablaIdNew);
             }
             List<TablaInfo> attachedTablaInfoListNew = new ArrayList<TablaInfo>();
             for (TablaInfo tablaInfoListNewTablaInfoToAttach : tablaInfoListNew) {
@@ -141,20 +156,20 @@ public class TablaSeccionJpaController implements Serializable {
             tablaSeccion.setTablaInfoList(tablaInfoListNew);
             tablaSeccion = em.merge(tablaSeccion);
             if (seccionMicrocurriculoOld != null && !seccionMicrocurriculoOld.equals(seccionMicrocurriculoNew)) {
-                seccionMicrocurriculoOld.getTablaSeccionList().remove(tablaSeccion);
+                seccionMicrocurriculoOld.setTablaSeccion(null);
                 seccionMicrocurriculoOld = em.merge(seccionMicrocurriculoOld);
             }
             if (seccionMicrocurriculoNew != null && !seccionMicrocurriculoNew.equals(seccionMicrocurriculoOld)) {
-                seccionMicrocurriculoNew.getTablaSeccionList().add(tablaSeccion);
+                seccionMicrocurriculoNew.setTablaSeccion(tablaSeccion);
                 seccionMicrocurriculoNew = em.merge(seccionMicrocurriculoNew);
             }
-            if (tablaOld != null && !tablaOld.equals(tablaNew)) {
-                tablaOld.getTablaSeccionList().remove(tablaSeccion);
-                tablaOld = em.merge(tablaOld);
+            if (tablaIdOld != null && !tablaIdOld.equals(tablaIdNew)) {
+                tablaIdOld.getTablaSeccionList().remove(tablaSeccion);
+                tablaIdOld = em.merge(tablaIdOld);
             }
-            if (tablaNew != null && !tablaNew.equals(tablaOld)) {
-                tablaNew.getTablaSeccionList().add(tablaSeccion);
-                tablaNew = em.merge(tablaNew);
+            if (tablaIdNew != null && !tablaIdNew.equals(tablaIdOld)) {
+                tablaIdNew.getTablaSeccionList().add(tablaSeccion);
+                tablaIdNew = em.merge(tablaIdNew);
             }
             for (TablaInfo tablaInfoListNewTablaInfo : tablaInfoListNew) {
                 if (!tablaInfoListOld.contains(tablaInfoListNewTablaInfo)) {
@@ -171,7 +186,7 @@ public class TablaSeccionJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                TablaSeccionPK id = tablaSeccion.getTablaSeccionPK();
+                Integer id = tablaSeccion.getSeccionMicrocurriculoId();
                 if (findTablaSeccion(id) == null) {
                     throw new NonexistentEntityException("The tablaSeccion with id " + id + " no longer exists.");
                 }
@@ -184,7 +199,7 @@ public class TablaSeccionJpaController implements Serializable {
         }
     }
 
-    public void destroy(TablaSeccionPK id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -192,7 +207,7 @@ public class TablaSeccionJpaController implements Serializable {
             TablaSeccion tablaSeccion;
             try {
                 tablaSeccion = em.getReference(TablaSeccion.class, id);
-                tablaSeccion.getTablaSeccionPK();
+                tablaSeccion.getSeccionMicrocurriculoId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tablaSeccion with id " + id + " no longer exists.", enfe);
             }
@@ -209,13 +224,13 @@ public class TablaSeccionJpaController implements Serializable {
             }
             SeccionMicrocurriculo seccionMicrocurriculo = tablaSeccion.getSeccionMicrocurriculo();
             if (seccionMicrocurriculo != null) {
-                seccionMicrocurriculo.getTablaSeccionList().remove(tablaSeccion);
+                seccionMicrocurriculo.setTablaSeccion(null);
                 seccionMicrocurriculo = em.merge(seccionMicrocurriculo);
             }
-            Tabla tabla = tablaSeccion.getTabla();
-            if (tabla != null) {
-                tabla.getTablaSeccionList().remove(tablaSeccion);
-                tabla = em.merge(tabla);
+            Tabla tablaId = tablaSeccion.getTablaId();
+            if (tablaId != null) {
+                tablaId.getTablaSeccionList().remove(tablaSeccion);
+                tablaId = em.merge(tablaId);
             }
             em.remove(tablaSeccion);
             em.getTransaction().commit();
@@ -250,7 +265,7 @@ public class TablaSeccionJpaController implements Serializable {
         }
     }
 
-    public TablaSeccion findTablaSeccion(TablaSeccionPK id) {
+    public TablaSeccion findTablaSeccion(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(TablaSeccion.class, id);

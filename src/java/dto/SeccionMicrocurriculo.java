@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -60,8 +61,8 @@ public class SeccionMicrocurriculo implements Serializable {
     private List<SeccionCambio> seccionCambioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculoIdAntigua")
     private List<SeccionCambio> seccionCambioList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculo")
-    private List<TablaSeccion> tablaSeccionList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculo")
+    private TablaSeccion tablaSeccion;
 
     public SeccionMicrocurriculo() {
     }
@@ -134,13 +135,12 @@ public class SeccionMicrocurriculo implements Serializable {
         this.seccionCambioList1 = seccionCambioList1;
     }
 
-    @XmlTransient
-    public List<TablaSeccion> getTablaSeccionList() {
-        return tablaSeccionList;
+    public TablaSeccion getTablaSeccion() {
+        return tablaSeccion;
     }
 
-    public void setTablaSeccionList(List<TablaSeccion> tablaSeccionList) {
-        this.tablaSeccionList = tablaSeccionList;
+    public void setTablaSeccion(TablaSeccion tablaSeccion) {
+        this.tablaSeccion = tablaSeccion;
     }
 
     @Override
