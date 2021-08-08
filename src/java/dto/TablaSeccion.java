@@ -6,9 +6,7 @@
 package dto;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,11 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -39,8 +35,6 @@ public class TablaSeccion implements Serializable {
     @Basic(optional = false)
     @Column(name = "seccion_microcurriculo_id")
     private Integer seccionMicrocurriculoId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tablaSeccion")
-    private List<TablaInfo> tablaInfoList;
     @JoinColumn(name = "seccion_microcurriculo_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private SeccionMicrocurriculo seccionMicrocurriculo;
@@ -61,15 +55,6 @@ public class TablaSeccion implements Serializable {
 
     public void setSeccionMicrocurriculoId(Integer seccionMicrocurriculoId) {
         this.seccionMicrocurriculoId = seccionMicrocurriculoId;
-    }
-
-    @XmlTransient
-    public List<TablaInfo> getTablaInfoList() {
-        return tablaInfoList;
-    }
-
-    public void setTablaInfoList(List<TablaInfo> tablaInfoList) {
-        this.tablaInfoList = tablaInfoList;
     }
 
     public SeccionMicrocurriculo getSeccionMicrocurriculo() {

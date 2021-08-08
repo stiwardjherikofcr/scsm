@@ -8,13 +8,12 @@ package dto;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,45 +26,62 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cumplimiento.findAll", query = "SELECT c FROM Cumplimiento c")
-    , @NamedQuery(name = "Cumplimiento.findByMateriaPeriodoGrupoId", query = "SELECT c FROM Cumplimiento c WHERE c.materiaPeriodoGrupoId = :materiaPeriodoGrupoId")
+    , @NamedQuery(name = "Cumplimiento.findByMateriaPeriodoGrupoId", query = "SELECT c FROM Cumplimiento c WHERE c.cumplimientoPK.materiaPeriodoGrupoId = :materiaPeriodoGrupoId")
+    , @NamedQuery(name = "Cumplimiento.findByContenidoUnidadId", query = "SELECT c FROM Cumplimiento c WHERE c.cumplimientoPK.contenidoUnidadId = :contenidoUnidadId")
     , @NamedQuery(name = "Cumplimiento.findByEstado", query = "SELECT c FROM Cumplimiento c WHERE c.estado = :estado")})
 public class Cumplimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+    @EmbeddedId
+    protected CumplimientoPK cumplimientoPK;
     @Basic(optional = false)
-    @Column(name = "materia_periodo_grupo_id")
-    private Integer materiaPeriodoGrupoId;
     @Column(name = "estado")
-    private Short estado;
-    @JoinColumn(name = "materia_periodo_grupo_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private MateriaPeriodoGrupo materiaPeriodoGrupo;
-    @JoinColumn(name = "contenido_id", referencedColumnName = "id")
+    private short estado;
+    @JoinColumn(name = "contenido_unidad_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Contenido contenidoId;
+    private ContenidoUnidad contenidoUnidad;
+    @JoinColumn(name = "materia_periodo_grupo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private MateriaPeriodoGrupo materiaPeriodoGrupo;
 
     public Cumplimiento() {
     }
 
-    public Cumplimiento(Integer materiaPeriodoGrupoId) {
-        this.materiaPeriodoGrupoId = materiaPeriodoGrupoId;
+    public Cumplimiento(CumplimientoPK cumplimientoPK) {
+        this.cumplimientoPK = cumplimientoPK;
     }
 
-    public Integer getMateriaPeriodoGrupoId() {
-        return materiaPeriodoGrupoId;
+    public Cumplimiento(CumplimientoPK cumplimientoPK, short estado) {
+        this.cumplimientoPK = cumplimientoPK;
+        this.estado = estado;
     }
 
-    public void setMateriaPeriodoGrupoId(Integer materiaPeriodoGrupoId) {
-        this.materiaPeriodoGrupoId = materiaPeriodoGrupoId;
+    public Cumplimiento(int materiaPeriodoGrupoId, int contenidoUnidadId) {
+        this.cumplimientoPK = new CumplimientoPK(materiaPeriodoGrupoId, contenidoUnidadId);
     }
 
-    public Short getEstado() {
+    public CumplimientoPK getCumplimientoPK() {
+        return cumplimientoPK;
+    }
+
+    public void setCumplimientoPK(CumplimientoPK cumplimientoPK) {
+        this.cumplimientoPK = cumplimientoPK;
+    }
+
+    public short getEstado() {
         return estado;
     }
 
-    public void setEstado(Short estado) {
+    public void setEstado(short estado) {
         this.estado = estado;
+    }
+
+    public ContenidoUnidad getContenidoUnidad() {
+        return contenidoUnidad;
+    }
+
+    public void setContenidoUnidad(ContenidoUnidad contenidoUnidad) {
+        this.contenidoUnidad = contenidoUnidad;
     }
 
     public MateriaPeriodoGrupo getMateriaPeriodoGrupo() {
@@ -76,18 +92,10 @@ public class Cumplimiento implements Serializable {
         this.materiaPeriodoGrupo = materiaPeriodoGrupo;
     }
 
-    public Contenido getContenidoId() {
-        return contenidoId;
-    }
-
-    public void setContenidoId(Contenido contenidoId) {
-        this.contenidoId = contenidoId;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (materiaPeriodoGrupoId != null ? materiaPeriodoGrupoId.hashCode() : 0);
+        hash += (cumplimientoPK != null ? cumplimientoPK.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +106,7 @@ public class Cumplimiento implements Serializable {
             return false;
         }
         Cumplimiento other = (Cumplimiento) object;
-        if ((this.materiaPeriodoGrupoId == null && other.materiaPeriodoGrupoId != null) || (this.materiaPeriodoGrupoId != null && !this.materiaPeriodoGrupoId.equals(other.materiaPeriodoGrupoId))) {
+        if ((this.cumplimientoPK == null && other.cumplimientoPK != null) || (this.cumplimientoPK != null && !this.cumplimientoPK.equals(other.cumplimientoPK))) {
             return false;
         }
         return true;
@@ -106,7 +114,7 @@ public class Cumplimiento implements Serializable {
 
     @Override
     public String toString() {
-        return "dto.Cumplimiento[ materiaPeriodoGrupoId=" + materiaPeriodoGrupoId + " ]";
+        return "dto.Cumplimiento[ cumplimientoPK=" + cumplimientoPK + " ]";
     }
     
 }

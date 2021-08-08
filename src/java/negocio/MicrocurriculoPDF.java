@@ -26,7 +26,6 @@ import dto.Microcurriculo;
 import dto.PrerrequisitoMateria;
 import dto.SeccionMicrocurriculo;
 import dto.Tabla;
-import dto.TablaInfo;
 import dto.TablaSeccion;
 import dto.TipoMateria;
 import java.io.ByteArrayInputStream;
@@ -104,14 +103,6 @@ public class MicrocurriculoPDF {
             }
         }
         return tab;
-    }
-
-    private String[][] getOrder(List<TablaInfo> tmis, int col) {
-        String[][] info = new String[tmis.size()/col][col];
-        for (TablaInfo tmi : tmis) {
-            info[tmi.getTablaInfoPK().getFila()][tmi.getTablaInfoPK().getColumna()] = tmi.getContenidoId().getTexto();
-        }
-        return info;
     }
 
     private void configEnca(PdfPTable tab, Tabla tm) {

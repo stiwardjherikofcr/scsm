@@ -61,6 +61,8 @@ public class SeccionMicrocurriculo implements Serializable {
     private List<SeccionCambio> seccionCambioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculoIdAntigua")
     private List<SeccionCambio> seccionCambioList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculoId")
+    private List<Unidad> unidadList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "seccionMicrocurriculo")
     private TablaSeccion tablaSeccion;
 
@@ -133,6 +135,15 @@ public class SeccionMicrocurriculo implements Serializable {
 
     public void setSeccionCambioList1(List<SeccionCambio> seccionCambioList1) {
         this.seccionCambioList1 = seccionCambioList1;
+    }
+
+    @XmlTransient
+    public List<Unidad> getUnidadList() {
+        return unidadList;
+    }
+
+    public void setUnidadList(List<Unidad> unidadList) {
+        this.unidadList = unidadList;
     }
 
     public TablaSeccion getTablaSeccion() {

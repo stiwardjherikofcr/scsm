@@ -12,10 +12,12 @@ import dto.Microcurriculo;
 import dto.Pensum;
 import dto.Seccion;
 import dto.SeccionMicrocurriculo;
+import dto.Unidad;
 import dto.Usuario;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,11 +104,10 @@ public class ControladorMicrocurriculo extends HttpServlet {
     public void toEditar(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int codigoPensum = Integer.parseInt(request.getParameter("codigoPensum"));
         int codigoMateria = Integer.parseInt(request.getParameter("codigoMateria"));
-        
+
         AdministrarMicrocurriculo adminMicrocurriculo = new AdministrarMicrocurriculo();
         Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(codigoMateria, codigoPensum);
-        
-        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
+
         request.getSession().setAttribute("microcurriculo", microcurriculo);
         response.sendRedirect("CSM_Software/CSM/director/dashboard/microcurriculo/editar-microcurriculo.jsp");
     }
@@ -115,12 +116,11 @@ public class ControladorMicrocurriculo extends HttpServlet {
         AdministrarMicrocurriculo adminMicrocurriculo = new AdministrarMicrocurriculo();
         int codigoPensum = Integer.parseInt(request.getParameter("codigoPensum"));
         int codigoMateria = Integer.parseInt(request.getParameter("codigoMateria"));
-        
+
         Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(codigoMateria, codigoPensum);
-        
-        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
+
         request.getSession().setAttribute("microcurriculo", microcurriculo);
-        
+
         String url = "";
         dto.Usuario user = (dto.Usuario) (request.getSession().getAttribute("usuario"));
         if (user.getRolId().getId().equals(1)) {
@@ -158,20 +158,34 @@ public class ControladorMicrocurriculo extends HttpServlet {
     }
 
     public void registrarInformacionTablas(HttpServletRequest request, HttpServletResponse response, AdministrarMicrocurriculo adminM, Microcurriculo microcurriculo) throws Exception {
-        for (SeccionMicrocurriculo secciones : microcurriculo.getSeccionMicrocurriculoList()) {
-            if (secciones.getSeccionId().getTipoSeccionId().getId() == 2) {
-                int cantidadFilas = Integer.parseInt(request.getParameter("nfilas-" + secciones.getId()));
-                adminM.deleteDataTable(secciones.getTablaSeccion());
-                
-                String contenidos[][] = new String[cantidadFilas][secciones.getTablaSeccion().getTablaId().getEncabezadoList().size()];
-                for (int i = 0; i < contenidos.length; i++) {
-                    for (int j = 0; j < contenidos[i].length; j++) {
-                        contenidos[i][j] = (String) request.getParameter("contenido-" + secciones.getSeccionId().getId() + "-" + (i) + "-" + j);
-                    }
+        String contenidos[][][] = new String[2][][];
+        SeccionMicrocurriculo seccionUnidad = null;
+        for (SeccionMicrocurriculo seccion : microcurriculo.getSeccionMicrocurriculoList()) {
+            if(seccion.getSeccionId().getId()==1) seccionUnidad = seccion;
+            if (seccion.getSeccionId().getTipoSeccionId().getId() == 2) {
+                System.out.println(seccion.getSeccionId().getId());
+                contenidos[seccion.getSeccionId().getId()==1 ? 0 : 1] = this.getInfoTabla(request, seccion);
+                for(String contents[] : contenidos[seccion.getSeccionId().getId()==1 ? 0 : 1]){
+                    System.out.println(java.util.Arrays.asList(contents));
                 }
-                adminM.registrarContenidoTablas(contenidos, secciones);
+                }
+            }
+        String idContentsExist[] = request.getParameterValues("old_content");
+        String idUnidsExist[] = request.getParameterValues("old_unit");
+        adminM.updateUnidades(contenidos, new String[][]{idUnidsExist, idContentsExist}, seccionUnidad);
+    }
+
+    private String[][] getInfoTabla(HttpServletRequest request, SeccionMicrocurriculo seccion) {
+        int cantidadFilas = Integer.parseInt(request.getParameter("nfilas-" + seccion.getId()));
+
+        String contenidos[][] = new String[cantidadFilas][seccion.getTablaSeccion().getTablaId().getEncabezadoList().size()];
+        for (int i = 0; i < contenidos.length; i++) {
+            for (int j = 0; j < contenidos[i].length; j++) {
+                System.out.println("contenido-" + seccion.getSeccionId().getId() + "-" + i + "-" + j);
+                contenidos[i][j] = (String) request.getParameter("contenido-" + seccion.getSeccionId().getId() + "-" + i + "-" + j);
             }
         }
+        return contenidos;
     }
 
     public void registrarSecciones(HttpServletRequest request, HttpServletResponse response, AdministrarMicrocurriculo adminMicro, Microcurriculo microcurriculo) throws Exception {
@@ -188,11 +202,11 @@ public class ControladorMicrocurriculo extends HttpServlet {
         AdministrarMicrocurriculo adminMicrocurriculo = new AdministrarMicrocurriculo();
         int areaFormacion = Integer.parseInt(request.getParameter("areasFormacion"));
         Microcurriculo microcurriculo = (dto.Microcurriculo) request.getSession().getAttribute("microcurriculo");
-        
-        adminMicrocurriculo.actualizarAreaFormacionMicrocurriculo(microcurriculo, areaFormacion);
+
+//        adminMicrocurriculo.actualizarAreaFormacionMicrocurriculo(microcurriculo, areaFormacion);
         registrarInformacionTablas(request, response, adminMicrocurriculo, microcurriculo);
-        registrarSecciones(request, response, adminMicrocurriculo, microcurriculo);
-        
+//        registrarSecciones(request, response, adminMicrocurriculo, microcurriculo);
+
         response.sendRedirect("CSM_Software/CSM/director/dashboard/microcurriculo/consultar-microcurriculo.jsp");
     }
 
@@ -207,7 +221,7 @@ public class ControladorMicrocurriculo extends HttpServlet {
         Integer sem = Integer.parseInt(request.getParameter("sem"));
         List<Materia> materias[] = (List<Materia>[]) request.getSession().getAttribute("materiasSemestre");
         for (Materia materia : materias[sem - 1]) {
-            if (materia.getMateriaPK().getCodigo()== cod) {
+            if (materia.getMateriaPK().getCodigo() == cod) {
                 this.paintModal(pw, materia);
                 break;
             }
@@ -217,10 +231,9 @@ public class ControladorMicrocurriculo extends HttpServlet {
     private void paintModal(PrintWriter pw, Materia materia) {
         AdministrarMicrocurriculo adminMicro = new AdministrarMicrocurriculo();
         Microcurriculo micro = adminMicro.obtenerMicrocurriculo(materia.getMateriaPK().getCodigo(), materia.getMateriaPK().getPensumCodigo());
-        List<String[][]> retrieveDataTable = adminMicro.ordenarTablaInfo(micro);
         StringBuilder build = new StringBuilder();
         this.getModalHeader(materia, build);
-        this.getModalBody(micro, retrieveDataTable.get(0), build);
+        this.getModalBody(micro, build);
         pw.write(build.toString());
         pw.flush();
     }
@@ -238,7 +251,7 @@ public class ControladorMicrocurriculo extends HttpServlet {
         build.append("</div>");
     }
 
-    private void getModalBody(Microcurriculo micro, String contenido[][], StringBuilder build) {
+    private void getModalBody(Microcurriculo micro, StringBuilder build) {
         build.append("<div class='modal-body'>");
         for (SeccionMicrocurriculo seccion : micro.getSeccionMicrocurriculoList()) {
             if (seccion.getSeccionId().getId() == 1 || seccion.getSeccionId().getId() == 9) {
@@ -248,11 +261,11 @@ public class ControladorMicrocurriculo extends HttpServlet {
                 build.append(seccion.getSeccionId().getNombre().toUpperCase());
                 build.append("</b></h6>");
                 if (seccion.getSeccionId().getId() == 1) {
-                    for (String row[] : contenido) {
+                    for (Unidad unidad : seccion.getUnidadList()) {
                         build.append("<p>UNIDAD ");
-                        build.append(row[0]);
+                        build.append(unidad.getNum());
                         build.append(". ");
-                        build.append(row[1]);
+                        build.append(unidad.getNombre());
                         build.append("</p>");
                     }
                 } else {

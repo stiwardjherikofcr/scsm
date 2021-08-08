@@ -108,7 +108,7 @@ public class ControladorMicrocurriculoDocente extends HttpServlet {
         int codigoMateria = Integer.parseInt(request.getParameter("codigoMateria"));
         AdministrarMicrocurriculo adminMicrocurriculo = new AdministrarMicrocurriculo();
         Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(codigoMateria, codigoPensum);
-        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
+//        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
         request.getSession().setAttribute("microcurriculo", microcurriculo);
         response.sendRedirect("jspTest/microcurriculoDocente.jsp");
     }
@@ -118,7 +118,7 @@ public class ControladorMicrocurriculoDocente extends HttpServlet {
         int codigoMateria = Integer.parseInt(request.getParameter("codigoMateria"));
         negocio.AdministrarMicrocurriculo adminMicrocurriculo = new negocio.AdministrarMicrocurriculo();
         Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(codigoMateria, codigoPensum);
-        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
+//        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
         request.getSession().setAttribute("microcurriculo", microcurriculo);
         response.sendRedirect("CSM_Software/CSM/docente/dashboard/microcurriculo/solicitud-microcurriculo.jsp");
     }
@@ -128,7 +128,7 @@ public class ControladorMicrocurriculoDocente extends HttpServlet {
         int codigoMateria = Integer.parseInt(request.getParameter("codigoMateria"));
         AdministrarMicrocurriculo adminMicrocurriculo = new AdministrarMicrocurriculo();
         Microcurriculo microcurriculo = adminMicrocurriculo.obtenerMicrocurriculo(codigoMateria, codigoPensum);
-        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
+//        request.getSession().setAttribute("tablas", adminMicrocurriculo.ordenarTablaInfo(microcurriculo));
         request.getSession().setAttribute("microcurriculo", microcurriculo);
         response.sendRedirect("CSM_Software/CSM/docente/dashboard/microcurriculo/ver-microcurriculo.jsp");
     }

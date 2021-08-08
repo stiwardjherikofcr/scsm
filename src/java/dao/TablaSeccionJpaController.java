@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import dto.SeccionMicrocurriculo;
 import dto.Tabla;
-import dto.TablaInfo;
 import dto.TablaSeccion;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +37,6 @@ public class TablaSeccionJpaController implements Serializable {
     }
 
     public void create(TablaSeccion tablaSeccion) throws IllegalOrphanException, PreexistingEntityException, Exception {
-        if (tablaSeccion.getTablaInfoList() == null) {
-            tablaSeccion.setTablaInfoList(new ArrayList<TablaInfo>());
-        }
         List<String> illegalOrphanMessages = null;
         SeccionMicrocurriculo seccionMicrocurriculoOrphanCheck = tablaSeccion.getSeccionMicrocurriculo();
         if (seccionMicrocurriculoOrphanCheck != null) {
@@ -69,12 +65,6 @@ public class TablaSeccionJpaController implements Serializable {
                 tablaId = em.getReference(tablaId.getClass(), tablaId.getId());
                 tablaSeccion.setTablaId(tablaId);
             }
-            List<TablaInfo> attachedTablaInfoList = new ArrayList<TablaInfo>();
-            for (TablaInfo tablaInfoListTablaInfoToAttach : tablaSeccion.getTablaInfoList()) {
-                tablaInfoListTablaInfoToAttach = em.getReference(tablaInfoListTablaInfoToAttach.getClass(), tablaInfoListTablaInfoToAttach.getTablaInfoPK());
-                attachedTablaInfoList.add(tablaInfoListTablaInfoToAttach);
-            }
-            tablaSeccion.setTablaInfoList(attachedTablaInfoList);
             em.persist(tablaSeccion);
             if (seccionMicrocurriculo != null) {
                 seccionMicrocurriculo.setTablaSeccion(tablaSeccion);
@@ -83,15 +73,6 @@ public class TablaSeccionJpaController implements Serializable {
             if (tablaId != null) {
                 tablaId.getTablaSeccionList().add(tablaSeccion);
                 tablaId = em.merge(tablaId);
-            }
-            for (TablaInfo tablaInfoListTablaInfo : tablaSeccion.getTablaInfoList()) {
-                TablaSeccion oldTablaSeccionOfTablaInfoListTablaInfo = tablaInfoListTablaInfo.getTablaSeccion();
-                tablaInfoListTablaInfo.setTablaSeccion(tablaSeccion);
-                tablaInfoListTablaInfo = em.merge(tablaInfoListTablaInfo);
-                if (oldTablaSeccionOfTablaInfoListTablaInfo != null) {
-                    oldTablaSeccionOfTablaInfoListTablaInfo.getTablaInfoList().remove(tablaInfoListTablaInfo);
-                    oldTablaSeccionOfTablaInfoListTablaInfo = em.merge(oldTablaSeccionOfTablaInfoListTablaInfo);
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -116,8 +97,6 @@ public class TablaSeccionJpaController implements Serializable {
             SeccionMicrocurriculo seccionMicrocurriculoNew = tablaSeccion.getSeccionMicrocurriculo();
             Tabla tablaIdOld = persistentTablaSeccion.getTablaId();
             Tabla tablaIdNew = tablaSeccion.getTablaId();
-            List<TablaInfo> tablaInfoListOld = persistentTablaSeccion.getTablaInfoList();
-            List<TablaInfo> tablaInfoListNew = tablaSeccion.getTablaInfoList();
             List<String> illegalOrphanMessages = null;
             if (seccionMicrocurriculoNew != null && !seccionMicrocurriculoNew.equals(seccionMicrocurriculoOld)) {
                 TablaSeccion oldTablaSeccionOfSeccionMicrocurriculo = seccionMicrocurriculoNew.getTablaSeccion();
@@ -126,14 +105,6 @@ public class TablaSeccionJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("The SeccionMicrocurriculo " + seccionMicrocurriculoNew + " already has an item of type TablaSeccion whose seccionMicrocurriculo column cannot be null. Please make another selection for the seccionMicrocurriculo field.");
-                }
-            }
-            for (TablaInfo tablaInfoListOldTablaInfo : tablaInfoListOld) {
-                if (!tablaInfoListNew.contains(tablaInfoListOldTablaInfo)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain TablaInfo " + tablaInfoListOldTablaInfo + " since its tablaSeccion field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -147,13 +118,6 @@ public class TablaSeccionJpaController implements Serializable {
                 tablaIdNew = em.getReference(tablaIdNew.getClass(), tablaIdNew.getId());
                 tablaSeccion.setTablaId(tablaIdNew);
             }
-            List<TablaInfo> attachedTablaInfoListNew = new ArrayList<TablaInfo>();
-            for (TablaInfo tablaInfoListNewTablaInfoToAttach : tablaInfoListNew) {
-                tablaInfoListNewTablaInfoToAttach = em.getReference(tablaInfoListNewTablaInfoToAttach.getClass(), tablaInfoListNewTablaInfoToAttach.getTablaInfoPK());
-                attachedTablaInfoListNew.add(tablaInfoListNewTablaInfoToAttach);
-            }
-            tablaInfoListNew = attachedTablaInfoListNew;
-            tablaSeccion.setTablaInfoList(tablaInfoListNew);
             tablaSeccion = em.merge(tablaSeccion);
             if (seccionMicrocurriculoOld != null && !seccionMicrocurriculoOld.equals(seccionMicrocurriculoNew)) {
                 seccionMicrocurriculoOld.setTablaSeccion(null);
@@ -170,17 +134,6 @@ public class TablaSeccionJpaController implements Serializable {
             if (tablaIdNew != null && !tablaIdNew.equals(tablaIdOld)) {
                 tablaIdNew.getTablaSeccionList().add(tablaSeccion);
                 tablaIdNew = em.merge(tablaIdNew);
-            }
-            for (TablaInfo tablaInfoListNewTablaInfo : tablaInfoListNew) {
-                if (!tablaInfoListOld.contains(tablaInfoListNewTablaInfo)) {
-                    TablaSeccion oldTablaSeccionOfTablaInfoListNewTablaInfo = tablaInfoListNewTablaInfo.getTablaSeccion();
-                    tablaInfoListNewTablaInfo.setTablaSeccion(tablaSeccion);
-                    tablaInfoListNewTablaInfo = em.merge(tablaInfoListNewTablaInfo);
-                    if (oldTablaSeccionOfTablaInfoListNewTablaInfo != null && !oldTablaSeccionOfTablaInfoListNewTablaInfo.equals(tablaSeccion)) {
-                        oldTablaSeccionOfTablaInfoListNewTablaInfo.getTablaInfoList().remove(tablaInfoListNewTablaInfo);
-                        oldTablaSeccionOfTablaInfoListNewTablaInfo = em.merge(oldTablaSeccionOfTablaInfoListNewTablaInfo);
-                    }
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -199,7 +152,7 @@ public class TablaSeccionJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -210,17 +163,6 @@ public class TablaSeccionJpaController implements Serializable {
                 tablaSeccion.getSeccionMicrocurriculoId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tablaSeccion with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            List<TablaInfo> tablaInfoListOrphanCheck = tablaSeccion.getTablaInfoList();
-            for (TablaInfo tablaInfoListOrphanCheckTablaInfo : tablaInfoListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This TablaSeccion (" + tablaSeccion + ") cannot be destroyed since the TablaInfo " + tablaInfoListOrphanCheckTablaInfo + " in its tablaInfoList field has a non-nullable tablaSeccion field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             SeccionMicrocurriculo seccionMicrocurriculo = tablaSeccion.getSeccionMicrocurriculo();
             if (seccionMicrocurriculo != null) {

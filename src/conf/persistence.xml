@@ -35,6 +35,8 @@
     <class>dto.TablaSeccion</class>
     <class>dto.TipoMateria</class>
     <class>dto.Cumplimiento</class>
+    <class>dto.Unidad</class>
+    <class>dto.ContenidoUnidad</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/scsm?zeroDateTimeBehavior=convertToNull"/>

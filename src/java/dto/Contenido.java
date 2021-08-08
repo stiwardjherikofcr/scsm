@@ -6,9 +6,7 @@
 package dto;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,10 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -49,13 +45,9 @@ public class Contenido implements Serializable {
     @Basic(optional = false)
     @Column(name = "cantidad_items_lista")
     private int cantidadItemsLista;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contenidoId")
-    private List<Cumplimiento> cumplimientoList;
     @JoinColumn(name = "seccion_microcurriculo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private SeccionMicrocurriculo seccionMicrocurriculoId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contenidoId")
-    private List<TablaInfo> tablaInfoList;
 
     public Contenido() {
     }
@@ -94,30 +86,12 @@ public class Contenido implements Serializable {
         this.cantidadItemsLista = cantidadItemsLista;
     }
 
-    @XmlTransient
-    public List<Cumplimiento> getCumplimientoList() {
-        return cumplimientoList;
-    }
-
-    public void setCumplimientoList(List<Cumplimiento> cumplimientoList) {
-        this.cumplimientoList = cumplimientoList;
-    }
-
     public SeccionMicrocurriculo getSeccionMicrocurriculoId() {
         return seccionMicrocurriculoId;
     }
 
     public void setSeccionMicrocurriculoId(SeccionMicrocurriculo seccionMicrocurriculoId) {
         this.seccionMicrocurriculoId = seccionMicrocurriculoId;
-    }
-
-    @XmlTransient
-    public List<TablaInfo> getTablaInfoList() {
-        return tablaInfoList;
-    }
-
-    public void setTablaInfoList(List<TablaInfo> tablaInfoList) {
-        this.tablaInfoList = tablaInfoList;
     }
 
     @Override

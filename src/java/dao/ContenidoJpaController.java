@@ -5,7 +5,6 @@
  */
 package dao;
 
-import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dto.Contenido;
 import java.io.Serializable;
@@ -14,10 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import dto.SeccionMicrocurriculo;
-import dto.Cumplimiento;
-import java.util.ArrayList;
 import java.util.List;
-import dto.TablaInfo;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -37,12 +33,6 @@ public class ContenidoJpaController implements Serializable {
     }
 
     public void create(Contenido contenido) {
-        if (contenido.getCumplimientoList() == null) {
-            contenido.setCumplimientoList(new ArrayList<Cumplimiento>());
-        }
-        if (contenido.getTablaInfoList() == null) {
-            contenido.setTablaInfoList(new ArrayList<TablaInfo>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -52,40 +42,10 @@ public class ContenidoJpaController implements Serializable {
                 seccionMicrocurriculoId = em.getReference(seccionMicrocurriculoId.getClass(), seccionMicrocurriculoId.getId());
                 contenido.setSeccionMicrocurriculoId(seccionMicrocurriculoId);
             }
-            List<Cumplimiento> attachedCumplimientoList = new ArrayList<Cumplimiento>();
-            for (Cumplimiento cumplimientoListCumplimientoToAttach : contenido.getCumplimientoList()) {
-                cumplimientoListCumplimientoToAttach = em.getReference(cumplimientoListCumplimientoToAttach.getClass(), cumplimientoListCumplimientoToAttach.getMateriaPeriodoGrupoId());
-                attachedCumplimientoList.add(cumplimientoListCumplimientoToAttach);
-            }
-            contenido.setCumplimientoList(attachedCumplimientoList);
-            List<TablaInfo> attachedTablaInfoList = new ArrayList<TablaInfo>();
-            for (TablaInfo tablaInfoListTablaInfoToAttach : contenido.getTablaInfoList()) {
-                tablaInfoListTablaInfoToAttach = em.getReference(tablaInfoListTablaInfoToAttach.getClass(), tablaInfoListTablaInfoToAttach.getTablaInfoPK());
-                attachedTablaInfoList.add(tablaInfoListTablaInfoToAttach);
-            }
-            contenido.setTablaInfoList(attachedTablaInfoList);
             em.persist(contenido);
             if (seccionMicrocurriculoId != null) {
                 seccionMicrocurriculoId.getContenidoList().add(contenido);
                 seccionMicrocurriculoId = em.merge(seccionMicrocurriculoId);
-            }
-            for (Cumplimiento cumplimientoListCumplimiento : contenido.getCumplimientoList()) {
-                Contenido oldContenidoIdOfCumplimientoListCumplimiento = cumplimientoListCumplimiento.getContenidoId();
-                cumplimientoListCumplimiento.setContenidoId(contenido);
-                cumplimientoListCumplimiento = em.merge(cumplimientoListCumplimiento);
-                if (oldContenidoIdOfCumplimientoListCumplimiento != null) {
-                    oldContenidoIdOfCumplimientoListCumplimiento.getCumplimientoList().remove(cumplimientoListCumplimiento);
-                    oldContenidoIdOfCumplimientoListCumplimiento = em.merge(oldContenidoIdOfCumplimientoListCumplimiento);
-                }
-            }
-            for (TablaInfo tablaInfoListTablaInfo : contenido.getTablaInfoList()) {
-                Contenido oldContenidoIdOfTablaInfoListTablaInfo = tablaInfoListTablaInfo.getContenidoId();
-                tablaInfoListTablaInfo.setContenidoId(contenido);
-                tablaInfoListTablaInfo = em.merge(tablaInfoListTablaInfo);
-                if (oldContenidoIdOfTablaInfoListTablaInfo != null) {
-                    oldContenidoIdOfTablaInfoListTablaInfo.getTablaInfoList().remove(tablaInfoListTablaInfo);
-                    oldContenidoIdOfTablaInfoListTablaInfo = em.merge(oldContenidoIdOfTablaInfoListTablaInfo);
-                }
             }
             em.getTransaction().commit();
         } finally {
@@ -95,7 +55,7 @@ public class ContenidoJpaController implements Serializable {
         }
     }
 
-    public void edit(Contenido contenido) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Contenido contenido) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -103,48 +63,10 @@ public class ContenidoJpaController implements Serializable {
             Contenido persistentContenido = em.find(Contenido.class, contenido.getId());
             SeccionMicrocurriculo seccionMicrocurriculoIdOld = persistentContenido.getSeccionMicrocurriculoId();
             SeccionMicrocurriculo seccionMicrocurriculoIdNew = contenido.getSeccionMicrocurriculoId();
-            List<Cumplimiento> cumplimientoListOld = persistentContenido.getCumplimientoList();
-            List<Cumplimiento> cumplimientoListNew = contenido.getCumplimientoList();
-            List<TablaInfo> tablaInfoListOld = persistentContenido.getTablaInfoList();
-            List<TablaInfo> tablaInfoListNew = contenido.getTablaInfoList();
-            List<String> illegalOrphanMessages = null;
-            for (Cumplimiento cumplimientoListOldCumplimiento : cumplimientoListOld) {
-                if (!cumplimientoListNew.contains(cumplimientoListOldCumplimiento)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Cumplimiento " + cumplimientoListOldCumplimiento + " since its contenidoId field is not nullable.");
-                }
-            }
-            for (TablaInfo tablaInfoListOldTablaInfo : tablaInfoListOld) {
-                if (!tablaInfoListNew.contains(tablaInfoListOldTablaInfo)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain TablaInfo " + tablaInfoListOldTablaInfo + " since its contenidoId field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             if (seccionMicrocurriculoIdNew != null) {
                 seccionMicrocurriculoIdNew = em.getReference(seccionMicrocurriculoIdNew.getClass(), seccionMicrocurriculoIdNew.getId());
                 contenido.setSeccionMicrocurriculoId(seccionMicrocurriculoIdNew);
             }
-            List<Cumplimiento> attachedCumplimientoListNew = new ArrayList<Cumplimiento>();
-            for (Cumplimiento cumplimientoListNewCumplimientoToAttach : cumplimientoListNew) {
-                cumplimientoListNewCumplimientoToAttach = em.getReference(cumplimientoListNewCumplimientoToAttach.getClass(), cumplimientoListNewCumplimientoToAttach.getMateriaPeriodoGrupoId());
-                attachedCumplimientoListNew.add(cumplimientoListNewCumplimientoToAttach);
-            }
-            cumplimientoListNew = attachedCumplimientoListNew;
-            contenido.setCumplimientoList(cumplimientoListNew);
-            List<TablaInfo> attachedTablaInfoListNew = new ArrayList<TablaInfo>();
-            for (TablaInfo tablaInfoListNewTablaInfoToAttach : tablaInfoListNew) {
-                tablaInfoListNewTablaInfoToAttach = em.getReference(tablaInfoListNewTablaInfoToAttach.getClass(), tablaInfoListNewTablaInfoToAttach.getTablaInfoPK());
-                attachedTablaInfoListNew.add(tablaInfoListNewTablaInfoToAttach);
-            }
-            tablaInfoListNew = attachedTablaInfoListNew;
-            contenido.setTablaInfoList(tablaInfoListNew);
             contenido = em.merge(contenido);
             if (seccionMicrocurriculoIdOld != null && !seccionMicrocurriculoIdOld.equals(seccionMicrocurriculoIdNew)) {
                 seccionMicrocurriculoIdOld.getContenidoList().remove(contenido);
@@ -153,28 +75,6 @@ public class ContenidoJpaController implements Serializable {
             if (seccionMicrocurriculoIdNew != null && !seccionMicrocurriculoIdNew.equals(seccionMicrocurriculoIdOld)) {
                 seccionMicrocurriculoIdNew.getContenidoList().add(contenido);
                 seccionMicrocurriculoIdNew = em.merge(seccionMicrocurriculoIdNew);
-            }
-            for (Cumplimiento cumplimientoListNewCumplimiento : cumplimientoListNew) {
-                if (!cumplimientoListOld.contains(cumplimientoListNewCumplimiento)) {
-                    Contenido oldContenidoIdOfCumplimientoListNewCumplimiento = cumplimientoListNewCumplimiento.getContenidoId();
-                    cumplimientoListNewCumplimiento.setContenidoId(contenido);
-                    cumplimientoListNewCumplimiento = em.merge(cumplimientoListNewCumplimiento);
-                    if (oldContenidoIdOfCumplimientoListNewCumplimiento != null && !oldContenidoIdOfCumplimientoListNewCumplimiento.equals(contenido)) {
-                        oldContenidoIdOfCumplimientoListNewCumplimiento.getCumplimientoList().remove(cumplimientoListNewCumplimiento);
-                        oldContenidoIdOfCumplimientoListNewCumplimiento = em.merge(oldContenidoIdOfCumplimientoListNewCumplimiento);
-                    }
-                }
-            }
-            for (TablaInfo tablaInfoListNewTablaInfo : tablaInfoListNew) {
-                if (!tablaInfoListOld.contains(tablaInfoListNewTablaInfo)) {
-                    Contenido oldContenidoIdOfTablaInfoListNewTablaInfo = tablaInfoListNewTablaInfo.getContenidoId();
-                    tablaInfoListNewTablaInfo.setContenidoId(contenido);
-                    tablaInfoListNewTablaInfo = em.merge(tablaInfoListNewTablaInfo);
-                    if (oldContenidoIdOfTablaInfoListNewTablaInfo != null && !oldContenidoIdOfTablaInfoListNewTablaInfo.equals(contenido)) {
-                        oldContenidoIdOfTablaInfoListNewTablaInfo.getTablaInfoList().remove(tablaInfoListNewTablaInfo);
-                        oldContenidoIdOfTablaInfoListNewTablaInfo = em.merge(oldContenidoIdOfTablaInfoListNewTablaInfo);
-                    }
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -193,7 +93,7 @@ public class ContenidoJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -204,24 +104,6 @@ public class ContenidoJpaController implements Serializable {
                 contenido.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The contenido with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            List<Cumplimiento> cumplimientoListOrphanCheck = contenido.getCumplimientoList();
-            for (Cumplimiento cumplimientoListOrphanCheckCumplimiento : cumplimientoListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Contenido (" + contenido + ") cannot be destroyed since the Cumplimiento " + cumplimientoListOrphanCheckCumplimiento + " in its cumplimientoList field has a non-nullable contenidoId field.");
-            }
-            List<TablaInfo> tablaInfoListOrphanCheck = contenido.getTablaInfoList();
-            for (TablaInfo tablaInfoListOrphanCheckTablaInfo : tablaInfoListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Contenido (" + contenido + ") cannot be destroyed since the TablaInfo " + tablaInfoListOrphanCheckTablaInfo + " in its tablaInfoList field has a non-nullable contenidoId field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             SeccionMicrocurriculo seccionMicrocurriculoId = contenido.getSeccionMicrocurriculoId();
             if (seccionMicrocurriculoId != null) {

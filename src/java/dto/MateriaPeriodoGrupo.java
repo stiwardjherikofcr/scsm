@@ -6,6 +6,7 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,9 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,8 +45,8 @@ public class MateriaPeriodoGrupo implements Serializable {
     @Basic(optional = false)
     @Column(name = "grupo")
     private String grupo;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "materiaPeriodoGrupo")
-    private Cumplimiento cumplimiento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "materiaPeriodoGrupo")
+    private List<Cumplimiento> cumplimientoList;
     @JoinColumn(name = "docente_codigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Docente docenteCodigo;
@@ -80,12 +82,13 @@ public class MateriaPeriodoGrupo implements Serializable {
         this.grupo = grupo;
     }
 
-    public Cumplimiento getCumplimiento() {
-        return cumplimiento;
+    @XmlTransient
+    public List<Cumplimiento> getCumplimientoList() {
+        return cumplimientoList;
     }
 
-    public void setCumplimiento(Cumplimiento cumplimiento) {
-        this.cumplimiento = cumplimiento;
+    public void setCumplimientoList(List<Cumplimiento> cumplimientoList) {
+        this.cumplimientoList = cumplimientoList;
     }
 
     public Docente getDocenteCodigo() {
