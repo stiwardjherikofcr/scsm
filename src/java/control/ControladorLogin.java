@@ -8,6 +8,7 @@ package control;
 import dto.Pensum;
 import dto.Usuario;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import negocio.AdministrarDocentes;
 import negocio.AdministrarPensum;
+import negocio.AdministrarSeguimiento;
 import negocio.Login;
 
 /**
@@ -61,11 +63,17 @@ public class ControladorLogin extends HttpServlet {
     }
 
     public void cargarInformacion(HttpServletRequest request, HttpServletResponse response, Usuario usuario) {
+        AdministrarSeguimiento adminSeg = new AdministrarSeguimiento();
         request.getSession().setAttribute("usuario", usuario);
+        List<Object[]> info = null;
         if (usuario.getRolId().getId() == 1) {
             cargarLastPensum(request, response, usuario);
+            info = adminSeg.getLastSeguimientoGeneral(usuario.getDocente().getProgramaCodigo());
             request.getSession().setAttribute("numDocActivos", new AdministrarDocentes().getNumDocentesActivos());
+        }else{
+            info = adminSeg.getLastSeguimientoGeneral(usuario.getDocente());
         }
+        request.getSession().setAttribute("listSeguimiento", info);
     }
     
     public void cargarLastPensum(HttpServletRequest request, HttpServletResponse response, dto.Usuario usuario) {

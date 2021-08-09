@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -57,9 +58,11 @@ public class Unidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "horas_independiente")
     private int horasIndependiente;
-    @JoinColumn(name = "seccion_microcurriculo_id", referencedColumnName = "id")
+    @JoinColumns({
+        @JoinColumn(name = "microcurriculo_materia_codigo", referencedColumnName = "materia_codigo")
+        , @JoinColumn(name = "microcurriculo_materia_pensum_codigo", referencedColumnName = "materia_pensum_codigo")})
     @ManyToOne(optional = false)
-    private SeccionMicrocurriculo seccionMicrocurriculoId;
+    private Microcurriculo microcurriculo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidadId")
     private List<ContenidoUnidad> contenidoUnidadList;
 
@@ -118,12 +121,12 @@ public class Unidad implements Serializable {
         this.horasIndependiente = horasIndependiente;
     }
 
-    public SeccionMicrocurriculo getSeccionMicrocurriculoId() {
-        return seccionMicrocurriculoId;
+    public Microcurriculo getMicrocurriculo() {
+        return microcurriculo;
     }
 
-    public void setSeccionMicrocurriculoId(SeccionMicrocurriculo seccionMicrocurriculoId) {
-        this.seccionMicrocurriculoId = seccionMicrocurriculoId;
+    public void setMicrocurriculo(Microcurriculo microcurriculo) {
+        this.microcurriculo = microcurriculo;
     }
 
     @XmlTransient

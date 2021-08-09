@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import negocio.AdministrarMicrocurriculo;
+import negocio.AdministrarPrograma;
 import negocio.MicrocurriculoPDF;
 import negocio.RegistroMicrocurriculoBackground;
 import org.apache.commons.io.IOUtils;
@@ -79,17 +80,14 @@ public class ControladorMicrocurriculo extends HttpServlet {
             }
         }
     }
-
-    public static void cargarMicrocurriculo() {
-    }
-
+    
     public void listar(HttpServletRequest request, HttpServletResponse response) throws IOException {
         AdministrarMicrocurriculo adminMicrocurriculo = new AdministrarMicrocurriculo();
         Usuario usuario = (dto.Usuario) request.getSession().getAttribute("usuario");
         List<Materia> materias = null;
         String url = "";
         if (usuario.getRolId().getId() == 1) {
-            materias = adminMicrocurriculo.obtenerTodasMateria(usuario.getDocente().getProgramaCodigo());
+            materias = adminMicrocurriculo.obtenerTodasMateria(new AdministrarPrograma().refreshPrograma(usuario.getDocente().getProgramaCodigo()));
             url = "CSM_Software/CSM/director/dashboard/microcurriculo/consultar-microcurriculo.jsp";
         } else {
             materias = adminMicrocurriculo.obtenerMateriasDocentes(usuario);
@@ -159,20 +157,14 @@ public class ControladorMicrocurriculo extends HttpServlet {
 
     public void registrarInformacionTablas(HttpServletRequest request, HttpServletResponse response, AdministrarMicrocurriculo adminM, Microcurriculo microcurriculo) throws Exception {
         String contenidos[][][] = new String[2][][];
-        SeccionMicrocurriculo seccionUnidad = null;
         for (SeccionMicrocurriculo seccion : microcurriculo.getSeccionMicrocurriculoList()) {
-            if(seccion.getSeccionId().getId()==1) seccionUnidad = seccion;
             if (seccion.getSeccionId().getTipoSeccionId().getId() == 2) {
-                System.out.println(seccion.getSeccionId().getId());
-                contenidos[seccion.getSeccionId().getId()==1 ? 0 : 1] = this.getInfoTabla(request, seccion);
-                for(String contents[] : contenidos[seccion.getSeccionId().getId()==1 ? 0 : 1]){
-                    System.out.println(java.util.Arrays.asList(contents));
-                }
-                }
+                contenidos[seccion.getSeccionId().getId() == 1 ? 0 : 1] = this.getInfoTabla(request, seccion);
             }
+        }
         String idContentsExist[] = request.getParameterValues("old_content");
         String idUnidsExist[] = request.getParameterValues("old_unit");
-        adminM.updateUnidades(contenidos, new String[][]{idUnidsExist, idContentsExist}, seccionUnidad);
+        adminM.updateUnidades(contenidos, new String[][]{idUnidsExist, idContentsExist}, microcurriculo);
     }
 
     private String[][] getInfoTabla(HttpServletRequest request, SeccionMicrocurriculo seccion) {
@@ -181,7 +173,6 @@ public class ControladorMicrocurriculo extends HttpServlet {
         String contenidos[][] = new String[cantidadFilas][seccion.getTablaSeccion().getTablaId().getEncabezadoList().size()];
         for (int i = 0; i < contenidos.length; i++) {
             for (int j = 0; j < contenidos[i].length; j++) {
-                System.out.println("contenido-" + seccion.getSeccionId().getId() + "-" + i + "-" + j);
                 contenidos[i][j] = (String) request.getParameter("contenido-" + seccion.getSeccionId().getId() + "-" + i + "-" + j);
             }
         }
@@ -203,9 +194,9 @@ public class ControladorMicrocurriculo extends HttpServlet {
         int areaFormacion = Integer.parseInt(request.getParameter("areasFormacion"));
         Microcurriculo microcurriculo = (dto.Microcurriculo) request.getSession().getAttribute("microcurriculo");
 
-//        adminMicrocurriculo.actualizarAreaFormacionMicrocurriculo(microcurriculo, areaFormacion);
+        adminMicrocurriculo.actualizarAreaFormacionMicrocurriculo(microcurriculo, areaFormacion);
         registrarInformacionTablas(request, response, adminMicrocurriculo, microcurriculo);
-//        registrarSecciones(request, response, adminMicrocurriculo, microcurriculo);
+        registrarSecciones(request, response, adminMicrocurriculo, microcurriculo);
 
         response.sendRedirect("CSM_Software/CSM/director/dashboard/microcurriculo/consultar-microcurriculo.jsp");
     }
@@ -261,7 +252,7 @@ public class ControladorMicrocurriculo extends HttpServlet {
                 build.append(seccion.getSeccionId().getNombre().toUpperCase());
                 build.append("</b></h6>");
                 if (seccion.getSeccionId().getId() == 1) {
-                    for (Unidad unidad : seccion.getUnidadList()) {
+                    for (Unidad unidad : micro.getUnidadList()) {
                         build.append("<p>UNIDAD ");
                         build.append(unidad.getNum());
                         build.append(". ");

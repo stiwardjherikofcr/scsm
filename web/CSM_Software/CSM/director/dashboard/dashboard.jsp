@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="dto.Pensum"%>
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -273,51 +274,11 @@
                     ["Materia", "Porcentaje", {
                             role: "style"
                         }],
-                    ["Calculo Diferencial", 50, "#a81f2b"],
-                    ["Matematicas Discretas", 10, "#a81f2b"],
-                    ["Fundamentos de Programacion", 25, "#a81f2b"],
-                    ["Introduccion Ing. Sistemas", 30, "#a81f2b"],
-                    ["Comunicacion I", 50, "#a81f2b"],
-                    ["Intro Vida Universitaria", 25, "#a81f2b"],
-                    ["Calculo Integral", 89, "#a81f2b"],
-                    ["Algebra Lineal", 100, "#a81f2b"],
-                    ["Fisica Mecanica", 19, "#a81f2b"],
-                    ["Programacion Orientada a Objectos", 30, "#a81f2b"],
-                    ["Comunicacion II", 75, "#a81f2b"],
-                    ["Seminario Integrador I", 50, "#a81f2b"],
-                    ["Calculo Vectorial", 50, "#a81f2b"],
-                    ["Fisica Electromagnetica", 27, "#a81f2b"],
-                    ["Estructuras de Datos", 50, "#a81f2b"],
-                    ["Programacion Orientada a Objectos II", 10, "#a81f2b"],
-                    ["Seminario de Investigacion I", 25, "#a81f2b"],
-                    ["Ecuaciones Diferenciales", 30, "#a81f2b"],
-                    ["Probabilidad y Estadistica", 50, "#a81f2b"],
-                    ["Ondas y Particulas", 25, "#a81f2b"],
-                    ["Analisis de Algoritmos", 89, "#a81f2b"],
-                    ["Teoria de la Computación", 100, "#a81f2b"],
-                    ["Analisis Numerico", 19, "#a81f2b"],
-                    ["Investigacion de Operaciones", 30, "#a81f2b"],
-                    ["Electronica", 75, "#a81f2b"],
-                    ["Arquitectura de Computadores", 50, "#a81f2b"],
-                    ["Seminario de Investigacion II", 50, "#a81f2b"],
-                    ["Sistemas Operativos", 27, "#a81f2b"],
-                    ["Bases de Datos", 50, "#a81f2b"],
-                    ["Programacion Web", 10, "#a81f2b"],
-                    ["Constitucion y Civismo", 25, "#a81f2b"],
-                    ["Planeacion Estrategica de Sistemas Informacion", 30, "#a81f2b"],
-                    ["Teoria General de las Comunicaciones", 50, "#a81f2b"],
-                    ["Analisis y Diseño de Sistemas", 25, "#a81f2b"],
-                    ["Seminario de Investigacion III", 89, "#a81f2b"],
-                    ["Etica Profesional", 100, "#a81f2b"],
-                    ["Administracion de Proyectos Informaticos", 19, "#a81f2b"],
-                    ["Programacion Orientada a Objectos", 30, "#a81f2b"],
-                    ["Redes de Computadores", 75, "#a81f2b"],
-                    ["Ingenieria de Software", 50, "#a81f2b"],
-                    ["Formulacion y Evaluacion de Proyectos de Sistemas", 50, "#a81f2b"],
-                    ["Seminario Integrador III", 27, "#a81f2b"],
-                    ["Arquitectura de Software", 37, "#a81f2b"],
-                    ["Gestion de Tics", 77, "#a81f2b"],
-                    ["Practica en Ing. Sistemas", 87, "#a81f2b"]
+                    <%
+                        List<Object[]> listSeg = (List<Object[]>)request.getSession().getAttribute("listSeguimiento"); 
+                        for(Object row[]: listSeg){%>
+                            ["<%=row[1] %>", <%=(int)row[4]%>, "#a81f2b"],
+                    <%}%>
                 ]);
 
 
@@ -341,6 +302,13 @@
                     legend: {
                         position: "none"
                     },
+                    vAxis: {
+                        viewWindowMode:'explicit',
+                        viewWindow: {
+                          max:100,
+                          min:0
+                        }
+                    }
                 };
                 var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
                 chart.draw(view, options);

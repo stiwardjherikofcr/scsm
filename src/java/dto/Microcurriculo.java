@@ -47,6 +47,8 @@ public class Microcurriculo implements Serializable {
         , @JoinColumn(name = "materia_pensum_codigo", referencedColumnName = "pensum_codigo", insertable = false, updatable = false)})
     @OneToOne(optional = false)
     private Materia materia;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "microcurriculo")
+    private List<Unidad> unidadList;
 
     public Microcurriculo() {
     }
@@ -90,6 +92,15 @@ public class Microcurriculo implements Serializable {
 
     public void setMateria(Materia materia) {
         this.materia = materia;
+    }
+
+    @XmlTransient
+    public List<Unidad> getUnidadList() {
+        return unidadList;
+    }
+
+    public void setUnidadList(List<Unidad> unidadList) {
+        this.unidadList = unidadList;
     }
 
     @Override

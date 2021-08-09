@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`cambio` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `estado_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_cambios_estado1_idx` (`estado_id` ASC) VISIBLE,
+  INDEX `fk_cambios_estado1_idx` (`estado_id` ASC),
   CONSTRAINT `fk_cambios_estado1`
     FOREIGN KEY (`estado_id`)
     REFERENCES `scsm`.`estado` (`id`)
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`departamento` (
   `nombre` VARCHAR(100) NOT NULL,
   `facultad_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_departamento_facultad1_idx` (`facultad_id` ASC) VISIBLE,
+  INDEX `fk_departamento_facultad1_idx` (`facultad_id` ASC),
   CONSTRAINT `fk_departamento_facultad1`
     FOREIGN KEY (`facultad_id`)
     REFERENCES `scsm`.`facultad` (`id`)
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`programa` (
   `departamento_id` INT(11) NOT NULL,
   `imagen` LONGBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`codigo`),
-  INDEX `fk_programa_facultad1_idx` (`departamento_id` ASC) VISIBLE,
+  INDEX `fk_programa_facultad1_idx` (`departamento_id` ASC),
   CONSTRAINT `fk_programa_facultad1`
     FOREIGN KEY (`departamento_id`)
     REFERENCES `scsm`.`departamento` (`id`)
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`pensum` (
   `fecha_fin_vigencia` DATE NULL DEFAULT NULL,
   `estado_visualizacion` TINYINT(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`codigo`, `programa_codigo`),
-  INDEX `fk_pensum_programa1_idx` (`programa_codigo` ASC) VISIBLE,
+  INDEX `fk_pensum_programa1_idx` (`programa_codigo` ASC),
   CONSTRAINT `fk_pensum_programa1`
     FOREIGN KEY (`programa_codigo`)
     REFERENCES `scsm`.`programa` (`codigo`)
@@ -155,8 +155,8 @@ CREATE TABLE IF NOT EXISTS `scsm`.`materia` (
   `hti` INT(11) NOT NULL,
   `cr` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`codigo`, `pensum_codigo`),
-  INDEX `fk_materia_pensum1_idx` (`pensum_codigo` ASC, `programa_codigo` ASC) VISIBLE,
-  INDEX `tipo_id` (`tipo_id` ASC) VISIBLE,
+  INDEX `fk_materia_pensum1_idx` (`pensum_codigo` ASC, `programa_codigo` ASC),
+  INDEX `tipo_id` (`tipo_id` ASC),
   CONSTRAINT `fk_materia_pensum1`
     FOREIGN KEY (`pensum_codigo` , `programa_codigo`)
     REFERENCES `scsm`.`pensum` (`codigo` , `programa_codigo`)
@@ -177,8 +177,8 @@ CREATE TABLE IF NOT EXISTS `scsm`.`microcurriculo` (
   `materia_pensum_codigo` INT(11) NOT NULL,
   `area_de_formacion_id` INT(11) NOT NULL,
   PRIMARY KEY (`materia_codigo`, `materia_pensum_codigo`),
-  INDEX `fk_microcurriculo_area_de_formacion1_idx` (`area_de_formacion_id` ASC) VISIBLE,
-  INDEX `fk_microcurriculo_materia1_idx` (`materia_codigo` ASC, `materia_pensum_codigo` ASC) VISIBLE,
+  INDEX `fk_microcurriculo_area_de_formacion1_idx` (`area_de_formacion_id` ASC),
+  INDEX `fk_microcurriculo_materia1_idx` (`materia_codigo` ASC, `materia_pensum_codigo` ASC),
   CONSTRAINT `fk_microcurriculo_area_de_formacion1`
     FOREIGN KEY (`area_de_formacion_id`)
     REFERENCES `scsm`.`area_formacion` (`id`)
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`seccion` (
   `nombre` VARCHAR(100) NOT NULL,
   `tipo_seccion_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_seccion_tipo_seccion1_idx` (`tipo_seccion_id` ASC) VISIBLE,
+  INDEX `fk_seccion_tipo_seccion1_idx` (`tipo_seccion_id` ASC),
   CONSTRAINT `fk_seccion_tipo_seccion1`
     FOREIGN KEY (`tipo_seccion_id`)
     REFERENCES `scsm`.`tipo_seccion` (`id`)
@@ -235,8 +235,8 @@ CREATE TABLE IF NOT EXISTS `scsm`.`seccion_microcurriculo` (
   `microcurriculo_materia_codigo` INT(11) NOT NULL,
   `microcurriculo_materia_pensum_codigo` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_seccion_microcurriculo_seccion1_idx` (`seccion_id` ASC) VISIBLE,
-  INDEX `fk_seccion_microcurriculo_microcurriculo1_idx` (`microcurriculo_materia_codigo` ASC, `microcurriculo_materia_pensum_codigo` ASC) VISIBLE,
+  INDEX `fk_seccion_microcurriculo_seccion1_idx` (`seccion_id` ASC),
+  INDEX `fk_seccion_microcurriculo_microcurriculo1_idx` (`microcurriculo_materia_codigo` ASC, `microcurriculo_materia_pensum_codigo` ASC),
   CONSTRAINT `fk_seccion_microcurriculo_microcurriculo1`
     FOREIGN KEY (`microcurriculo_materia_codigo` , `microcurriculo_materia_pensum_codigo`)
     REFERENCES `scsm`.`microcurriculo` (`materia_codigo` , `materia_pensum_codigo`)
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`contenido` (
   `cantidad_items_lista` INT(11) NOT NULL,
   `seccion_microcurriculo_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_contenido_seccion_microcurriculo1_idx` (`seccion_microcurriculo_id` ASC) VISIBLE,
+  INDEX `fk_contenido_seccion_microcurriculo1_idx` (`seccion_microcurriculo_id` ASC),
   CONSTRAINT `fk_contenido_seccion_microcurriculo1`
     FOREIGN KEY (`seccion_microcurriculo_id`)
     REFERENCES `scsm`.`seccion_microcurriculo` (`id`)
@@ -284,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`docente` (
   `estado` TINYINT(4) NOT NULL DEFAULT 1,
   `imagen` LONGBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`codigo`),
-  INDEX `fk_docente_programa1_idx` (`programa_codigo` ASC) VISIBLE,
+  INDEX `fk_docente_programa1_idx` (`programa_codigo` ASC),
   CONSTRAINT `fk_docente_programa1`
     FOREIGN KEY (`programa_codigo`)
     REFERENCES `scsm`.`programa` (`codigo`)
@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`encabezado` (
   `tabla_id` INT(11) NOT NULL,
   `encabezado` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`tabla_id`, `columna`),
-  INDEX `fk_encabezado_tabla1_idx` (`tabla_id` ASC) VISIBLE,
+  INDEX `fk_encabezado_tabla1_idx` (`tabla_id` ASC),
   CONSTRAINT `fk_encabezado_tabla1`
     FOREIGN KEY (`tabla_id`)
     REFERENCES `scsm`.`tabla` (`id`)
@@ -334,7 +334,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`equivalencia_materia` (
   `materia_codigo` INT(11) NOT NULL,
   `materia_pensum_codigo` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_equivalencia_materia_materia1_idx` (`materia_codigo` ASC, `materia_pensum_codigo` ASC) VISIBLE,
+  INDEX `fk_equivalencia_materia_materia1_idx` (`materia_codigo` ASC, `materia_pensum_codigo` ASC),
   CONSTRAINT `fk_equivalencia_materia_materia1`
     FOREIGN KEY (`materia_codigo` , `materia_pensum_codigo`)
     REFERENCES `scsm`.`materia` (`codigo` , `pensum_codigo`)
@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`materia_periodo` (
   `materia_pensum_codigo` INT(11) NOT NULL,
   `anio` INT(11) NOT NULL,
   `periodo` INT(11) NOT NULL,
-  INDEX `fk_materia_periodo_materia1_idx` (`codigo_materia` ASC, `materia_pensum_codigo` ASC) VISIBLE,
+  INDEX `fk_materia_periodo_materia1_idx` (`codigo_materia` ASC, `materia_pensum_codigo` ASC),
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_materia_periodo_materia1`
     FOREIGN KEY (`codigo_materia` , `materia_pensum_codigo`)
@@ -373,9 +373,9 @@ CREATE TABLE IF NOT EXISTS `scsm`.`materia_periodo_grupo` (
   `grupo` VARCHAR(2) NOT NULL,
   `docente_codigo` INT(11) NOT NULL,
   `materia_periodo_id` INT NOT NULL,
-  INDEX `fk_materia_periodo_grupo_docente1_idx` (`docente_codigo` ASC) VISIBLE,
+  INDEX `fk_materia_periodo_grupo_docente1_idx` (`docente_codigo` ASC),
   PRIMARY KEY (`id`),
-  INDEX `fk_materia_periodo_grupo_materia_periodo1_idx` (`materia_periodo_id` ASC) VISIBLE,
+  INDEX `fk_materia_periodo_grupo_materia_periodo1_idx` (`materia_periodo_id` ASC),
   CONSTRAINT `fk_materia_periodo_grupo_docente1`
     FOREIGN KEY (`docente_codigo`)
     REFERENCES `scsm`.`docente` (`codigo`)
@@ -400,8 +400,8 @@ CREATE TABLE IF NOT EXISTS `scsm`.`prerrequisito_materia` (
   `materia_codigo_prerreq` INT(11) NOT NULL,
   `materia_pensum_codigo_prerreq` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_prerrequisito_materia_materia1_idx` (`materia_codigo` ASC, `materia_pensum_codigo` ASC) VISIBLE,
-  INDEX `fk_prerrequisito_materia_materia2_idx` (`materia_codigo_prerreq` ASC, `materia_pensum_codigo_prerreq` ASC) VISIBLE,
+  INDEX `fk_prerrequisito_materia_materia1_idx` (`materia_codigo` ASC, `materia_pensum_codigo` ASC),
+  INDEX `fk_prerrequisito_materia_materia2_idx` (`materia_codigo_prerreq` ASC, `materia_pensum_codigo_prerreq` ASC),
   CONSTRAINT `fk_prerrequisito_materia_materia1`
     FOREIGN KEY (`materia_codigo` , `materia_pensum_codigo`)
     REFERENCES `scsm`.`materia` (`codigo` , `pensum_codigo`)
@@ -438,9 +438,9 @@ CREATE TABLE IF NOT EXISTS `scsm`.`seccion_cambio` (
   `seccion_microcurriculo_id_nuevo` INT(11) NOT NULL,
   `seccion_microcurriculo_id_antigua` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_seccion_cambio_cambio1_idx` (`cambio_id` ASC) VISIBLE,
-  INDEX `fk_seccion_cambio_seccion_microcurriculo1_idx` (`seccion_microcurriculo_id_nuevo` ASC) VISIBLE,
-  INDEX `fk_seccion_cambio_seccion_microcurriculo2_idx` (`seccion_microcurriculo_id_antigua` ASC) VISIBLE,
+  INDEX `fk_seccion_cambio_cambio1_idx` (`cambio_id` ASC),
+  INDEX `fk_seccion_cambio_seccion_microcurriculo1_idx` (`seccion_microcurriculo_id_nuevo` ASC),
+  INDEX `fk_seccion_cambio_seccion_microcurriculo2_idx` (`seccion_microcurriculo_id_antigua` ASC),
   CONSTRAINT `fk_seccion_cambio_cambio1`
     FOREIGN KEY (`cambio_id`)
     REFERENCES `scsm`.`cambio` (`id`)
@@ -479,7 +479,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`usuario` (
   `docente_codigo` INT(11) NOT NULL,
   `rol_id` INT(11) NOT NULL,
   `clave` VARCHAR(120) NOT NULL,
-  INDEX `fk_Usuario_Rol1_idx` (`rol_id` ASC) VISIBLE,
+  INDEX `fk_Usuario_Rol1_idx` (`rol_id` ASC),
   PRIMARY KEY (`docente_codigo`),
   CONSTRAINT `fk_Usuario_Rol1`
     FOREIGN KEY (`rol_id`)
@@ -507,7 +507,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`unidad` (
   `microcurriculo_materia_codigo` INT(11) NOT NULL,
   `microcurriculo_materia_pensum_codigo` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_unidad_microcurriculo1_idx` (`microcurriculo_materia_codigo` ASC, `microcurriculo_materia_pensum_codigo` ASC) VISIBLE,
+  INDEX `fk_unidad_microcurriculo1_idx` (`microcurriculo_materia_codigo` ASC, `microcurriculo_materia_pensum_codigo` ASC),
   CONSTRAINT `fk_unidad_microcurriculo1`
     FOREIGN KEY (`microcurriculo_materia_codigo` , `microcurriculo_materia_pensum_codigo`)
     REFERENCES `scsm`.`microcurriculo` (`materia_codigo` , `materia_pensum_codigo`)
@@ -525,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `scsm`.`contenido_unidad` (
   `trabajo_presencial` VARCHAR(2000) NULL,
   `trabajo_independiente` VARCHAR(2000) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_contenido_unidad_unidad1_idx` (`unidad_id` ASC) VISIBLE,
+  INDEX `fk_contenido_unidad_unidad1_idx` (`unidad_id` ASC),
   CONSTRAINT `fk_contenido_unidad_unidad1`
     FOREIGN KEY (`unidad_id`)
     REFERENCES `scsm`.`unidad` (`id`)
@@ -540,9 +540,9 @@ CREATE TABLE IF NOT EXISTS `scsm`.`cumplimiento` (
   `materia_periodo_grupo_id` INT(11) NOT NULL,
   `contenido_unidad_id` INT NOT NULL,
   `estado` TINYINT NOT NULL DEFAULT 0,
-  INDEX `fk_cumplimiento_materia_periodo_grupo1_idx` (`materia_periodo_grupo_id` ASC) VISIBLE,
+  INDEX `fk_cumplimiento_materia_periodo_grupo1_idx` (`materia_periodo_grupo_id` ASC),
   PRIMARY KEY (`materia_periodo_grupo_id`, `contenido_unidad_id`),
-  INDEX `fk_cumplimiento_contenido_unidad1_idx` (`contenido_unidad_id` ASC) VISIBLE,
+  INDEX `fk_cumplimiento_contenido_unidad1_idx` (`contenido_unidad_id` ASC),
   CONSTRAINT `fk_cumplimiento_materia_periodo_grupo1`
     FOREIGN KEY (`materia_periodo_grupo_id`)
     REFERENCES `scsm`.`materia_periodo_grupo` (`id`)
@@ -563,8 +563,8 @@ CREATE TABLE IF NOT EXISTS `scsm`.`tabla_seccion` (
   `seccion_microcurriculo_id` INT(11) NOT NULL,
   `tabla_id` INT(11) NOT NULL,
   PRIMARY KEY (`seccion_microcurriculo_id`),
-  INDEX `fk_tabla_seccion_seccion_microcurriculo1_idx` (`seccion_microcurriculo_id` ASC) VISIBLE,
-  INDEX `fk_tabla_seccion_tabla1_idx` (`tabla_id` ASC) VISIBLE,
+  INDEX `fk_tabla_seccion_seccion_microcurriculo1_idx` (`seccion_microcurriculo_id` ASC),
+  INDEX `fk_tabla_seccion_tabla1_idx` (`tabla_id` ASC),
   CONSTRAINT `fk_tabla_seccion_seccion_microcurriculo1`
     FOREIGN KEY (`seccion_microcurriculo_id`)
     REFERENCES `scsm`.`seccion_microcurriculo` (`id`)

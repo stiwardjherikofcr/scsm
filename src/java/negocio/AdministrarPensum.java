@@ -108,8 +108,10 @@ public class AdministrarPensum {
     }
 
     public Pensum getLastPensum(Usuario usuario) {
+        AdministrarPrograma adminPrograma = new AdministrarPrograma();
         Pensum pensumRes = null;
-        for (Pensum pensum : usuario.getDocente().getProgramaCodigo().getPensumList()) {
+        Programa programa = adminPrograma.refreshPrograma(usuario.getDocente().getProgramaCodigo());
+        for (Pensum pensum : programa.getPensumList()) {
             if (pensumRes != null && pensumRes.getPensumPK().getCodigo() < pensum.getPensumPK().getCodigo()) {
                 pensumRes = pensum;
             } else {

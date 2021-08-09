@@ -156,7 +156,7 @@
                                                 </div>
                                                 <div class="u-text">
                                                     <h4><%=user.getDocente().getNombre()%></h4>
-                                                    <p class="text-muted"><%=user.getRol().getRol()%></p>
+                                                    <p class="text-muted"><%=user.getRolId().getRol()%></p>
                                                 </div>
                                             </div>
                                         </li>
@@ -190,7 +190,7 @@
                                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                                         <span>
                                             <%=user.getDocente().getNombre()%>
-                                            <span class="user-level"><%=user.getRol().getRol()%></span>
+                                            <span class="user-level"><%=user.getRolId().getRol()%></span>
                                             <span class="caret"></span>
                                         </span>
                                     </a>

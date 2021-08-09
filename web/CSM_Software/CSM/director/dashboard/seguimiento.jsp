@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -130,17 +131,21 @@
                                                 </tr>
                                             </tfoot>
                                             <tbody>
+                                                <%
+                                                    List<Object[]> data = (List<Object[]>)request.getSession().getAttribute("listSeguimiento");
+                                                    for(Object row[]: data){
+                                                %>
                                                 <tr>
-                                                    <td>1155609</td>
-                                                    <td>SEMINARIO DE INTEGRADOR II</td>
-                                                    <td>2</td>
-                                                    <td>6</td>
+                                                    <td><%=row[0] %></td>
+                                                    <td><%=row[1] %></td>
+                                                    <td><%=row[2] %></td>
+                                                    <td><%=row[3] %></td>
                                                     <td>
                                                         <div class="progress" style="height: 6px;">
                                                             <div class="progress-bar bg-primary" role="progressbar"
-                                                                style="width: 10%" aria-valuenow="70" aria-valuemin="0"
+                                                                style="width: <%=row[4] %>%" aria-valuenow="70" aria-valuemin="0"
                                                                 aria-valuemax="100" data-toggle="tooltip"
-                                                                data-placement="top" title="" data-original-title="10%">
+                                                                data-placement="top" title="" data-original-title="<%=row[4] %>%">
                                                             </div>
                                                         </div>
                                                     </td>
@@ -161,151 +166,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>1155705</td>
-                                                    <td>ANALISIS Y DISEÑO DE SISTEMAS</td>
-                                                    <td>4</td>
-                                                    <td>7</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 6px;">
-                                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                                style="width: 30%" aria-valuenow="70" aria-valuemin="0"
-                                                                aria-valuemax="100" data-toggle="tooltip"
-                                                                data-placement="top" title="" data-original-title="30%">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button id="pensum" type="button" data-toggle="tooltip"
-                                                                title="" class="btn btn-link btn-dark"
-                                                                data-original-title="Ver" style="color: black;">
-                                                                <i class="fas fa-search"></i>
-                                                            </button>
-                                                            <button type="button" data-toggle="tooltip" title=""
-                                                                class="btn btn-link btn-dark"
-                                                                data-original-title="Exportar PDF" style="color: black;">
-                                                                <i class="fas fa-file-pdf"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1155706</td>
-                                                    <td>SEMINARIO DE INVESTIGACION III</td>
-                                                    <td>2</td>
-                                                    <td>7</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 6px;">
-                                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                                style="width: 45%" aria-valuenow="70" aria-valuemin="0"
-                                                                aria-valuemax="100" data-toggle="tooltip"
-                                                                data-placement="top" title="" data-original-title="45%">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button id="pensum" type="button" data-toggle="tooltip"
-                                                                title="" class="btn btn-link btn-dark"
-                                                                data-original-title="Ver" style="color: black;">
-                                                                <i class="fas fa-search"></i>
-                                                            </button>
-                                                            <button type="button" data-toggle="tooltip" title=""
-                                                                class="btn btn-link btn-dark"
-                                                                data-original-title="Exportar PDF" style="color: black;">
-                                                                <i class="fas fa-file-pdf"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1155708</td>
-                                                    <td>ADMINISTRACION DE PROYECTOS INFORMATICOS</td>
-                                                    <td>3</td>
-                                                    <td>7</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 6px;">
-                                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                                style="width: 65%" aria-valuenow="70" aria-valuemin="0"
-                                                                aria-valuemax="100" data-toggle="tooltip"
-                                                                data-placement="top" title="" data-original-title="65%">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button id="pensum" type="button" data-toggle="tooltip"
-                                                                title="" class="btn btn-link btn-dark"
-                                                                data-original-title="Ver" style="color: black;">
-                                                                <i class="fas fa-search"></i>
-                                                            </button>
-                                                            <button type="button" data-toggle="tooltip" title=""
-                                                                class="btn btn-link btn-dark"
-                                                                data-original-title="Exportar PDF" style="color: black;">
-                                                                <i class="fas fa-file-pdf"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1155704</td>
-                                                    <td>TEORIA GENERAL DE LAS COMUNICACIONES</td>
-                                                    <td>3</td>
-                                                    <td>6</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 6px;">
-                                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                                style="width: 90%" aria-valuenow="70" aria-valuemin="0"
-                                                                aria-valuemax="100" data-toggle="tooltip"
-                                                                data-placement="top" title="" data-original-title="90%">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button id="pensum" type="button" data-toggle="tooltip"
-                                                                title="" class="btn btn-link btn-dark"
-                                                                data-original-title="Ver" style="color: black;">
-                                                                <i class="fas fa-search"></i>
-                                                            </button>
-                                                            <button type="button" data-toggle="tooltip" title=""
-                                                                class="btn btn-link btn-dark"
-                                                                data-original-title="Exportar PDF" style="color: black;">
-                                                                <i class="fas fa-file-pdf"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1155704</td>
-                                                    <td>TEORIA GENERAL DE LAS COMUNICACIONES</td>
-                                                    <td>3</td>
-                                                    <td>7</td>
-                                                    <td>
-                                                        <div class="progress" style="height: 6px;">
-                                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                                style="width: 70%" aria-valuenow="70" aria-valuemin="0"
-                                                                aria-valuemax="100" data-toggle="tooltip"
-                                                                data-placement="top" title="" data-original-title="70%">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <button id="pensum" type="button" data-toggle="tooltip"
-                                                                title="" class="btn btn-link btn-dark"
-                                                                data-original-title="Ver" style="color: black;">
-                                                                <i class="fas fa-search"></i>
-                                                            </button>
-                                                            <button type="button" data-toggle="tooltip" title=""
-                                                                class="btn btn-link btn-dark"
-                                                                data-original-title="Exportar PDF" style="color: black;">
-                                                                <i class="fas fa-file-pdf"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                <%}%>
                                             </tbody>
                                         </table>
                                     </div>

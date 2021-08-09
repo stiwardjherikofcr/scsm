@@ -20,6 +20,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import dao.AreaFormacionJpaController;
 import dao.TipoMateriaJpaController;
 import dto.AreaFormacion;
+import dto.ContenidoUnidad;
 import dto.Encabezado;
 import dto.Materia;
 import dto.Microcurriculo;
@@ -28,6 +29,7 @@ import dto.SeccionMicrocurriculo;
 import dto.Tabla;
 import dto.TablaSeccion;
 import dto.TipoMateria;
+import dto.Unidad;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,7 +80,7 @@ public class MicrocurriculoPDF {
             this.doc.add(getParapgraph(sm.getSeccionId().getNombre(), 11, Paragraph.ALIGN_CENTER));
             this.createBlank();
             if (sm.getSeccionId().getTipoSeccionId().getId() == 2) {
-                this.doc.add(this.getTabla(sm.getTablaSeccion()));
+                this.doc.add(this.getTabla(sm));
             } else {
                 this.doc.add(getParapgraph(sm.getContenidoList().get(0).getTexto(), 9, Paragraph.ALIGN_JUSTIFIED));
             }
@@ -89,17 +91,29 @@ public class MicrocurriculoPDF {
         return is;
     }
     
-    private PdfPTable getTabla(TablaSeccion tm) throws DocumentException {
-        PdfPTable tab = new PdfPTable(tm.getTablaId().getEncabezadoList().size());
-        if (tm.getSeccionMicrocurriculoId() == 1) {
+    private PdfPTable getTabla(SeccionMicrocurriculo sm) throws DocumentException {
+        PdfPTable tab = new PdfPTable(sm.getTablaSeccion().getTablaId().getEncabezadoList().size());
+        tab.setWidthPercentage(100);
+        this.configEnca(tab, sm.getTablaSeccion().getTablaId());
+        if (sm.getSeccionId().getId() == 1) {
             tab.setWidths(new int[]{1, 3, 1, 1, 1});
         }
-        tab.setWidthPercentage(100);
-        this.configEnca(tab, tm.getTablaId());
-        String[][] infoOrder = this.getOrder(tm.getTablaInfoList(), tm.getTablaId().getEncabezadoList().size());
-        for (String x[] : infoOrder) {
-            for (String y : x) {
-                tab.addCell(getParapgraph(y, 9, Paragraph.ALIGN_CENTER));
+        int i=0;
+        for(Unidad unidad: this.m.getUnidadList()){
+            if (sm.getSeccionId().getId() == 1) {
+                if(i==0)tab.setWidths(new int[]{1, 3, 1, 1, 1});
+                tab.addCell(getParapgraph(""+unidad.getNum(), 9, Paragraph.ALIGN_CENTER));
+                tab.addCell(getParapgraph(unidad.getNombre(), 9, Paragraph.ALIGN_CENTER));
+                tab.addCell(getParapgraph(""+unidad.getHorasPresencial(), 9, Paragraph.ALIGN_CENTER));
+                tab.addCell(getParapgraph(""+unidad.getHorasIndependiente(), 9, Paragraph.ALIGN_CENTER));
+                tab.addCell(getParapgraph(""+(unidad.getHorasIndependiente()+unidad.getHorasIndependiente()), 9, Paragraph.ALIGN_CENTER));
+            }else{
+                for(ContenidoUnidad content: unidad.getContenidoUnidadList()){
+                    tab.addCell(getParapgraph(""+unidad.getNum(), 9, Paragraph.ALIGN_CENTER));
+                    tab.addCell(getParapgraph(content.getContenido(), 9, Paragraph.ALIGN_CENTER));
+                    tab.addCell(getParapgraph(content.getTrabajoPresencial(), 9, Paragraph.ALIGN_CENTER));
+                    tab.addCell(getParapgraph(content.getTrabajoIndependiente(), 9, Paragraph.ALIGN_CENTER));
+                }
             }
         }
         return tab;

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import dto.SeccionCambio;
 import dto.SeccionMicrocurriculo;
-import dto.Unidad;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -48,9 +47,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
         }
         if (seccionMicrocurriculo.getSeccionCambioList1() == null) {
             seccionMicrocurriculo.setSeccionCambioList1(new ArrayList<SeccionCambio>());
-        }
-        if (seccionMicrocurriculo.getUnidadList() == null) {
-            seccionMicrocurriculo.setUnidadList(new ArrayList<Unidad>());
         }
         EntityManager em = null;
         try {
@@ -89,12 +85,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
                 attachedSeccionCambioList1.add(seccionCambioList1SeccionCambioToAttach);
             }
             seccionMicrocurriculo.setSeccionCambioList1(attachedSeccionCambioList1);
-            List<Unidad> attachedUnidadList = new ArrayList<Unidad>();
-            for (Unidad unidadListUnidadToAttach : seccionMicrocurriculo.getUnidadList()) {
-                unidadListUnidadToAttach = em.getReference(unidadListUnidadToAttach.getClass(), unidadListUnidadToAttach.getId());
-                attachedUnidadList.add(unidadListUnidadToAttach);
-            }
-            seccionMicrocurriculo.setUnidadList(attachedUnidadList);
             em.persist(seccionMicrocurriculo);
             if (microcurriculo != null) {
                 microcurriculo.getSeccionMicrocurriculoList().add(seccionMicrocurriculo);
@@ -140,15 +130,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
                     oldSeccionMicrocurriculoIdAntiguaOfSeccionCambioList1SeccionCambio = em.merge(oldSeccionMicrocurriculoIdAntiguaOfSeccionCambioList1SeccionCambio);
                 }
             }
-            for (Unidad unidadListUnidad : seccionMicrocurriculo.getUnidadList()) {
-                SeccionMicrocurriculo oldSeccionMicrocurriculoIdOfUnidadListUnidad = unidadListUnidad.getSeccionMicrocurriculoId();
-                unidadListUnidad.setSeccionMicrocurriculoId(seccionMicrocurriculo);
-                unidadListUnidad = em.merge(unidadListUnidad);
-                if (oldSeccionMicrocurriculoIdOfUnidadListUnidad != null) {
-                    oldSeccionMicrocurriculoIdOfUnidadListUnidad.getUnidadList().remove(unidadListUnidad);
-                    oldSeccionMicrocurriculoIdOfUnidadListUnidad = em.merge(oldSeccionMicrocurriculoIdOfUnidadListUnidad);
-                }
-            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -175,8 +156,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
             List<SeccionCambio> seccionCambioListNew = seccionMicrocurriculo.getSeccionCambioList();
             List<SeccionCambio> seccionCambioList1Old = persistentSeccionMicrocurriculo.getSeccionCambioList1();
             List<SeccionCambio> seccionCambioList1New = seccionMicrocurriculo.getSeccionCambioList1();
-            List<Unidad> unidadListOld = persistentSeccionMicrocurriculo.getUnidadList();
-            List<Unidad> unidadListNew = seccionMicrocurriculo.getUnidadList();
             List<String> illegalOrphanMessages = null;
             if (tablaSeccionOld != null && !tablaSeccionOld.equals(tablaSeccionNew)) {
                 if (illegalOrphanMessages == null) {
@@ -206,14 +185,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain SeccionCambio " + seccionCambioList1OldSeccionCambio + " since its seccionMicrocurriculoIdAntigua field is not nullable.");
-                }
-            }
-            for (Unidad unidadListOldUnidad : unidadListOld) {
-                if (!unidadListNew.contains(unidadListOldUnidad)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Unidad " + unidadListOldUnidad + " since its seccionMicrocurriculoId field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -252,13 +223,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
             }
             seccionCambioList1New = attachedSeccionCambioList1New;
             seccionMicrocurriculo.setSeccionCambioList1(seccionCambioList1New);
-            List<Unidad> attachedUnidadListNew = new ArrayList<Unidad>();
-            for (Unidad unidadListNewUnidadToAttach : unidadListNew) {
-                unidadListNewUnidadToAttach = em.getReference(unidadListNewUnidadToAttach.getClass(), unidadListNewUnidadToAttach.getId());
-                attachedUnidadListNew.add(unidadListNewUnidadToAttach);
-            }
-            unidadListNew = attachedUnidadListNew;
-            seccionMicrocurriculo.setUnidadList(unidadListNew);
             seccionMicrocurriculo = em.merge(seccionMicrocurriculo);
             if (microcurriculoOld != null && !microcurriculoOld.equals(microcurriculoNew)) {
                 microcurriculoOld.getSeccionMicrocurriculoList().remove(seccionMicrocurriculo);
@@ -315,17 +279,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
                     if (oldSeccionMicrocurriculoIdAntiguaOfSeccionCambioList1NewSeccionCambio != null && !oldSeccionMicrocurriculoIdAntiguaOfSeccionCambioList1NewSeccionCambio.equals(seccionMicrocurriculo)) {
                         oldSeccionMicrocurriculoIdAntiguaOfSeccionCambioList1NewSeccionCambio.getSeccionCambioList1().remove(seccionCambioList1NewSeccionCambio);
                         oldSeccionMicrocurriculoIdAntiguaOfSeccionCambioList1NewSeccionCambio = em.merge(oldSeccionMicrocurriculoIdAntiguaOfSeccionCambioList1NewSeccionCambio);
-                    }
-                }
-            }
-            for (Unidad unidadListNewUnidad : unidadListNew) {
-                if (!unidadListOld.contains(unidadListNewUnidad)) {
-                    SeccionMicrocurriculo oldSeccionMicrocurriculoIdOfUnidadListNewUnidad = unidadListNewUnidad.getSeccionMicrocurriculoId();
-                    unidadListNewUnidad.setSeccionMicrocurriculoId(seccionMicrocurriculo);
-                    unidadListNewUnidad = em.merge(unidadListNewUnidad);
-                    if (oldSeccionMicrocurriculoIdOfUnidadListNewUnidad != null && !oldSeccionMicrocurriculoIdOfUnidadListNewUnidad.equals(seccionMicrocurriculo)) {
-                        oldSeccionMicrocurriculoIdOfUnidadListNewUnidad.getUnidadList().remove(unidadListNewUnidad);
-                        oldSeccionMicrocurriculoIdOfUnidadListNewUnidad = em.merge(oldSeccionMicrocurriculoIdOfUnidadListNewUnidad);
                     }
                 }
             }
@@ -386,13 +339,6 @@ public class SeccionMicrocurriculoJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This SeccionMicrocurriculo (" + seccionMicrocurriculo + ") cannot be destroyed since the SeccionCambio " + seccionCambioList1OrphanCheckSeccionCambio + " in its seccionCambioList1 field has a non-nullable seccionMicrocurriculoIdAntigua field.");
-            }
-            List<Unidad> unidadListOrphanCheck = seccionMicrocurriculo.getUnidadList();
-            for (Unidad unidadListOrphanCheckUnidad : unidadListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This SeccionMicrocurriculo (" + seccionMicrocurriculo + ") cannot be destroyed since the Unidad " + unidadListOrphanCheckUnidad + " in its unidadList field has a non-nullable seccionMicrocurriculoId field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

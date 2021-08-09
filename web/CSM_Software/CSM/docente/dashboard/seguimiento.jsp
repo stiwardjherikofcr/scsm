@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -254,7 +255,7 @@
                                     </div>
                                 </li>
                                 <li class="nav-item active">
-                                    <a href="seguimiento.jsp">
+                                    <a href="<%=request.getContextPath()%>/ControladorSeguimiento?accion=list">
                                         <i class="fas fa-chart-bar"></i>
                                         <p>Seguimiento</p>
                                     </a>
@@ -338,83 +339,43 @@
                                                 </tfoot>
                                                 <tbody>
                                                     <tr>
-                                                        <td>1155708</td>
-                                                        <td>ADMINISTRACION DE PROYECTOS INFORMATICOS</td>
-                                                        <td>3</td>
-                                                        <td>7</td>
-                                                        <td>
-                                                            <div class="progress" style="height: 6px;">
-                                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                                     style="width: 10%" aria-valuenow="70" aria-valuemin="0"
-                                                                     aria-valuemax="100" data-toggle="tooltip"
-                                                                     data-placement="top" title="" data-original-title="10%">
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="seguimiento/seguimiento-materia.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Ver" style="color: black;">
-                                                                        <i class="fas fa-search"></i>
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                        <%
+                                                            List<Object[]> data = (List<Object[]>) request.getSession().getAttribute("listSeguimiento");
+                                                            for (Object row[] : data) {
+                                                        %>
                                                     <tr>
-                                                        <td>1155609</td>
-                                                        <td>SEMINARIO DE INTEGRADOR II</td>
-                                                        <td>2</td>
-                                                        <td>6</td>
+                                                        <td><%=row[0]%></td>
+                                                        <td><%=row[1]%></td>
+                                                        <td><%=row[2]%></td>
+                                                        <td><%=row[3]%></td>
                                                         <td>
                                                             <div class="progress" style="height: 6px;">
                                                                 <div class="progress-bar bg-primary" role="progressbar"
-                                                                     style="width: 30%" aria-valuenow="70" aria-valuemin="0"
+                                                                     style="width: <%=row[4]%>%" aria-valuenow="70" aria-valuemin="0"
                                                                      aria-valuemax="100" data-toggle="tooltip"
-                                                                     data-placement="top" title="" data-original-title="30%">
+                                                                     data-placement="top" title="" data-original-title="<%=row[4]%>%">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="seguimiento/seguimiento-materia.jsp">
+                                                                <a href="<%=request.getContextPath()%>/ControladorSeguimiento?accion=listTo&mat_per=<%=row[5] %>">
+                                                                <!--a href="seguimiento/seguimiento-materia.jsp"-->
                                                                     <button id="pensum" type="button" data-toggle="tooltip"
                                                                             title="" class="btn btn-link btn-dark"
                                                                             data-original-title="Ver" style="color: black;">
                                                                         <i class="fas fa-search"></i>
                                                                     </button>
                                                                 </a>
+                                                                <button type="button" data-toggle="tooltip" title=""
+                                                                        class="btn btn-link btn-dark"
+                                                                        data-original-title="Exportar PDF" style="color: black;">
+                                                                    <i class="fas fa-file-pdf"></i>
+                                                                </button>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>1155808</td>
-                                                        <td>FORMULACION Y EVALUACION DE PROYECTOS DE SISTEMAS</td>
-                                                        <td>3</td>
-                                                        <td>8</td>
-                                                        <td>
-                                                            <div class="progress" style="height: 6px;">
-                                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                                     style="width: 45%" aria-valuenow="70" aria-valuemin="0"
-                                                                     aria-valuemax="100" data-toggle="tooltip"
-                                                                     data-placement="top" title="" data-original-title="45%">
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="seguimiento/seguimiento-materia.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Ver" style="color: black;">
-                                                                        <i class="fas fa-search"></i>
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    <%}%>
                                                 </tbody>
                                             </table>
                                         </div>

@@ -81,7 +81,8 @@
                     </div>
                 </li>
                 <li class="nav-item" id="seguimiento">
-                    <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/seguimiento.jsp">
+                    <a href="<%=request.getContextPath()%>/ControladorSeguimiento?accion=list">
+                    <!--a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/seguimiento.jsp"-->
                         <i class="fas fa-chart-bar"></i>
                         <p>Seguimiento</p>
                     </a>

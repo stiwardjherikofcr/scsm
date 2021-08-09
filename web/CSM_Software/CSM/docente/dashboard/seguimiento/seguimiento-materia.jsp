@@ -4,6 +4,7 @@
     Author     : Stiward
 --%>
 
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -348,23 +349,28 @@
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
+                                                    <%
+                                                        List<Object[]> data = (List<Object[]>) request.getSession().getAttribute("listSeguimientoMateria");
+                                                        for (Object row[] : data) {
+                                                    %>
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>1151201</td>
-                                                        <td>Rojas Puentes Maria Del Pilar</td>
-                                                        <td>A</td>
+                                                        <td><%=row[0] %></td>
+                                                        <td><%=row[1] %></td>
+                                                        <td><%=row[2] %></td>
+                                                        <td><%=row[3] %></td>
                                                         <td>
                                                             <div class="progress" style="height: 6px;">
                                                                 <div class="progress-bar bg-primary" role="progressbar"
-                                                                     style="width: 10%" aria-valuenow="70" aria-valuemin="0"
+                                                                     style="width: <%=row[4] %>%" aria-valuenow="70" aria-valuemin="0"
                                                                      aria-valuemax="100" data-toggle="tooltip"
-                                                                     data-placement="top" title="" data-original-title="10%">
+                                                                     data-placement="top" title="" data-original-title="<%=row[4] %>%">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div class="form-button-action">
-                                                                <a href="ver-cumplimiento.jsp">
+                                                                <a href="<%=request.getContextPath()%>/ControladorSeguimiento?accion=ver-cumplimiento&mat_per_gr=<%=row[5] %>">
+                                                                <!--a href="ver-cumplimiento.jsp"-->
                                                                     <button id="pensum" type="button" data-toggle="tooltip"
                                                                             title="" class="btn btn-link btn-dark"
                                                                             data-original-title="Check" style="color: black;">
@@ -382,40 +388,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>1151201</td>
-                                                        <td>Rojas Puentes Maria Del Pilar</td>
-                                                        <td>B</td>
-                                                        <td>
-                                                            <div class="progress" style="height: 6px;">
-                                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                                     style="width: 10%" aria-valuenow="70" aria-valuemin="0"
-                                                                     aria-valuemax="100" data-toggle="tooltip"
-                                                                     data-placement="top" title="" data-original-title="10%">
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="ver-cumplimiento.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Check" style="color: black;">
-                                                                        <i class="fas fa-clipboard-check"></i>
-                                                                    </button>
-                                                                </a>
-                                                                <a href="programar-evaluacion.jsp">
-                                                                    <button id="pensum" type="button" data-toggle="tooltip"
-                                                                            title="" class="btn btn-link btn-dark"
-                                                                            data-original-title="Evaluacion"
-                                                                            style="color: black;">
-                                                                        <i class="fas fa-clock"></i>
-                                                                    </button>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    <%}%>
                                                 </tbody>
                                             </table>
                                         </div>

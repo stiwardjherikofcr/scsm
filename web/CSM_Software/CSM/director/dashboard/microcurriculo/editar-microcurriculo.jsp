@@ -464,16 +464,19 @@
                                         <div class="card-body pb-0">
                                             <table class="table table-hover" id="tabla<%=seccion.getSeccionId().getId()%>">
                                                 <thead>
+                                                    <!-- Encabezados -->
                                                     <tr>
                                                         <% for (int i = 0; i < canColum; i++) {%>
                                                         <th class="text-center" scope="col"><%=table.getEncabezadoList().get(i).getEncabezado() %></th>
                                                         <%}%>
                                                     </tr>
+                                                    
+                                                    <!-- Hidden rows tables -->
                                                     <%if(seccion.getSeccionId().getId() == 1){%>
-                                                        <input  type="hidden" name="nfilas-<%=seccion.getId()%>" id="nfilas-<%=seccion.getSeccionId().getId()%>" value="<%=secciones.get(0).getUnidadList().size() %>">
+                                                        <input  type="hidden" name="nfilas-<%=seccion.getId()%>" id="nfilas-<%=seccion.getSeccionId().getId()%>" value="<%=microcurriculo.getUnidadList().size() %>">
                                                     <%}else{
                                                         int rowNum = 0;
-                                                        for(Unidad unidad: secciones.get(0).getUnidadList()){rowNum += unidad.getContenidoUnidadList().size();}%>
+                                                        for(Unidad unidad: microcurriculo.getUnidadList()){rowNum += unidad.getContenidoUnidadList().size();}%>
                                                         <input  type="hidden" name="nfilas-<%=seccion.getId()%>" id="nfilas-<%=seccion.getSeccionId().getId()%>" value="<%=rowNum %>">
                                                     <%}%>
                                                 </thead>
@@ -482,7 +485,7 @@
                                                         int row = 0;
                                                         Integer idSeccion = seccion.getSeccionId().getId();
                                                         String idSecRow = "", idSecContRow = ""; 
-                                                        for(Unidad unidad: secciones.get(0).getUnidadList()){
+                                                        for(Unidad unidad: microcurriculo.getUnidadList()){
                                                             if(seccion.getSeccionId().getId() == 1){
                                                                 idSecRow = idSeccion+"-"+row;
                                                                 idSecContRow = "contenido-"+idSecRow;
@@ -491,8 +494,8 @@
                                                         <input type="hidden" value="<%=unidad.getId()%>" name="old_unit" />
                                                         <td><div class='form-group'><input class="form-control form-micro" value="<%=unidad.getNum() %>" readonly name="<%=idSecContRow%>-0" /></div></td>
                                                         <td><div class='form-group'><textarea class="form-control form-micro" name="<%=idSecContRow%>-1"><%=unidad.getNombre() %></textarea></div></td>
-                                                        <td><div class='form-group'><input class="form-control form-micro" type="text" name="<%=idSecContRow%>-<%=2%>" id="<%=idSecRow%>-2" onkeyup="sumFields('<%=idSecRow %>-2')" onkeypress="return validate(event,'<%=idSecRow %>-2')" value="<%=unidad.getHorasPresencial() %>" /></div></td>
-                                                        <td><div class='form-group'><input class="form-control form-micro" type="text" name="<%=idSecContRow%>-<%=3%>" id="<%=idSecRow%>-3" onkeyup="sumFields('<%=idSecRow %>-2')" onkeypress="return validate(event,'<%=idSecRow %>-3')" value="<%=unidad.getHorasIndependiente()%>" /></div></td>
+                                                        <td><div class='form-group'><input class="form-control form-micro" type="text" name="<%=idSecContRow%>-2" id="<%=idSecRow%>-2" onkeyup="sumFields('<%=idSecRow %>-2')" onkeypress="return validate(event,'<%=idSecRow %>-2')" value="<%=unidad.getHorasPresencial() %>" /></div></td>
+                                                        <td><div class='form-group'><input class="form-control form-micro" type="text" name="<%=idSecContRow%>-3" id="<%=idSecRow%>-3" onkeyup="sumFields('<%=idSecRow %>-2')" onkeypress="return validate(event,'<%=idSecRow %>-3')" value="<%=unidad.getHorasIndependiente()%>" /></div></td>
                                                         <td><div class='form-group'><input class="form-control form-micro" value="<%=unidad.getHorasIndependiente()+unidad.getHorasPresencial() %>" readonly/></div></td>
                                                     </tr>
                                                     <%row++;
@@ -504,15 +507,15 @@
                                                     <tr>
                                                         <input type="hidden" value="<%=contenido.getId() %>-<%=row%>" name="old_content" />
                                                         <td>
-                                                            <select id="<%=idSecContRow %>-<%=0%>" name="<%=idSecContRow %>-<%=0%>">
-                                                                <%for(Unidad u: secciones.get(0).getUnidadList()){%>
+                                                            <select id="<%=idSecContRow %>-0" name="<%=idSecContRow %>-0">
+                                                                <%for(Unidad u: microcurriculo.getUnidadList()){%>
                                                                 <option <%if(u.equals(unidad)){%>selected<%}%> value="<%=u.getNum() %>"><%=u.getNum() %></option>
                                                                 <%}%>
                                                             </select>
                                                         </td>
-                                                        <td><div class='form-group'><textarea class="form-control form-micro" name="<%=idSecContRow %>-<%=1%>"><%=contenido.getContenido() %></textarea></td>
-                                                        <td><div class='form-group'><textarea class="form-control form-micro" name="<%=idSecContRow %>-<%=2%>"><%=contenido.getTrabajoPresencial() %></textarea></td>
-                                                        <td><div class='form-group'><textarea class="form-control form-micro" name="<%=idSecContRow %>-<%=3%>"><%=contenido.getTrabajoIndependiente() %></textarea></td>
+                                                        <td><div class='form-group'><textarea class="form-control form-micro" name="<%=idSecContRow %>-1"><%=contenido.getContenido() %></textarea></td>
+                                                        <td><div class='form-group'><textarea class="form-control form-micro" name="<%=idSecContRow %>-2"><%=contenido.getTrabajoPresencial() %></textarea></td>
+                                                        <td><div class='form-group'><textarea class="form-control form-micro" name="<%=idSecContRow %>-3"><%=contenido.getTrabajoIndependiente() %></textarea></td>
                                                     </tr>
                                                     <%row++;
                                                                 }

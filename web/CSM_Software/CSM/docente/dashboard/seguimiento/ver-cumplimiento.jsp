@@ -4,6 +4,11 @@
     Author     : Stiward
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="dto.ContenidoUnidad"%>
+<%@page import="dto.Unidad"%>
+<%@page import="dto.Microcurriculo"%>
+<%@page import="dto.MateriaPeriodoGrupo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -313,34 +318,41 @@
                         <div class="row">
 
                             <!-- Contenido de Microcurriculo -->
+                            <%
+                                MateriaPeriodoGrupo matPrGr = (MateriaPeriodoGrupo)request.getSession().getAttribute("mat_per_gr");
+                                Microcurriculo micro = matPrGr.getMateriaPeriodoId().getMateria().getMicrocurriculo();
+                                int percentages[] = (int[])request.getSession().getAttribute("percentages");
+                                Map<Integer, Boolean> checkeds = (Map<Integer, Boolean> )request.getSession().getAttribute("checkeds");
+                            %>
                             <div class="col-md-10">
                                 <!-- Title -->
                                 <div class="card">
                                     <div class="card-header d-flex justify-content-center text-center">
-                                        <h2 class="card-title mtittle">1155708 - Administracion de Proyectos Informaticos -
+                                        <h2 class="card-title mtittle"><%=matPrGr.getMateriaPeriodoId().getMateria().getMateriaPK().getCodigo() %> - <%=matPrGr.getMateriaPeriodoId().getMateria().getNombre() %> -
                                             Grupo
-                                            A<br>Rojas Puentes Maria Del Pilar</h2>
+                                            <%=matPrGr.getGrupo() %><br><%=matPrGr.getDocenteCodigo().getNombre()+" "+matPrGr.getDocenteCodigo().getApellido() %></h2>
                                     </div>
                                 </div>
                                 <!-- Fin Title -->
-
+                                <%
+                                    for(Unidad unidad: micro.getUnidadList()){
+                                %>
                                 <!-- Unidad 1 -->
-                                <div class="card" id="Unidad-1">
+                                <div class="card" id="Unidad-<%=unidad.getNum() %>">
                                     <div class="card-header d-flex justify-content-center text-center">
-                                        <h2 class="card-title font-weight-bold">UNIDAD 1: GENERALIDADES DE
-                                            LA INVESTIGACIÓN</h2>
+                                        <h2 class="card-title font-weight-bold"><%=unidad.getNombre() %></h2>
                                     </div>
                                     <div class="card-body pb-0 ">
                                         <!-- Progress-Status -->
                                         <div class="progress-card">
                                             <div class="progress-status">
-                                                <span class="text-muted fw-bold ml-auto"> 70%</span>
+                                                <span class="text-muted fw-bold ml-auto"><%=percentages[unidad.getNum()] %>%</span>
                                             </div>
                                             <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: <%=percentages[unidad.getNum()] %>%"
                                                      aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
                                                      data-toggle="tooltip" data-placement="top" title=""
-                                                     data-original-title="70%"></div>
+                                                     data-original-title="<%=percentages[unidad.getNum()] %>%"></div>
                                             </div>
                                         </div>
                                         <!-- Fin Progress-Status -->
@@ -355,192 +367,27 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <%
+                                                    int i=0;
+                                                    for(ContenidoUnidad content: unidad.getContenidoUnidadList()){
+                                                %>
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>COLCIENCIAS, como Sistema
-                                                        Nacional de Ciencia, Tecnología e
-                                                        Innovación.</td>
+                                                    <td><%=(++i)%></td>
+                                                    <td><%=content.getContenido() %></td>
                                                     <td>
                                                         <div class="">
                                                             <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1" checked>
+                                                                   id="exampleCheck1" <%if(checkeds.get(content.getId())){%>checked<%}%>>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Sistema Universitario de
-                                                        Investigación de la Universidad,
-                                                        según Acuerdo 056 de 2012</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1" checked>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Valor estratégico de los Centros de
-                                                        Investigación, Grupos y Semilleros</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1">
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                <%}%>
                                             </tbody>
                                         </table>
                                         <!-- Fin Tabla Unidades -->
                                     </div>
                                 </div>
-
-                                <!--Unidad 2 -->
-                                <div class="card" id="Unidad-2">
-                                    <div class="card-header d-flex justify-content-center text-center">
-                                        <h2 class="card-title font-weight-bold">UNIDAD 2: INTRODUCCION A LAS METODOLOGIAS DE
-                                            LA
-                                            INVESTIGACIÓN</h2>
-                                    </div>
-                                    <div class="card-body pb-0 ">
-                                        <!-- Progress-Status -->
-                                        <div class="progress-card">
-                                            <div class="progress-status">
-                                                <span class="text-muted fw-bold ml-auto"> 70%</span>
-                                            </div>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
-                                                     aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
-                                                     data-toggle="tooltip" data-placement="top" title=""
-                                                     data-original-title="70%"></div>
-                                            </div>
-                                        </div>
-                                        <!-- Fin Progress-Status -->
-
-                                        <!-- Tabla Unidades -->
-                                        <table class="table mt-3 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Contenido Unidad</th>
-                                                    <th scope="col">Estado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>COLCIENCIAS, como Sistema
-                                                        Nacional de Ciencia, Tecnología e
-                                                        Innovación.</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1" checked>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Sistema Universitario de
-                                                        Investigación de la Universidad,
-                                                        según Acuerdo 056 de 2012</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1">
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Valor estratégico de los Centros de
-                                                        Investigación, Grupos y Semilleros</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1">
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <!-- Fin Tabla Unidades -->
-                                    </div>
-                                </div>
-
-                                <!--Unidad 3 -->
-                                <div class="card" id="Unidad-3">
-                                    <div class="card-header d-flex justify-content-center text-center">
-                                        <h2 class="card-title font-weight-bold">UNIDAD 3: INTRODUCCION A LAS METODOLOGIAS DE
-                                            LA
-                                            INVESTIGACIÓN</h2>
-                                    </div>
-                                    <div class="card-body pb-0 ">
-                                        <!-- Progress-Status -->
-                                        <div class="progress-card">
-                                            <div class="progress-status">
-                                                <span class="text-muted fw-bold ml-auto"> 70%</span>
-                                            </div>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
-                                                     aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
-                                                     data-toggle="tooltip" data-placement="top" title=""
-                                                     data-original-title="70%"></div>
-                                            </div>
-                                        </div>
-                                        <!-- Fin Progress-Status -->
-
-                                        <!-- Tabla Unidades -->
-                                        <table class="table mt-3 text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Contenido Unidad</th>
-                                                    <th scope="col">Estado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>COLCIENCIAS, como Sistema
-                                                        Nacional de Ciencia, Tecnología e
-                                                        Innovación.</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1">
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Sistema Universitario de
-                                                        Investigación de la Universidad,
-                                                        según Acuerdo 056 de 2012</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1">
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Valor estratégico de los Centros de
-                                                        Investigación, Grupos y Semilleros</td>
-                                                    <td>
-                                                        <div class="">
-                                                            <input type="checkbox" class="form-check-input"
-                                                                   id="exampleCheck1">
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <!-- Fin Tabla Unidades -->
-                                    </div>
-                                </div>
+                                <%}%>
                                 <div class="w-100 d-flex justify-content-center">
                                     <a class="w-75 btn btn-danger" href="seguimiento-materia.jsp">Guardar</a>
                                 </div>
@@ -563,31 +410,15 @@
                                         </div>
                                     </div>
                                     <h2 class="d-flex justify-content-center font-weight-bold">Unidades</h2>
-                                    <a href="#Unidad-1">
+                                    <%
+                                        for(Unidad unidad: micro.getUnidadList()){
+                                    %>
+                                    <a href="#Unidad-<%=unidad.getNum() %>">
                                         <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Unidad 1</h4>
+                                            <h4 class="card-title ">Unidad <%=unidad.getNum() %></h4>
                                         </div>
                                     </a>
-                                    <a href="#Unidad-2">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Unidad 2</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Unidad-3">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Unidad 3</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Unidad-4">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Unidad 4</h4>
-                                        </div>
-                                    </a>
-                                    <a href="#Unidad-5">
-                                        <div class="card btn btn-light mb-2 p-2 d-flex justify-content-center">
-                                            <h4 class="card-title ">Unidad 5</h4>
-                                        </div>
-                                    </a>
+                                    <%}%>
                                 </div>
                             </div>
                             <!-- Fin Navegacion Unidades -->
@@ -670,10 +501,10 @@
             Circles.create({
                 id: 'circles-1',
                 radius: 45,
-                value: 80,
+                value: <%=percentages[0] %>,
                 maxValue: 100,
                 width: 7,
-                text: "80%",
+                text: "<%=percentages[0] %>%",
                 colors: ['#f1f1f1', '#AA1916'],
                 duration: 400,
                 wrpClass: 'circles-wrp',

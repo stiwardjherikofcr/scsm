@@ -9,6 +9,7 @@ import dao.AreaFormacionJpaController;
 import dao.CambioJpaController;
 import dao.ContenidoJpaController;
 import dao.ContenidoUnidadJpaController;
+import dao.CumplimientoJpaController;
 import dao.EstadoJpaController;
 import dao.MateriaJpaController;
 import dao.MateriaPeriodoGrupoJpaController;
@@ -25,6 +26,7 @@ import dto.AreaFormacion;
 import dto.Cambio;
 import dto.Contenido;
 import dto.ContenidoUnidad;
+import dto.Cumplimiento;
 import dto.Docente;
 import dto.Estado;
 import dto.Materia;
@@ -113,14 +115,14 @@ public class AdministrarMicrocurriculo {
         daoMicrocurriculo.edit(microcurriculo);
     }
 
-    public void updateUnidades(String[][][] contenidos, String[][] oldInfo, SeccionMicrocurriculo seccion) throws Exception{
+    public void updateUnidades(String[][][] contenidos, String[][] oldInfo, Microcurriculo microcurriculo) throws Exception{
         Conexion con = Conexion.getConexion();
         UnidadJpaController uDao = new UnidadJpaController(con.getBd());
         ContenidoUnidadJpaController cuDao = new ContenidoUnidadJpaController(con.getBd());
         
         /*Buscar unidades ya existentes y actualizarlas*/
         List<Unidad> unitUpdates = new ArrayList<>();
-        for(Unidad unidad: seccion.getUnidadList()){
+        for(Unidad unidad: microcurriculo.getUnidadList()){
             for(int i=0; oldInfo[0]!=null && i<oldInfo[0].length; i++){
                 if(oldInfo[0][i] == null) continue;
                 if(Integer.parseInt(oldInfo[0][i]) == unidad.getId()){
@@ -147,7 +149,7 @@ public class AdministrarMicrocurriculo {
                 unidad.setNombre(contenidos[0][i][1]);
                 unidad.setHorasPresencial(Integer.parseInt(contenidos[0][i][2]));
                 unidad.setHorasIndependiente(Integer.parseInt(contenidos[0][i][3]));
-                unidad.setSeccionMicrocurriculoId(seccion);
+                unidad.setMicrocurriculo(microcurriculo);
                 uDao.create(unidad);
                 unitNews.add(unidad);
             }
@@ -155,7 +157,7 @@ public class AdministrarMicrocurriculo {
         
         /*Buscar contenidos por unidades ya existentes y actualizarlos*/
         List<ContenidoUnidad> contentUpdates = new ArrayList<>();
-        for(Unidad unidad: seccion.getUnidadList()){
+        for(Unidad unidad: microcurriculo.getUnidadList()){
             for(ContenidoUnidad contUnit: unidad.getContenidoUnidadList()){
                 for(int i=0; oldInfo[1]!=null && i<oldInfo[1].length; i++){
                     if(oldInfo[1][i]==null) continue;
@@ -171,6 +173,7 @@ public class AdministrarMicrocurriculo {
         }
         
         /*Crear contenidos que no fueron actualizados, es decir, nuevos contenidos*/
+        List<ContenidoUnidad> contentNews = new ArrayList<>(contentUpdates);
         for(int i=0; i<contenidos[1].length; i++){
             if(contenidos[1][i]!=null){
                 ContenidoUnidad contUnit = new ContenidoUnidad();
@@ -179,15 +182,18 @@ public class AdministrarMicrocurriculo {
                 contUnit.setTrabajoPresencial(contenidos[1][i][2]);
                 contUnit.setTrabajoIndependiente(contenidos[1][i][3]);
                 cuDao.create(contUnit);
+                contentNews.add(contUnit);
             }
         }
         
         /*Borrar contenidos que no fueron actualizados o creados, contenidos viejos*/
-        List<Unidad> deletes = seccion.getUnidadList();
+        List<Unidad> deletes = microcurriculo.getUnidadList();
+        AdministrarSeguimiento adminSeg = new AdministrarSeguimiento();
         for(Unidad unidad: deletes){
             List<ContenidoUnidad> deleteContents = unidad.getContenidoUnidadList();
             deleteContents.removeAll(contentUpdates);
             for(ContenidoUnidad contUnit: deleteContents){
+                adminSeg.deleteCumplimiento(microcurriculo, contUnit);
                 cuDao.destroy(contUnit.getId());
             }
         }
@@ -197,6 +203,7 @@ public class AdministrarMicrocurriculo {
         for(Unidad unidad: deletes){
             uDao.destroy(unidad.getId());
         }
+        adminSeg.addContents(microcurriculo, contentNews);
     }
     
     private Unidad getUnidad(List<Unidad> unidades, int num){
@@ -226,70 +233,6 @@ public class AdministrarMicrocurriculo {
         content.setTrabajoPresencial(info[2]);
         content.setTrabajoIndependiente(info[3]);
         cuDao.edit(content);
-    }
-    
-    public void updateUnidades1(String[][][] contenidos, String[][][] oldInfo, SeccionMicrocurriculo seccion) throws Exception {
-//        Conexion con = Conexion.getConexion();
-//        UnidadJpaController uDao = new UnidadJpaController(con.getBd());
-//        ContenidoUnidadJpaController cuDao = new ContenidoUnidadJpaController(con.getBd());
-//        int countUnidad = 0;
-//        Map<Integer, List<String[]>> contenidosUnidad = this.getUnidadContenidos(contenidos[1]);
-//        for(int i=0; i<contenidos[0].length && i<seccion.getUnidadList().size(); i++){
-//            Unidad unidad = seccion.getUnidadList().get(i);
-//            unidad.setNombre(contenidos[0][i][1]);
-//            unidad.setHorasPresencial(Integer.parseInt(contenidos[0][i][2]));
-//            unidad.setHorasIndependiente(Integer.parseInt(contenidos[0][i][3]));
-//            int countContent = 0;
-//            for(int j=0; j<contenidosUnidad.get(unidad.getId()).size() && j<unidad.getContenidoUnidadList().size(); j++){
-//                ContenidoUnidad contenido = unidad.getContenidoUnidadList().get(j);
-//                String data[] = contenidosUnidad.get(unidad.getId()).get(j);
-//                contenido.setContenido(data[1]);
-//                contenido.setTrabajoPresencial(data[2]);
-//                contenido.setTrabajoIndependiente(data[3]);
-//                cuDao.edit(contenido);
-//                countContent++;
-//            }
-//            if(contenidosUnidad.get(unidad.getId()).size() < unidad.getContenidoUnidadList().size()){
-//                //Eliminar
-//                deleteContenidosUnidad(unidad.getContenidoUnidadList(), uDao, countContent);
-//            }else{
-//                //Agregar
-//                addContenidosUnidad(contenidosUnidad.get(unidad.getId()), con.getBd(), countUnidad);
-//            }
-//            uDao.edit(unidad);
-//            countUnidad++;
-//        }
-//        if(contenidos[0].length < seccion.getUnidadList().size()){
-//            //Eliminar
-//            deleteUnidades(seccion.getUnidadList(), uDao, countUnidad);
-//        }else{
-//            //Agregar
-//            addUnidades(contenidos[0], con.getBd(), countUnidad);
-//        }
-    }
-    
-    private void deleteUnidades(List<Unidad> unidades, UnidadJpaController uDao, int count) throws IllegalOrphanException, NonexistentEntityException{
-        for(; count<unidades.size(); count++){
-            uDao.destroy(unidades.get(count).getId());
-        }
-    }
-    
-    private Map<Integer, List<String[]>> getUnidadContenidos(String [][]contenidos){
-        Map<Integer, List<String[]>> contenidosUnidad = new HashMap<>();
-        for(String contenido[]: contenidos){
-            int idUnidad = Integer.parseInt(contenido[0]);
-            if(contenidosUnidad.get(idUnidad)==null)
-                contenidosUnidad.put(idUnidad, new ArrayList<>());
-            contenidosUnidad.get(idUnidad).add(contenido);
-        }
-        int i=0;
-        for(List<String[]> cont: contenidosUnidad.values()){
-            System.out.println("Unidad: "+(++i));
-            for(String []info: cont){
-                System.out.println(java.util.Arrays.asList(info));
-            }
-        }
-        return contenidosUnidad;
     }
 
     public void ingresarContenidoSeccion(String info, SeccionMicrocurriculo seccionMicrocurriculo) throws NonexistentEntityException, Exception {

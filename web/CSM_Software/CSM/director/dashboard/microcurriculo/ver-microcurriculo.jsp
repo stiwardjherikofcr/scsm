@@ -1,5 +1,6 @@
-    <%@page import="dto.TablaSeccion"%>
-<%@page import="dto.TablaInfo"%>
+    <%@page import="dto.ContenidoUnidad"%>
+<%@page import="dto.Unidad"%>
+<%@page import="dto.TablaSeccion"%>
 <%@page import="dto.Tabla"%>
 <%@page import="dto.SeccionMicrocurriculo"%>
 <%@page import="dto.TipoMateria"%>
@@ -421,7 +422,6 @@
                                         </div>
                                     </div>
                                     <%
-                                        List<String[][]> tablas = (List<String[][]>) request.getSession().getAttribute("tablas");
                                         List<SeccionMicrocurriculo> secciones = microcurriculo.getSeccionMicrocurriculoList();
                                         int numTabla=0;
                                         for (SeccionMicrocurriculo seccion : secciones) {
@@ -445,7 +445,6 @@
                                     <%   } else {
                                         TablaSeccion tableSeccion = seccion.getTablaSeccion();
                                         Tabla table = tableSeccion.getTablaId();
-                                        String tableInfo[][] =  tablas.get(numTabla++);
                                         int canColum = table.getEncabezadoList().size();
                                     %>
                                     <!-- Tabla -->
@@ -465,17 +464,31 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <%  
-                                                        for (int i = 0; i < tableInfo.length; i++) {
+                                                    <%for(Unidad unidad: microcurriculo.getUnidadList()){
+                                                        if(seccion.getSeccionId().getId() == 1){%>
+                                                        <tr>
+                                                            <td class="text-center "><%=unidad.getNum() %></td>
+                                                            <td class="text-center "><%=unidad.getNombre() %></td>
+                                                            <td class="text-center "><%=unidad.getHorasPresencial() %></td>
+                                                            <td class="text-center "><%=unidad.getHorasIndependiente() %></td>
+                                                            <td class="text-center "><%=unidad.getHorasIndependiente()+unidad.getHorasPresencial() %></td>
+                                                        </tr>
+                                                    <%
+                                                        }else{
+                                                            int i=0;
+                                                            for(ContenidoUnidad content: unidad.getContenidoUnidadList()){
                                                     %>
-                                                    <tr>
-                                                        <%
-                                                            for (int j = 0; j < tableInfo[i].length; j++) {
-                                                        %>
-                                                        <td class="text-center "><%=tableInfo[i][j]%></td>
-                                                        <%}%>
-                                                    </tr>
-                                                    <% }%>
+                                                        <tr>
+                                                            <%if(i++==0){%><td class="text-center " rowspan="<%=unidad.getContenidoUnidadList().size() %>" title="<%=unidad.getNombre() %>" data-toggle="tooltip"><%=unidad.getNum() %></td><%}%>
+                                                            <td class="text-center "><%=content.getContenido() %></td>
+                                                            <td class="text-center "><%=content.getTrabajoPresencial() %></td>
+                                                            <td class="text-center "><%=content.getTrabajoIndependiente() %></td>
+                                                        </tr>
+                                                    <%
+                                                            }
+                                                        }
+                                                    }
+                                                    %>
                                                 </tbody>
                                             </table>
                                         </div>

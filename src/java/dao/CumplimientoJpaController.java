@@ -39,8 +39,8 @@ public class CumplimientoJpaController implements Serializable {
         if (cumplimiento.getCumplimientoPK() == null) {
             cumplimiento.setCumplimientoPK(new CumplimientoPK());
         }
-        cumplimiento.getCumplimientoPK().setMateriaPeriodoGrupoId(cumplimiento.getMateriaPeriodoGrupo().getId());
         cumplimiento.getCumplimientoPK().setContenidoUnidadId(cumplimiento.getContenidoUnidad().getId());
+        cumplimiento.getCumplimientoPK().setMateriaPeriodoGrupoId(cumplimiento.getMateriaPeriodoGrupo().getId());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -78,8 +78,8 @@ public class CumplimientoJpaController implements Serializable {
     }
 
     public void edit(Cumplimiento cumplimiento) throws NonexistentEntityException, Exception {
-        cumplimiento.getCumplimientoPK().setMateriaPeriodoGrupoId(cumplimiento.getMateriaPeriodoGrupo().getId());
         cumplimiento.getCumplimientoPK().setContenidoUnidadId(cumplimiento.getContenidoUnidad().getId());
+        cumplimiento.getCumplimientoPK().setMateriaPeriodoGrupoId(cumplimiento.getMateriaPeriodoGrupo().getId());
         EntityManager em = null;
         try {
             em = getEntityManager();
