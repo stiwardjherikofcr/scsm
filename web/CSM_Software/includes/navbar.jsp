@@ -5,10 +5,9 @@
         <div class="d-inline-flex">
             <div class="avatar"><img src="<%=request.getContextPath()%>/CSM_Software/assets/img/logo_ingsistemas.png"
                                      alt="logotipo de ing Sistemas" class="avatar-img rounded"></div>
-            <h1 class=" ml-3 text-white d-flex align-items-center">Ingeniería de Sistemas</h1>
+            <h1 class=" ml-3 text-white d-flex align-items-center">Ingenieria de Sistemas</h1>
         </div>
         <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-
             <li class="nav-item dropdown hidden-caret">
                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,7 +96,7 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/perfil/profile.jsp">Perfil</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/perfil/edit-profile.jsp">Configuración</a>
+                            <a class="dropdown-item" href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/perfil/edit-profile.jsp">Configuracion</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<%=request.getContextPath()%>/CSM_Software/CSM/sign-in/singin.jsp">Salir</a>
                         </li>

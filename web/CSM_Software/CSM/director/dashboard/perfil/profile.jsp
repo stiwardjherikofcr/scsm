@@ -7,7 +7,7 @@
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -44,8 +44,8 @@
 
 <body>
     <%
-            Usuario user = (Usuario) request.getSession().getAttribute("usuario");
-        %>
+        Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+    %>
     <div class="wrapper">
         <div class="main-header">
             <!-- Logo Header -->
@@ -72,9 +72,8 @@
             <nav class="navbar navbar-header navbar-expand-lg" data-background-color="red">
                 <div class="container-fluid ">
                     <div class="d-inline-flex">
-                        <div class="avatar"><img
-                                src="<%=request.getContextPath()%>/CSM_Software/assets/img/logo_ingsistemas.png"
-                                alt="logotipo de ing Sistemas" class="avatar-img rounded"></div>
+                        <div class="avatar">
+                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/logo_ingsistemas.png" alt="logotipo de ing Sistemas" class="avatar-img rounded"></div>
                         <h1 class=" ml-3 text-white d-flex align-items-center">Ingeniería de Sistemas</h1>
                     </div>
                     <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
@@ -92,8 +91,7 @@
                                     <div class="notif-scroll scrollbar-outer">
                                         <div class="notif-center">
                                             <a href="#">
-                                                <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i>
-                                                </div>
+                                                <div class="notif-icon notif-primary"><i class="fa fa-user-plus"></i></div>
                                                 <div class="notif-content">
                                                     <span class="block">
                                                         New user registered
@@ -102,8 +100,7 @@
                                                 </div>
                                             </a>
                                             <a href="#">
-                                                <div class="notif-icon notif-success"> <i class="fa fa-comment"></i>
-                                                </div>
+                                                <div class="notif-icon notif-success"><i class="fa fa-comment"></i></div>
                                                 <div class="notif-content">
                                                     <span class="block">
                                                         Rahmad commented on Admin
@@ -113,8 +110,7 @@
                                             </a>
                                             <a href="#">
                                                 <div class="notif-img">
-                                                    <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile2.jpg"
-                                                        alt="Img Profile">
+                                                    <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile2.jpg" alt="Img Profile">
                                                 </div>
                                                 <div class="notif-content">
                                                     <span class="block">
@@ -136,8 +132,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a class="see-all" href="javascript:void(0);">See all notifications<i
-                                            class="fa fa-angle-right"></i> </a>
+                                    <a class="see-all" href="javascript:void(0);">See all notifications<i class="fa fa-angle-right"></i></a>
                                 </li>
                             </ul>
                         </li>
@@ -145,8 +140,7 @@
                             <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
                                 aria-expanded="false">
                                 <div class="avatar-sm">
-                                    <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif"
-                                        alt="..." class="avatar-img rounded-circle">
+                                    <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="..." class="avatar-img rounded-circle">
                                 </div>
                             </a>
                             <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -154,8 +148,7 @@
                                     <li>
                                         <div class="user-box">
                                             <div class="avatar-lg">
-                                                <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif"
-                                                    alt="image profile" class="avatar-img rounded">
+                                                <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="image profile" class="avatar-img rounded">
                                             </div>
                                             <div class="u-text">
                                                 <h4><%=user.getDocente().getNombre()%></h4>
@@ -281,8 +274,7 @@
                             </li>
                         </ul>
                         <div class=" d-flex justify-content-center align-items-end w-100 logoUFPS">
-                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/Logo-nuevo-vertical.png"
-                                alt="..." class="avatar-img w-75">
+                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/Logo-nuevo-vertical.png" alt="..." class="avatar-img w-75">
                         </div>
                     </div>
                 </div>
@@ -321,8 +313,7 @@
                                 <div class="card-body d-flex justify-content-center">
                                     <p class="demo">
                                         <div class="avatar avatar-xxl">
-                                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif"
-                                                alt="..." class="avatar-img rounded-circle">
+                                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="..." class="avatar-img rounded-circle">
                                         </div>
                                     </p>
                                 </div>
@@ -384,33 +375,11 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav class="pull-left">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    Nigth Devs
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    Help
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    Licenses
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright ml-auto">
-                        2021 &copy; All Rights Reserved.
-                        Desarrollado por: <a href="#">Nigth Devs</a>
-                    </div>
-                </div>
-            </footer>
+                                                    
+             <!-- Footer -->
+            <jsp:include page="/CSM_Software/includes/footer.jsp" />
+            <!-- End Footer -->
+            
         </div>
     </div>
     <!--   Core JS Files   -->
@@ -418,47 +387,12 @@
     <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/popper.min.js"></script>
     <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/bootstrap.min.js"></script>
     <!-- jQuery UI -->
-    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js">
-    </script>
-    <script
-        src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js">
-    </script>
-
+    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
     <!-- jQuery Scrollbar -->
-    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js">
-    </script>
+    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
     <!-- Atlantis JS -->
     <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/atlantis.min.js"></script>
-    <!-- Atlantis DEMO methods, don't include it in your project! -->
-    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/setting-demo2.js"></script>
-    <script>
-        $('#displayNotif').on('click', function () {
-            var placementFrom = $('#notify_placement_from option:selected').val();
-            var placementAlign = $('#notify_placement_align option:selected').val();
-            var state = $('#notify_state option:selected').val();
-            var style = $('#notify_style option:selected').val();
-            var content = {};
-
-            content.message = 'Turning standard Bootstrap alerts into "notify" like notifications';
-            content.title = 'Bootstrap notify';
-            if (style == "withicon") {
-                content.icon = 'fa fa-bell';
-            } else {
-                content.icon = 'none';
-            }
-            content.url = 'index.jsp';
-            content.target = '_blank';
-
-            $.notify(content, {
-                type: state,
-                placement: {
-                    from: placementFrom,
-                    align: placementAlign
-                },
-                time: 1000,
-            });
-        });
-    </script>
 </body>
 
 </html>

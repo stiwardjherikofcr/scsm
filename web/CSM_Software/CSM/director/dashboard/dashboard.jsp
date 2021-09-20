@@ -8,7 +8,7 @@
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -93,8 +93,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-primary card-round">
                                     <div class="card-body">
-                                        <a href="<%=request.getContextPath()%>/ControladorDocente?action=listarDocente"
-                                           alt="Docentes" class="anonstyle">
+                                        <a href="<%=request.getContextPath()%>/ControladorDocente?action=listarDocente" alt="Docentes" class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="icon-big text-center">
@@ -115,8 +114,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-info card-round">
                                     <div class="card-body">
-                                        <a href="<%=request.getContextPath()%>/ControladorPensum?accion=listarPensum"
-                                           alt="Pensum" class="anonstyle">
+                                        <a href="<%=request.getContextPath()%>/ControladorPensum?accion=listarPensum" alt="Pensum" class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="icon-big text-center">
@@ -141,8 +139,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-warning card-round">
                                     <div class="card-body ">
-                                        <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/seguimiento.jsp"
-                                           alt="Materias" class="anonstyle">
+                                        <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/seguimiento.jsp" alt="Materias" class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="icon-big text-center">
@@ -167,8 +164,7 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-danger card-round">
                                     <div class="card-body ">
-                                        <a href="<%=request.getContextPath()%>/ControladorMicrocurriculo?accion=listarTodos"
-                                           alt="Microcurriculos" class="anonstyle">
+                                        <a href="<%=request.getContextPath()%>/ControladorMicrocurriculo?accion=listarTodos" alt="Microcurriculos" class="anonstyle">
                                             <div class="row">
                                                 <div class="col-5">
                                                     <div class="icon-big text-center">
@@ -187,7 +183,6 @@
                                                 </div>
                                             </div>
                                         </a>
-
                                     </div>
                                 </div>
                             </div>
@@ -197,15 +192,115 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header text-center">
-                                        <div class="card-title">Porcentaje de Cumplimiento</div>
+                                        <div class="card-title">Porcentaje de Cumplimiento / 115 - 02 / 2021 - 2</div>
                                     </div>
                                     <div class="card-body">
-                                        <div class="d-flex justify-content-center align-items-center"
-                                             id="columnchart_values"></div>
+                                        <div class="d-flex justify-content-center align-items-center" id="columnchart_values"></div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Fin Tabla % Seguimiento -->
+
+
+                            <!-- Tabla Cumplimiento de Periodos Acádemicos -->
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header text-center">
+                                        <h4 class="card-title">Cumplimiento de Periodos Acádemicos</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="basic-datatables" class="display table table-striped table-hover text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pensum</th>
+                                                        <th>Periodo</th>
+                                                        <th>Cumplimiento (%)</th>
+                                                        <th>Estado</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Pensum</th>
+                                                        <th>Periodo</th>
+                                                        <th>Cumplimiento (%)</th>
+                                                        <th>Estado</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </tfoot>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>115 - 1</td>
+                                                        <td>2021 - 2</td>
+                                                        <td>80</td>
+                                                        <td>En Curso</td>
+                                                        <td>
+                                                            <div class="form-button-action">
+                                                                <a href="#"
+                                                                   type="button" data-toggle="tooltip" title=""
+                                                                   class="btn btn-link btn-dark" data-original-title="Ver"
+                                                                   style="color: black;">
+                                                                    <i class="fas fa-search"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>115 - 1</td>
+                                                        <td>2021 - 1</td>
+                                                        <td>85</td>
+                                                        <td>Finalizado</td>
+                                                        <td>
+                                                            <div class="form-button-action">
+                                                                <a href="#"
+                                                                   type="button" data-toggle="tooltip" title=""
+                                                                   class="btn btn-link btn-dark" data-original-title="Ver"
+                                                                   style="color: black;">
+                                                                    <i class="fas fa-search"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>115 - 1</td>
+                                                        <td>2020 - 2</td>
+                                                        <td>90</td>
+                                                        <td>Finalizado</td>
+                                                        <td>
+                                                            <div class="form-button-action">
+                                                                <a href="#"
+                                                                   type="button" data-toggle="tooltip" title=""
+                                                                   class="btn btn-link btn-dark" data-original-title="Ver"
+                                                                   style="color: black;">
+                                                                    <i class="fas fa-search"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr> 
+                                                    <tr>
+                                                        <td>115 - 1</td>
+                                                        <td>2020 - 1</td>
+                                                        <td>80</td>
+                                                        <td>Finalizado</td>
+                                                        <td>
+                                                            <div class="form-button-action">
+                                                                <a href="#"
+                                                                   type="button" data-toggle="tooltip" title=""
+                                                                   class="btn btn-link btn-dark" data-original-title="Ver"
+                                                                   style="color: black;">
+                                                                    <i class="fas fa-search"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin Tabla Cumplimiento de Periodos Acádemicos -->
                         </div>
                     </div>
                 </div>
@@ -256,15 +351,11 @@
         <!-- Atlantis JS -->
         <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/atlantis.min.js"></script>
 
-        <!-- Atlantis DEMO methods, don't include it in your project! -->
-        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/setting-demo.js"></script>
-        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/demo.js"></script>
-
         <!-- Chart -->
         <script type="text/javascript">
-            $(document).ready(function (){
+            $(document).ready(function () {
                 google.charts.load("current", {
-                packages: ['corechart']
+                    packages: ['corechart']
                 });
                 google.charts.setOnLoadCallback(drawChart);
             });
@@ -342,16 +433,25 @@
                     },
                     legend: {
                         position: "none"
-                    },
-                };
+                    }};
                 var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
                 chart.draw(view, options);
             }
         </script>
         <script type="text/javascript">
             $(document).ready(function () {
+                document.getElementById('microcurriculo').classList.toggle('active');
+                document.getElementById('microcurriculo').classList.toggle('submenu');
+                document.getElementById('sidebarLayouts').classList.toggle('show');
                 document.getElementById('dashboard').classList.toggle('active');
+                pageLength();
             });
+
+            function pageLength() {
+                // Basic
+                $('#basic-datatables').DataTable({
+                    "pageLength": 5});
+            }
         </script>
     </body>
 

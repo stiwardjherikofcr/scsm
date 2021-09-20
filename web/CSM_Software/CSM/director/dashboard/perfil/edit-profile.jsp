@@ -7,7 +7,7 @@
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -66,8 +66,7 @@
                     <div>
                         <div class="user">
                             <div class="avatar-sm float-left mr-2">
-                                <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="..."
-                                    class="avatar-img rounded-circle">
+                                <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="..." class="avatar-img rounded-circle">
                             </div>
                             <div class="info">
                                 <a data-toggle="collapse" href="#tables">
@@ -160,8 +159,7 @@
                             </li>
                         </ul>
                         <div class=" d-flex justify-content-center align-items-end w-100 logoUFPS">
-                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/Logo-nuevo-vertical.png"
-                                alt="..." class="avatar-img w-75">
+                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/Logo-nuevo-vertical.png" alt="..." class="avatar-img w-75">
                         </div>
                     </div>
                 </div>
@@ -200,8 +198,7 @@
                                 <div class="card-body d-flex justify-content-center">
                                     <p class="demo">
                                         <div class="avatar avatar-xxl">
-                                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif"
-                                                alt="..." class="avatar-img rounded-circle">
+                                            <img src="<%=request.getContextPath()%>/CSM_Software/assets/img/profile.jfif" alt="..." class="avatar-img rounded-circle">
                                         </div>
                                     </p>
                                 </div>
@@ -274,48 +271,16 @@
     <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/jquery.3.2.1.min.js"></script>
     <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/popper.min.js"></script>
     <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/bootstrap.min.js"></script>
+    
     <!-- jQuery UI -->
-    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js">
-    </script>
-    <script
-        src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js">
-    </script>
+    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 
     <!-- jQuery Scrollbar -->
-    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js">
-    </script>
+    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+   
     <!-- Atlantis JS -->
     <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/atlantis.min.js"></script>
-    <!-- Atlantis DEMO methods, don't include it in your project! -->
-    <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/setting-demo2.js"></script>
-    <script>
-        $('#displayNotif').on('click', function () {
-            var placementFrom = $('#notify_placement_from option:selected').val();
-            var placementAlign = $('#notify_placement_align option:selected').val();
-            var state = $('#notify_state option:selected').val();
-            var style = $('#notify_style option:selected').val();
-            var content = {};
-
-            content.message = 'Turning standard Bootstrap alerts into "notify" like notifications';
-            content.title = 'Bootstrap notify';
-            if (style == "withicon") {
-                content.icon = 'fa fa-bell';
-            } else {
-                content.icon = 'none';
-            }
-            content.url = 'index.jsp';
-            content.target = '_blank';
-
-            $.notify(content, {
-                type: state,
-                placement: {
-                    from: placementFrom,
-                    align: placementAlign
-                },
-                time: 1000,
-            });
-        });
-    </script>
 </body>
 
 </html>
