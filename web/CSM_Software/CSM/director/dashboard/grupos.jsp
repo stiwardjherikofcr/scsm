@@ -11,7 +11,7 @@
 <%@page import="dto.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -45,8 +45,7 @@
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link rel="stylesheet" href="<%=request.getContextPath()%>/CSM_Software/assets/css/demo.css">
         <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/JQuery.js" type="text/javascript"></script>
-        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/administrarGrupos.js" type="text/javascript">
-        </script>
+        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/administrarGrupos.js" type="text/javascript"></script>
     </head>
 
     <body>
@@ -76,7 +75,7 @@
                             <div class="ml-md-auto">
                                 <ul class="breadcrumbs">
                                     <li class="nav-home">
-                                        <a href="dashboard.jsp">
+                                        <a href="<%=request.getContextPath()%>/CSM_Software/CSM/director/dashboard/dashboard.jsp">
                                             <i class="flaticon-home"></i>
                                         </a>
                                     </li>
@@ -208,10 +207,9 @@
                                                        value="<%=fecha.getYear() + 1900%>">
                                                 <input type="hidden" name="periodo"
                                                        value="<%=fecha.getMonth() + 1%>">
-                                                <div
-                                                    class="form-group d-flex justify-content-center align-items-center">
+                                                <div class="form-group d-flex justify-content-center align-items-center">
                                                     <input class="btn btn-danger"
-                                                           type="submit"
+                                                           type="submit" name="accion"
                                                            value="Registrar Grupo">
                                                 </div>
                                             </form>
@@ -231,41 +229,33 @@
             </div>
         </div>
         <!--   Core JS Files   -->
-        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/jquery.3.2.1.min.js">
-        </script>
+        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/jquery.3.2.1.min.js"></script>
         <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/popper.min.js"></script>
         <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/core/bootstrap.min.js"></script>
         <!-- jQuery UI -->
-        <script
-            src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js">
-        </script>
-        <script
-            src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js">
-        </script>
+        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
         <!-- jQuery Scrollbar -->
-        <script
-            src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js">
-        </script>
+        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
         <!-- Datatables -->
-        <script
-            src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/datatables/datatables.min.js">
-        </script>
+        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/plugin/datatables/datatables.min.js"></script>
         <!-- Atlantis JS -->
         <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/atlantis.min.js"></script>
-        <!-- Atlantis DEMO methods, don't include it in your project! -->
-        <script src="<%=request.getContextPath()%>/CSM_Software/assets/js/setting-demo2.js"></script>
         <!-- Filtros Tablas JS -->
         <script>
-                                                                    $(document).ready(function () {
-                                                                        document.getElementById('grupos').classList.toggle('active');
-                                                                        pageLength();
-                                                                    });
+            $(document).ready(function () {
+                document.getElementById('microcurriculo').classList.toggle('active');
+                document.getElementById('microcurriculo').classList.toggle('submenu');
+                document.getElementById('sidebarLayouts').classList.toggle('show');
+                document.getElementById('grupos').classList.toggle('active');
+                pageLength();
+            });
 
-                                                                    function pageLength() {
-                                                                        // Basic
-                                                                        $('#basic-datatables').DataTable({
-                                                                            "pageLength": 5});
-                                                                    }
+            function pageLength() {
+                // Basic
+                $('#basic-datatables').DataTable({
+                    "pageLength": 5});
+            }
         </script>
     </body>
 

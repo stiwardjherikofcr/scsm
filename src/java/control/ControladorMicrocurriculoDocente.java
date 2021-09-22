@@ -133,6 +133,13 @@ public class ControladorMicrocurriculoDocente extends HttpServlet {
         response.sendRedirect("CSM_Software/CSM/docente/dashboard/microcurriculo/ver-microcurriculo.jsp");
     }
 
+    /**
+     * Se debe ajustar al nuevo modelo
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
+    @Deprecated
     private void solicitarCambio(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idSeccionMicrocurriculo = request.getParameter("idseccionmicrocurriculo");
         String contenido = request.getParameter("contenidonuevo");

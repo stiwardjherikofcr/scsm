@@ -270,6 +270,13 @@ public class AdministrarMicrocurriculo {
         return tipoMateriaJpa.findTipoMateriaEntities();
     }
 
+    /**
+     * Se debe ajustar al nuevo modelo
+     * @param idSeccionMicrocurriculo
+     * @param texto
+     * @deprecated
+     */
+    @Deprecated
     public void realizarSolicitudCambio(int idSeccionMicrocurriculo, String texto) {
         Conexion con = Conexion.getConexion();
         dao.SeccionMicrocurriculoJpaController daoSeccionMicrocurriculo = new dao.SeccionMicrocurriculoJpaController(con.getBd());

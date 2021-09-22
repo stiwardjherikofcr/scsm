@@ -91,7 +91,7 @@ public class ControladorPensum extends HttpServlet {
         
         //lista materias del pensum
         request.getSession().setAttribute("pensumList", admin.getMetaInfoPensums(pensums));
-        response.sendRedirect("CSM_Software/CSM/director/dashboard/pensum.jsp");
+        response.sendRedirect("CSM_Software/CSM/"+(user.getRolId().getId()==1 ? "director" : "docente")+"/dashboard/pensum.jsp");
     }
 
     public void listarPensum3(HttpServletRequest request, HttpServletResponse response) throws IOException {
