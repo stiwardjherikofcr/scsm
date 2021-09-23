@@ -66,8 +66,8 @@ public class ControladorLogin extends HttpServlet {
         AdministrarSeguimiento adminSeg = new AdministrarSeguimiento();
         request.getSession().setAttribute("usuario", usuario);
         List<Object[]> info = null;
+        cargarLastPensum(request, response, usuario);
         if (usuario.getRolId().getId() == 1) {
-            cargarLastPensum(request, response, usuario);
             info = adminSeg.getLastSeguimientoGeneral(usuario.getDocente().getProgramaCodigo());
             request.getSession().setAttribute("numDocActivos", new AdministrarDocentes().getNumDocentesActivos());
         }else{

@@ -151,7 +151,7 @@
                                                                         <i class="fas fa-search"></i>
                                                                     </button>
                                                                 </a>
-                                                                <a href="<%=request.getContextPath()%>/ControladorMicrocurriculo?accion=Editar&codigoMateria=<%=elem.getMicrocurriculo().getMateria().getMateriaPK().getCodigo()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>">  
+                                                                <a href="<%=request.getContextPath()%>/ControladorMicrocurriculo?accion=to-editar&codigoMateria=<%=elem.getMicrocurriculo().getMateria().getMateriaPK().getCodigo()%>&codigoPensum=<%=elem.getPensum().getPensumPK().getCodigo()%>">  
                                                                     <button type="button" data-toggle="tooltip" title=""
                                                                             class="btn btn-link btn-primary btn-lg"
                                                                             data-original-title="Editar">

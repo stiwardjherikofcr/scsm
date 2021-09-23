@@ -83,7 +83,7 @@
                             <%} else{%>
                             <li>
                                 <a href="<%=request.getContextPath()%>/CSM_Software/CSM/docente/dashboard/microcurriculo/solicitud-microcurriculo.jsp">
-                                    <span class="sub-item">Crear Solicitud Microcurriculo</span>
+                                    <span class="sub-item">Crear Solicitud Microcurriculo (No deberia estar aca)</span>
                                 </a>
                             </li>
                             <li>

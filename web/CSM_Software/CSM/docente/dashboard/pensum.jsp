@@ -171,33 +171,9 @@
                         </div>
                     </div>
                 </div>
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Nigth Devs
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Help
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        Licenses
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright ml-auto">
-                            2021 &copy; All Rights Reserved.
-                            Desarrollado por: <a href="#">Nigth Devs</a>
-                        </div>
-                    </div>
-                </footer>
+                <!-- Footer -->
+                <jsp:include page="/CSM_Software/includes/footer.jsp" />
+                <!-- End Footer -->
             </div>
         </div>
         <!--   Core JS Files   -->
@@ -217,9 +193,15 @@
         <script src="../../../assets/js/setting-demo2.js"></script>
         <!-- Filtros Tablas JS -->
         <script>
-            // Basic
-            $('#basic-datatables').DataTable({
-                "pageLength": 5,
+            function pageLength() {
+                // Basic
+                $('#basic-datatables').DataTable({
+                    "pageLength": 5});
+            }
+
+            // Add Row
+            $('#addRowButton').click(function () {
+                $('#addRowModal').modal('hide');
             });
         </script>
     </body>

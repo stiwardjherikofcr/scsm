@@ -88,6 +88,17 @@
         <script src="../../../../assets/js/atlantis.min.js"></script>
         <!-- Atlantis DEMO methods, don't include it in your project! -->
         <script src="../../../../assets/js/setting-demo2.js"></script>
+        <script>
+            function verMateria(codigo, semestre) {
+                $.post('<%=request.getContextPath()%>/ControladorMicrocurriculo?accion=ver-materia', {
+                    cod: codigo,
+                    sem: semestre
+                }, function (response) {
+                    $('#modal-content').html(response);
+                    $('#modal-materia').modal('show');
+                });
+            }
+        </script>
     </body>
 
 </html>

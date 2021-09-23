@@ -123,8 +123,8 @@
                         <div class="row">
                             <!-- Contenido de Microcurriculo -->
                             <div class="col-md-10">
-                                <form action="<%=request.getContextPath()%>/ControladorMicrocurriculo" method="POST" accept-charset="ISO-8859-1">
-                                    <input type="hidden"  name="microcurriculoId"  value=<%=microcurriculo.getMicrocurriculoPK().getId()%>>
+                                <form action="../../../../../ControladorMicrocurriculo?accion=editar" method="POST" accept-charset="ISO-8859-1">
+                                    <input type="hidden"  name="microcurriculoId"  value=<%=microcurriculo.getMicrocurriculoPK().getMateriaCodigo()+"-"+microcurriculo.getMicrocurriculoPK().getMateriaPensumCodigo() %>>
                                     <!--Microcurriculo-->
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-center">
@@ -211,8 +211,7 @@
                                     %>
                                     <!-- Seccion -->  
                                     <% int tipo = seccion.getSeccionId().getTipoSeccionId().getId();
-                                        if (tipo == 1) {
-                                    %>
+                                        if (tipo == 1) {%>
                                     <div class="card" id="<%=seccion.getSeccionId().getNombre()%>">
                                         <input  type="hidden"  name="seccionId-<%=seccion.getSeccionId().getId()%>" value="<%=seccion.getId()%>">  
                                         <div class="card-header">

@@ -54,10 +54,7 @@ public class ControladorPensum extends HttpServlet {
                 listarMaterias(request, response);
                 break;
             case "listarPensum":
-                this.listarPensum2(request, response);
-                break;
-            case "listarPensumDocente":
-                this.listarPensum3(request, response);
+                this.listarPensum(request, response);
                 break;
             case "ver":
                 this.verPensum(request, response);
@@ -80,7 +77,7 @@ public class ControladorPensum extends HttpServlet {
         this.processRequest(request, response);
     }
 
-    public void listarPensum2(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void listarPensum(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //listar pensum
         AdministrarPensum admin = new AdministrarPensum();
         AdministrarPrograma adminPrograma = new AdministrarPrograma();
@@ -92,22 +89,6 @@ public class ControladorPensum extends HttpServlet {
         //lista materias del pensum
         request.getSession().setAttribute("pensumList", admin.getMetaInfoPensums(pensums));
         response.sendRedirect("CSM_Software/CSM/"+(user.getRolId().getId()==1 ? "director" : "docente")+"/dashboard/pensum.jsp");
-    }
-
-    public void listarPensum3(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //listar pensum
-        AdministrarPensum admin = new AdministrarPensum();
-        Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-        
-        Programa programa = (Programa) request.getSession().getAttribute("programaSesion");
-        List<Pensum> pensum = programa.getPensumList();
-        request.getSession().setAttribute("listaPensum3", pensum);
-        
-        //lista materias del pensum
-        int pensumCodigo = pensum.get(0).getPensumPK().getCodigo();
-        List<dto.Materia> materias = admin.obtenerPensum(pensumCodigo, programa.getCodigo()).getMateriaList();
-        request.getSession().setAttribute("listaMateriasTodas", materias);
-        response.sendRedirect("CSM_Software/CSM/docente/dashboard/pensum.jsp");
     }
 
     private void registrar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -194,20 +175,6 @@ public class ControladorPensum extends HttpServlet {
         return null;
     }
 
-//    public static void cargarMateriasPorSemestre(HttpServletRequest request, Usuario user, int cod){
-//        List<Materia> materiasSemestre[] = new List[10];
-//        for(Pensum pensum : user.getDocente().getProgramaList().get(0).getPensumList()){
-//            if(pensum.getPensumPK().getCodigo()!=cod) continue;
-//            for(Materia m: pensum.getMateriaList()){
-//                int semestre = m.getSemestre()-1;
-//                if(materiasSemestre[semestre] == null)
-//                    materiasSemestre[semestre] = new ArrayList<>();
-//                materiasSemestre[semestre].add(m);
-//            }
-//            break;
-//        }
-//        
-//    }
     /**
      * Returns a short description of the servlet.
      *
